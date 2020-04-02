@@ -27,6 +27,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -37,6 +38,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -44,6 +46,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -57,13 +60,14 @@ public class GUI extends Application
 {
 	int width = 500; 
 	int height = 500; 
+	StackPane root = new StackPane();
+	Boolean[] checked = new Boolean[10]; // the list of checkboxes checked or not 
 	
 	public static void main(String[] args)
 	{ 
 		launch(args);  
 	}
 	 
-	
 	@Override 
 	public void start(Stage primaryStage)
 	{ 
@@ -75,16 +79,10 @@ public class GUI extends Application
 		 */
 		primaryStage.setTitle("Cat-o-log");
 		
-		StackPane root = new StackPane();
-		// sets up for where the filters and such will be added and organized later in the code  
-		GridPane grid = new GridPane(); 
-		grid.setVgap(10); // gap between rows 
-		grid.setHgap(10); // gap between columns
-		ScrollBar sbV = new ScrollBar();
-		ScrollBar sbH = new ScrollBar();
 		root.setStyle("-fx-background-color: LightSkyBlue;"); // background color
 		Scene startPage = new Scene(root, width, height); 
 	    
+		
 		// a mini abstract earth  
 		// fix later and put by login 
 		Circle C = new Circle(15,15,15);  
@@ -113,16 +111,9 @@ public class GUI extends Application
 	    searchBar.prefWidthProperty().bind(root.widthProperty());
 	    
 	    // submit search button 
-	    Button submit = new Button("Search!"); 
-	    submit.setMaxHeight(50);
-	    
-	    // submit.setMaxWidth(500); need to find a way to set limits better
-	    submit.prefHeightProperty().bind(root.heightProperty());
-	    submit.prefWidthProperty().bind(root.widthProperty());
-	    
+	    Button submit = makeButton("Search"); 
 	    submit.setOnAction(new EventHandler<ActionEvent>() 
 	    {
-
 	    	@Override
 	    	public void handle(ActionEvent e) 
 	    	{
@@ -132,56 +123,44 @@ public class GUI extends Application
 	    
 	    // login 
 		// just there to look pretty for now
-		Button login = new Button("Login");
-		login.setMaxHeight(50);
-	    login.prefHeightProperty().bind(root.heightProperty());
-	    login.prefWidthProperty().bind(root.widthProperty());
-	    
-		// put the login stuff here 
+		Button login = makeButton("Login"); 
 		login.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
 	        public void handle(ActionEvent event) 
 	        {
-	        	// will go to login scene 
-	            System.out.println("This will be where you login in!");
+	        	
 	        }
 		}); 
 		
 		// drop down sortBy  
-		ComboBox<String> sortByDropDown = new ComboBox<String>();
-		sortByDropDown.getItems().addAll("Name", "Number of Legs", "Preferred Biome", "Lifespan",
-										 "Diet", "Species", "Method of Travel", "Cold Blooded", 
-										 "Warm Blooded");
-		sortByDropDown.getValue(); // how to access the choice 
-		sortByDropDown.setMaxHeight(50);
-		sortByDropDown.prefHeightProperty().bind(root.heightProperty());
-		sortByDropDown.prefWidthProperty().bind(root.widthProperty());
+		String[] sortBy = {"Name", "Number of Legs", "Preferred Biome", "Lifespan",
+				 "Diet", "Species", "Method of Travel", "Cold Blooded", 
+			 "Warm Blooded"};
+		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
+		sortByDropDown.setPromptText("Sort By");
+		sortByDropDown.setOnAction(new EventHandler<ActionEvent>() 
+		{
+	        @Override
+	        public void handle(ActionEvent event) 
+	        {
+	        	// sort by sortByDropDown.getValue() 
+	        }
+		}); 
 		
 		
-		
-		// this is basically just a title to show that they're filters
-		Text T = new Text("Filters"); 
 		// the check boxes that will be filters 
-		CheckBox chkColdBlooded = new CheckBox("Cold Blooded");
-		chkColdBlooded.setMaxHeight(20);
-		chkColdBlooded.prefHeightProperty().bind(root.heightProperty());
-		chkColdBlooded.prefWidthProperty().bind(root.widthProperty());
-		
+		CheckBox chkColdBlooded =  makeChkBox("Cold Blooded");
 		chkColdBlooded.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
 	        public void handle(ActionEvent event) 
 	        {
-	            System.out.println("Filter includes only cold blooded animals");
+	            
 	        }
 		});
 		
-		CheckBox chkWarmBlooded = new CheckBox("Warm Blooded");
-		chkWarmBlooded.setMaxHeight(20);
-		chkWarmBlooded.prefHeightProperty().bind(root.heightProperty());
-		chkWarmBlooded.prefWidthProperty().bind(root.widthProperty());
-		
+		CheckBox chkWarmBlooded = makeChkBox("Warm Blooded");
 		chkWarmBlooded.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -192,24 +171,11 @@ public class GUI extends Application
 		});
 		
 		// have to include a text box to get the limb range 
-		CheckBox limbLimits = new CheckBox("Limit Limbs");
-		limbLimits.setMaxHeight(20);
-		limbLimits.prefHeightProperty().bind(root.heightProperty());
-		limbLimits.prefWidthProperty().bind(root.widthProperty());
+		CheckBox limbLimits = makeChkBox("Limit Limbs");
 		TextField limbLimitL = new TextField(); // lower limb limit 
 		limbLimitL.setPromptText("Minimum Number of Limbs");
-		limbLimitL.setMaxHeight(20);
-		limbLimitL.setMaxWidth(100);
-		limbLimitL.getText(); // use this to access text 
-		limbLimitL.prefHeightProperty().bind(root.heightProperty());
-		limbLimitL.prefWidthProperty().bind(root.widthProperty());
-		TextField limbLimitU = new TextField(); // upper limb limit
+		TextField limbLimitU = makeTF(); // upper limb limit
 		limbLimitU.setPromptText("Maximum Number of Limbs");
-		limbLimitU.setMaxHeight(20);
-		limbLimitU.setMaxWidth(100);
-		limbLimitU.getText(); // use this to access text 
-		limbLimitU.prefHeightProperty().bind(root.heightProperty());
-		limbLimitU.prefWidthProperty().bind(root.widthProperty());
 		
 		limbLimits.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -220,10 +186,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkflies = new CheckBox("Flies");
-		chkflies.setMaxHeight(20);
-		chkflies.prefHeightProperty().bind(root.heightProperty());
-		chkflies.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkflies = makeChkBox("Flies");
 		chkflies.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -233,10 +196,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkSlithers = new CheckBox("Slithers");
-		chkSlithers.setMaxHeight(20);
-		chkSlithers.prefHeightProperty().bind(root.heightProperty());
-		chkSlithers.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkSlithers = makeChkBox("Slithers");
 		chkSlithers.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -246,10 +206,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkWalk = new CheckBox("Walk");
-		chkWalk.setMaxHeight(20);
-		chkWalk.prefHeightProperty().bind(root.heightProperty());
-		chkWalk.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkWalk = makeChkBox("Walk");
 		chkWalk.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -259,49 +216,36 @@ public class GUI extends Application
 	        }
 		});
 		
+		CheckBox chkSwim = makeChkBox("Swims");
+		chkSwim.setOnAction(new EventHandler<ActionEvent>() 
+		{
+	        @Override
+	        public void handle(ActionEvent event) 
+	        {
+	            System.out.println("Animals that swim");
+	        }
+		});
 		// Lifespan range
-		CheckBox chkLifespan = new CheckBox("Lifespan");
-		chkLifespan.setMaxHeight(20);
-		chkLifespan.prefHeightProperty().bind(root.heightProperty());
-		chkLifespan.prefWidthProperty().bind(root.widthProperty());
-		TextField lifeLimitL = new TextField(); // lower limb limit 
-		lifeLimitL.setPromptText("Minimum Number of Years");
-		lifeLimitL.setMaxHeight(20);
-		lifeLimitL.setMaxWidth(100);
-		lifeLimitL.getText(); // use this to access text 
-		lifeLimitL.prefHeightProperty().bind(root.heightProperty());
-		lifeLimitL.prefWidthProperty().bind(root.widthProperty());
-		TextField lifeLimitU = new TextField(); // upper limb limit
-		lifeLimitU.setPromptText("Maximum Number of Years");
-		lifeLimitU.setMaxHeight(20);
-		lifeLimitU.setMaxWidth(100);
-		lifeLimitU.getText(); // use this to access text 
-		lifeLimitU.prefHeightProperty().bind(root.heightProperty());
-		lifeLimitU.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkLifespan = makeChkBox("Lifespan");
+		TextField lifeLimitL = makeTF(); // lower limb limit 
+		TextField lifeLimitU = makeTF(); // upper limb limit
 		
 		chkLifespan.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
 	        public void handle(ActionEvent event) 
 	        {
-	            System.out.println("Uses the entered years max and min as boundries");
+	            
 	        }
 		});
 		
 		// diet drop down 
 		// can make a couple of check boxes later 
-		ComboBox<String> dietDropDown = new ComboBox<String>();
-		dietDropDown.getItems().addAll("Carnivore", "Omnivore", "Herbavore");
-		dietDropDown.getValue(); // how to access the choice 
+		String[] dietOptions = {"Carnivore", "Omnivore", "Herbavore"}; 
+		ComboBox<String> dietDropDown = makeDropDown(dietOptions);
 		dietDropDown.setMaxHeight(20);
-		dietDropDown.setMaxWidth(100);
-		dietDropDown.prefHeightProperty().bind(root.heightProperty());
-		dietDropDown.prefWidthProperty().bind(root.widthProperty());
-		
-		CheckBox chkMammal = new CheckBox("Mammals");
-		chkMammal.setMaxHeight(20);
-		chkMammal.prefHeightProperty().bind(root.heightProperty());
-		chkMammal.prefWidthProperty().bind(root.widthProperty());
+		dietDropDown.setPromptText("Diet");
+		CheckBox chkMammal = makeChkBox("Mammals");
 		chkMammal.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -311,10 +255,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkFish = new CheckBox("Mammals");
-		chkFish.setMaxHeight(20);
-		chkFish.prefHeightProperty().bind(root.heightProperty());
-		chkFish.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkFish = makeChkBox("Fish");
 		chkFish.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -324,10 +265,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkBird = new CheckBox("Birds");
-		chkBird.setMaxHeight(20);
-		chkBird.prefHeightProperty().bind(root.heightProperty());
-		chkBird.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkBird = makeChkBox("Birds"); 
 		chkBird.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -337,10 +275,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkReptiles = new CheckBox("Reptiles");
-		chkReptiles.setMaxHeight(20);
-		chkReptiles.prefHeightProperty().bind(root.heightProperty());
-		chkReptiles.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkReptiles = makeChkBox("Reptiles");
 		chkReptiles.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -350,11 +285,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkInsect = new CheckBox("Insect");
-		chkInsect.setMaxHeight(20);
-		chkInsect.prefHeightProperty().bind(root.heightProperty());
-		chkInsect.prefWidthProperty().bind(root.widthProperty());
-		
+		CheckBox chkInsect = makeChkBox("Insect");
 		chkInsect.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -364,10 +295,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkAmphibians = new CheckBox("Amphibians");
-		chkAmphibians.setMaxHeight(20);
-		chkAmphibians.prefHeightProperty().bind(root.heightProperty());
-		chkAmphibians.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkAmphibians = makeChkBox("Amphibians");
 		chkAmphibians.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -377,10 +305,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkInvertebratesJointedLegs = new CheckBox("Invertebrates");
-		chkInvertebratesJointedLegs.setMaxHeight(20);
-		chkInvertebratesJointedLegs.prefHeightProperty().bind(root.heightProperty());
-		chkInvertebratesJointedLegs.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkInvertebratesJointedLegs = makeChkBox("Invertebrates with Jointed Legs");
 		chkInvertebratesJointedLegs.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -390,10 +315,7 @@ public class GUI extends Application
 	        }
 		});
 		
-		CheckBox chkInvertebratesNoJointedLegs = new CheckBox("Invertebrates");
-		chkInvertebratesNoJointedLegs.setMaxHeight(20);
-		chkInvertebratesNoJointedLegs.prefHeightProperty().bind(root.heightProperty());
-		chkInvertebratesNoJointedLegs.prefWidthProperty().bind(root.widthProperty());
+		CheckBox chkInvertebratesNoJointedLegs = makeChkBox("Invertebrates No Jointed Legs");
 		chkInvertebratesNoJointedLegs.setOnAction(new EventHandler<ActionEvent>() 
 		{
 	        @Override
@@ -403,80 +325,32 @@ public class GUI extends Application
 	        }
 		});
 		
-		// Headers for Animal Section
-		Text Names = new Text("Name");
-		Names.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
-		Text Limbs = new Text("Number of Limbs");
-		Limbs.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
-		Text Diet = new Text("Primary Diet");
-		Diet.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
-		Text Biome = new Text("Preferred Biome");
-		Biome.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
-		Text blood = new Text("Warm/Cold Blooded"); 
-		blood.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
-		Text travel = new Text("Method of Travel");
-		travel.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
-		Text life = new Text("Lifespan");
-		life.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
-		Text type = new Text("Class");
-		type.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
-		//End of header section
+		// the grid holds the accordion that holds a smaller grid that holds the checkboxes
+		TitledPane tp = new TitledPane(); 
+		tp.setText("Filters");
+		GridPane checkBoxes = new GridPane(); 
+		checkBoxes.setVgap(4);
+		checkBoxes.setPadding(new Insets(5, 5, 5, 5));
+		checkBoxes.add(chkColdBlooded, 0, 0);
+		checkBoxes.add(chkWarmBlooded, 0, 1);
+		checkBoxes.add(chkflies, 0, 2);
+		checkBoxes.add(chkSlithers, 0, 3);
+		checkBoxes.add(chkWalk, 0, 4);
+		checkBoxes.add(chkMammal, 0, 5);
+		checkBoxes.add(chkFish, 0, 6);
+		checkBoxes.add(chkBird, 0, 7);
+		checkBoxes.add(chkReptiles, 0, 8);
+		checkBoxes.add(chkInsect, 0, 9);
+		checkBoxes.add(chkAmphibians, 0, 10);
+		checkBoxes.add(chkInvertebratesJointedLegs, 0, 11);
+		checkBoxes.add(chkInvertebratesNoJointedLegs, 0, 12);
+		checkBoxes.add(dietDropDown, 0, 13);
+		checkBoxes.add(lifeLimitL, 0, 14);
+		checkBoxes.add(lifeLimitU, 0, 15);
+		checkBoxes.add(chkLifespan, 0, 16);
+		tp.setExpanded(false);
+		tp.setContent(checkBoxes);
 		
-		//Animal 1
-		Text Octopus = new Text("Octopus");
-		Text OcLimbs = new Text("8");
-		Text Ocdiet = new Text("crustaceans");
-		Text Ocbiome = new Text("Ocean");
-		Text Ocblood = new Text("Cold Blooded");
-		Text Octravel = new Text("Swim");
-		Text Oclife = new Text("3-5 years");
-		Text Octype = new Text("Cephalopoda");
-		//end of animal 1
-		
-		//Animal 2
-		Text Squirrel = new Text("Squirrel");
-		Text Sqlimbs = new Text("4");
-		Text Sqdiet = new Text("Nuts, seeds, fruits, fungi");
-		Text Sqbiome = new Text("Wooded Temperate areas");
-		Text Sqblood = new Text("Warm Blooded");
-		Text Sqtravel = new Text("Walk/Run/Crawl");
-		Text Sqlife = new Text("15-18 years");
-		Text Sqtype = new Text("Mammal");
-		//end of animal 2
-		
-		//Animal 3
-		Text Polar_Bear = new Text("Polar bear");
-		Text Pblimbs = new Text("4");
-		Text Pbdiet = new Text("ringed and beared seals");
-		Text Pbbiome = new Text("arctic");
-		Text Pbblood = new Text("Warm Blooded");
-		Text Pbtravel = new Text("Walk/Run/Swim");
-		Text Pblife = new Text("15-18 years");
-		Text Pbtype = new Text("Mammal");
-		//end of animal 3
-		
-		//ANIMAL 4
-		Text Snap_Turtle = new Text("Common Snapping Turtle");
-		Text Stlimbs = new Text("4");
-		Text Stdiet = new Text("Aquatic plants, fish, frogs, insects");
-		Text Stbiome = new Text(" large fresh water bodies");
-		Text Stblood = new Text("Cold Blooded");
-		Text Sttravel = new Text("Swim/Crawl");
-		Text Stlife = new Text(">100 years");
-		Text Sttype = new Text("Reptile");
-		//end of animal 4
-		
-		
-		//Animal 5
-		Text Bald_Eagle = new Text("Bald Eagle");
-		Text Belimbs = new Text("4");
-		Text Bediet = new Text("Fish");
-		Text Bebiome = new Text("Most common in Canada/Alaska");
-		Text Beblood = new Text("Warm Blooded");
-		Text Betravel = new Text("Flying");
-		Text Belife = new Text("16-20 years");
-		Text Betype = new Text("Bird");
-		//end of Animal 5
 		
 		/* 
 		 * !!!!!!!!!!!!!!!
@@ -486,28 +360,78 @@ public class GUI extends Application
 		 * 
 		 * Filter Column is grid column 0
 		*/
-		
-		
 		// add filters to this column 
-		grid.addColumn(0,T, chkColdBlooded, chkWarmBlooded, limbLimitL, 
-				limbLimitU, limbLimits, chkflies, lifeLimitL, lifeLimitU, 
-				chkLifespan, dietDropDown, chkWalk, chkSlithers, chkMammal, 
-				chkFish, chkBird, chkReptiles, chkInsect, chkAmphibians, 
-				chkInvertebratesJointedLegs, chkInvertebratesNoJointedLegs); 
+		// sets up for where the filters and such will be added and organized later in the code  
+		GridPane grid = new GridPane(); 
+		grid.setVgap(10); // gap between rows 
+		grid.setHgap(10); // gap between columns
+		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges 
+		
 		
 		grid.addRow(0, searchBar, submit, sortByDropDown, login);
-		grid.addRow(1, Names, type, life, Limbs, Diet, Biome,travel, blood);
-		grid.addRow(2, Octopus, Octype, Oclife, OcLimbs, Ocdiet, Ocbiome, Octravel, Ocblood);
-		grid.addRow(3,  Squirrel, Sqtype, Sqlife, Sqlimbs, Sqdiet, Sqbiome, Sqtravel, Sqblood);
-		grid.addRow(4, Polar_Bear, Pbtype, Pblife, Pblimbs, Pbdiet, Pbbiome, Pbtravel, Pbblood);
-		grid.addRow(5, Snap_Turtle, Sttype, Stlife, Stlimbs, Stdiet, Stbiome, Sttravel, Stblood);
-		grid.addRow(6, Bald_Eagle, Betype, Belife, Belimbs, Bediet, Bebiome, Betravel, Beblood);
-
+		grid.addColumn(0, tp); 
 		
 		root.getChildren().add(grid); 
-		
 		primaryStage.setScene(startPage);
 		primaryStage.show(); 
+	}
+	
+	CheckBox makeChkBox(String boxName)
+	{
+		CheckBox temp = new CheckBox(boxName);
+		temp.setMaxHeight(20);
+		temp.prefHeightProperty().bind(root.heightProperty());
+		temp.prefWidthProperty().bind(root.widthProperty());
+		
+		
+		return temp; 
+	}
+	
+	
+	Button makeButton(String str)
+	{
+		Button temp = new Button(str);
+		 temp.setMaxHeight(50); 
+		 // submit.setMaxWidth(500); need to find a way to set limits better
+		 temp.prefHeightProperty().bind(root.heightProperty());
+		 temp.prefWidthProperty().bind(root.widthProperty());
+		 
+		return temp; 
+	}
+	
+	ComboBox<String> makeDropDown(String[] values)
+	{ 
+		ComboBox temp = new ComboBox(FXCollections.observableArrayList(values)); 
+		
+		temp.setMaxHeight(50);
+		temp.prefHeightProperty().bind(root.heightProperty());
+		temp.prefWidthProperty().bind(root.widthProperty());
+		
+		return temp; 
+	}
+	
+	TextField makeTF()
+	{
+		TextField temp = new TextField(); 
+		temp.setPromptText("Maximum Number of Years");
+		temp.setMaxHeight(20);
+		temp.setMaxWidth(100);
+		temp.getText(); // use this to access text 
+		temp.prefHeightProperty().bind(root.heightProperty());
+		temp.prefWidthProperty().bind(root.widthProperty());
+		
+		return temp; 
+	}
+	
+	void makeAnimalFrontPageSection(Animal weirdDog)
+	{
+		
+	}
+	
+	
+	void makeScroll()
+	{
+		
 	}
 	
 }
