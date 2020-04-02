@@ -4,28 +4,49 @@
  * http://www.java2s.com/Tutorials/Java/JavaFX/0590__JavaFX_ComboBox.htm 
  * 
  * 
+ * background color options:
+ * https://www.w3schools.com/colors/colors_names.asp 
+ * 
  * 
  */
 
 
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage; 
 
@@ -38,20 +59,47 @@ public class GUI extends Application
 	{ 
 		launch(args);  
 	}
+	 
 	
 	@Override 
 	public void start(Stage primaryStage)
-	{
-		// scene is on top of stage root connects 
+	{ 
+		/*
+		 * DO NOT CHANGE ORDER !!!!
+		 * 
+		 * 
+		 * 
+		 */
 		primaryStage.setTitle("Cat-o-log");
-		StackPane root = new StackPane(); 
-		Scene startPage = new Scene(root, width, height);
+		
+		StackPane root = new StackPane();
+		// sets up for where the filters and such will be added and organized later in the code  
 		GridPane grid = new GridPane(); 
 		grid.setVgap(10); // gap between rows 
 		grid.setHgap(10); // gap between columns
-		
-		
-		root.setStyle("-fx-background-color: green;");
+		ScrollBar sbV = new ScrollBar();
+		ScrollBar sbH = new ScrollBar();
+		root.setStyle("-fx-background-color: LightSkyBlue;"); // background color
+		Scene startPage = new Scene(root, width, height); 
+	    
+		// a mini abstract earth  
+		// fix later and put by login 
+		Circle C = new Circle(15,15,15);  
+        RadialGradient gradient1 = new RadialGradient(
+        	0, 		 // focus angle
+            .01, 	 // focus distance
+            0, 	 // centerX
+            0, 	 // centerY
+            75,  	 // radius
+            false,   // proportional 
+            CycleMethod.NO_CYCLE,  
+            new Stop(0, Color.GREEN), 
+            new Stop(1, Color.BLUE)
+            );  
+        C.setFill(gradient1); 
+        C.setTranslateY(-150);
+        C.setTranslateX(270);
+        
 		
 		// search bar 
 		TextField searchBar = new TextField(); 
@@ -64,6 +112,7 @@ public class GUI extends Application
 	    // submit search button 
 	    Button submit = new Button("Search!"); 
 	    submit.setMaxHeight(50);
+	    
 	    // submit.setMaxWidth(500); need to find a way to set limits better
 	    submit.prefHeightProperty().bind(root.heightProperty());
 	    submit.prefWidthProperty().bind(root.widthProperty());
@@ -147,12 +196,14 @@ public class GUI extends Application
 		TextField limbLimitL = new TextField(); // lower limb limit 
 		limbLimitL.setPromptText("Minimum Number of Limbs");
 		limbLimitL.setMaxHeight(20);
+		limbLimitL.setMaxWidth(100);
 		limbLimitL.getText(); // use this to access text 
 		limbLimitL.prefHeightProperty().bind(root.heightProperty());
 		limbLimitL.prefWidthProperty().bind(root.widthProperty());
 		TextField limbLimitU = new TextField(); // upper limb limit
 		limbLimitU.setPromptText("Maximum Number of Limbs");
 		limbLimitU.setMaxHeight(20);
+		limbLimitU.setMaxWidth(100);
 		limbLimitU.getText(); // use this to access text 
 		limbLimitU.prefHeightProperty().bind(root.heightProperty());
 		limbLimitU.prefWidthProperty().bind(root.widthProperty());
@@ -213,12 +264,14 @@ public class GUI extends Application
 		TextField lifeLimitL = new TextField(); // lower limb limit 
 		lifeLimitL.setPromptText("Minimum Number of Years");
 		lifeLimitL.setMaxHeight(20);
+		lifeLimitL.setMaxWidth(100);
 		lifeLimitL.getText(); // use this to access text 
 		lifeLimitL.prefHeightProperty().bind(root.heightProperty());
 		lifeLimitL.prefWidthProperty().bind(root.widthProperty());
 		TextField lifeLimitU = new TextField(); // upper limb limit
 		lifeLimitU.setPromptText("Maximum Number of Years");
 		lifeLimitU.setMaxHeight(20);
+		lifeLimitU.setMaxWidth(100);
 		lifeLimitU.getText(); // use this to access text 
 		lifeLimitU.prefHeightProperty().bind(root.heightProperty());
 		lifeLimitU.prefWidthProperty().bind(root.widthProperty());
@@ -238,6 +291,7 @@ public class GUI extends Application
 		dietDropDown.getItems().addAll("Carnivore", "Omnivore", "Herbavore");
 		dietDropDown.getValue(); // how to access the choice 
 		dietDropDown.setMaxHeight(20);
+		dietDropDown.setMaxWidth(100);
 		dietDropDown.prefHeightProperty().bind(root.heightProperty());
 		dietDropDown.prefWidthProperty().bind(root.widthProperty());
 		
@@ -293,17 +347,82 @@ public class GUI extends Application
 	        }
 		});
 		
-		// PLEASE DON'T MESS WITH THE CODE LINE ORDER
-		// THE GRID CAN BE EASILY FCKED UP !!!!
+		CheckBox chkInsect = new CheckBox("Insect");
+		chkInsect.setMaxHeight(20);
+		chkInsect.prefHeightProperty().bind(root.heightProperty());
+		chkInsect.prefWidthProperty().bind(root.widthProperty());
+		
+		chkInsect.setOnAction(new EventHandler<ActionEvent>() 
+		{
+	        @Override
+	        public void handle(ActionEvent event) 
+	        {
+	            System.out.println("Insects");
+	        }
+		});
+		
+		CheckBox chkAmphibians = new CheckBox("Amphibians");
+		chkAmphibians.setMaxHeight(20);
+		chkAmphibians.prefHeightProperty().bind(root.heightProperty());
+		chkAmphibians.prefWidthProperty().bind(root.widthProperty());
+		chkAmphibians.setOnAction(new EventHandler<ActionEvent>() 
+		{
+	        @Override
+	        public void handle(ActionEvent event) 
+	        {
+	            System.out.println("Amphibians");
+	        }
+		});
+		
+		CheckBox chkInvertebratesJointedLegs = new CheckBox("Invertebrates");
+		chkInvertebratesJointedLegs.setMaxHeight(20);
+		chkInvertebratesJointedLegs.prefHeightProperty().bind(root.heightProperty());
+		chkInvertebratesJointedLegs.prefWidthProperty().bind(root.widthProperty());
+		chkInvertebratesJointedLegs.setOnAction(new EventHandler<ActionEvent>() 
+		{
+	        @Override
+	        public void handle(ActionEvent event) 
+	        {
+	            System.out.println("Invertebrates with Jointed Legs");
+	        }
+		});
+		
+		CheckBox chkInvertebratesNoJointedLegs = new CheckBox("Invertebrates");
+		chkInvertebratesNoJointedLegs.setMaxHeight(20);
+		chkInvertebratesNoJointedLegs.prefHeightProperty().bind(root.heightProperty());
+		chkInvertebratesNoJointedLegs.prefWidthProperty().bind(root.widthProperty());
+		chkInvertebratesNoJointedLegs.setOnAction(new EventHandler<ActionEvent>() 
+		{
+	        @Override
+	        public void handle(ActionEvent event) 
+	        {
+	            System.out.println("Invertebrates with No Jointed Legs");
+	        }
+		});
+		
+		
+		/* 
+		 * !!!!!!!!!!!!!!!
+		 * PLEASE DON'T MESS WITH THE CODE LINE ORDER
+		 * THE GRID CAN BE EASILY FCKED UP !!!!
+		 * !!!!!!!!!!!!!!!!!!
+		 * 
+		 * Filter Column is grid column 0
+		*/
+		
+		
+		// add filters to this column 
 		grid.addColumn(0,T, chkColdBlooded, chkWarmBlooded, limbLimitL, 
 				limbLimitU, limbLimits, chkflies, lifeLimitL, lifeLimitU, 
 				chkLifespan, dietDropDown, chkWalk, chkSlithers, chkMammal, 
-				chkFish, chkBird, chkReptiles); // add filters to this column
+				chkFish, chkBird, chkReptiles, chkInsect, chkAmphibians, 
+				chkInvertebratesJointedLegs, chkInvertebratesNoJointedLegs); 
+		
 		grid.addRow(0, searchBar, submit, sortByDropDown, login);
+		
 		root.getChildren().add(grid); 
-	    
-	    
-		primaryStage.setScene(startPage); 
+		
+		primaryStage.setScene(startPage);
 		primaryStage.show(); 
 	}
 	
