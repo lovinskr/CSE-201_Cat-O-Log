@@ -18,6 +18,9 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
@@ -400,6 +403,80 @@ public class GUI extends Application
 	        }
 		});
 		
+		// Headers for Animal Section
+		Text Names = new Text("Name");
+		Names.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
+		Text Limbs = new Text("Number of Limbs");
+		Limbs.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
+		Text Diet = new Text("Primary Diet");
+		Diet.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
+		Text Biome = new Text("Preferred Biome");
+		Biome.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
+		Text blood = new Text("Warm/Cold Blooded"); 
+		blood.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
+		Text travel = new Text("Method of Travel");
+		travel.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
+		Text life = new Text("Lifespan");
+		life.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
+		Text type = new Text("Class");
+		type.setFont(Font.font("verdana",FontWeight.BOLD, FontPosture.REGULAR, 15));
+		//End of header section
+		
+		//Animal 1
+		Text Octopus = new Text("Octopus");
+		Text OcLimbs = new Text("8");
+		Text Ocdiet = new Text("crustaceans");
+		Text Ocbiome = new Text("Ocean");
+		Text Ocblood = new Text("Cold Blooded");
+		Text Octravel = new Text("Swim");
+		Text Oclife = new Text("3-5 years");
+		Text Octype = new Text("Cephalopoda");
+		//end of animal 1
+		
+		//Animal 2
+		Text Squirrel = new Text("Squirrel");
+		Text Sqlimbs = new Text("4");
+		Text Sqdiet = new Text("Nuts, seeds, fruits, fungi");
+		Text Sqbiome = new Text("Wooded Temperate areas");
+		Text Sqblood = new Text("Warm Blooded");
+		Text Sqtravel = new Text("Walk/Run/Crawl");
+		Text Sqlife = new Text("15-18 years");
+		Text Sqtype = new Text("Mammal");
+		//end of animal 2
+		
+		//Animal 3
+		Text Polar_Bear = new Text("Polar bear");
+		Text Pblimbs = new Text("4");
+		Text Pbdiet = new Text("ringed and beared seals");
+		Text Pbbiome = new Text("arctic");
+		Text Pbblood = new Text("Warm Blooded");
+		Text Pbtravel = new Text("Walk/Run/Swim");
+		Text Pblife = new Text("15-18 years");
+		Text Pbtype = new Text("Mammal");
+		//end of animal 3
+		
+		//ANIMAL 4
+		Text Snap_Turtle = new Text("Common Snapping Turtle");
+		Text Stlimbs = new Text("4");
+		Text Stdiet = new Text("Aquatic plants, fish, frogs, insects");
+		Text Stbiome = new Text(" large fresh water bodies");
+		Text Stblood = new Text("Cold Blooded");
+		Text Sttravel = new Text("Swim/Crawl");
+		Text Stlife = new Text(">100 years");
+		Text Sttype = new Text("Reptile");
+		//end of animal 4
+		
+		
+		//Animal 5
+		Text Bald_Eagle = new Text("Bald Eagle");
+		Text Belimbs = new Text("4");
+		Text Bediet = new Text("Fish");
+		Text Bebiome = new Text("Most common in Canada/Alaska");
+		Text Beblood = new Text("Warm Blooded");
+		Text Betravel = new Text("Flying");
+		Text Belife = new Text("16-20 years");
+		Text Betype = new Text("Bird");
+		//end of Animal 5
 		
 		/* 
 		 * !!!!!!!!!!!!!!!
@@ -419,6 +496,13 @@ public class GUI extends Application
 				chkInvertebratesJointedLegs, chkInvertebratesNoJointedLegs); 
 		
 		grid.addRow(0, searchBar, submit, sortByDropDown, login);
+		grid.addRow(1, Names, type, life, Limbs, Diet, Biome,travel, blood);
+		grid.addRow(2, Octopus, Octype, Oclife, OcLimbs, Ocdiet, Ocbiome, Octravel, Ocblood);
+		grid.addRow(3,  Squirrel, Sqtype, Sqlife, Sqlimbs, Sqdiet, Sqbiome, Sqtravel, Sqblood);
+		grid.addRow(4, Polar_Bear, Pbtype, Pblife, Pblimbs, Pbdiet, Pbbiome, Pbtravel, Pbblood);
+		grid.addRow(5, Snap_Turtle, Sttype, Stlife, Stlimbs, Stdiet, Stbiome, Sttravel, Stblood);
+		grid.addRow(6, Bald_Eagle, Betype, Belife, Belimbs, Bediet, Bebiome, Betravel, Beblood);
+
 		
 		root.getChildren().add(grid); 
 		
