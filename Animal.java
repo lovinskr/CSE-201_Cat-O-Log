@@ -1,7 +1,10 @@
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+
 
 public class Animal 
 {
@@ -10,15 +13,21 @@ public class Animal
 	String[] methodsOfTravel = new String[10];
 	String[] comments = new String[500]; 
 	int lastComment = 0;
-	boolean coldOrWarmBlooded; // false == cold blooded
-	// File animalStorage = new File("animalStorage.dat");
+	int coldOrWarmBlooded; // 1 = cold blooded 0 = warmblooded
+	File animalStorage;
+	String filename;
 	
 	public Animal() {
 		
 	}
 	
+	public Animal(String Aname, String identifier) {
+		name = Aname;
+		filename = identifier + "Storage.dat";
+	}
+	
 	public Animal(String Aname, String Adiet, String region, String biome, String Aclass,
-			int limbs, int lifespan, String[] travel, String[] anycomments) throws IOException {
+			int limbs, int lifespan, String[] travel, String[] anycomments, String identifier, String blood) throws IOException {
 		name = Aname;
 		diet = Adiet;
 		commonRegion = region;
@@ -28,6 +37,13 @@ public class Animal
 		averageLifespan = lifespan;
 		methodsOfTravel = travel;
 		comments = anycomments;
+		if(blood.contains("cold")) {
+			coldOrWarmBlooded = 1;
+		} else {
+			coldOrWarmBlooded = 0;
+		}
+		filename = identifier + "Storage.dat";
+		animalStorage = new File(filename);
 		saveAnimal();
 	}
 	
@@ -59,8 +75,16 @@ public class Animal
 		return averageLifespan;
 	}
 	
-	boolean getColdOrWarmBlooded() {
+	int getColdOrWarmBlooded() {
 		return coldOrWarmBlooded;
+	}
+	
+	File getAnimalFile() {
+		return animalStorage;
+	}
+	
+	String getFilename() {
+		return filename;
 	}
 	
 	/*
@@ -78,7 +102,7 @@ public class Animal
 		traits[5] = Integer.toString(numOfLimbs);
 		traits[6] = Integer.toString(averageLifespan);
 		String blood;
-		if (coldOrWarmBlooded) blood = "warm blooded";
+		if (coldOrWarmBlooded==0) blood = "warm blooded";
 		else blood = "cold blooded";
 		traits[7] = blood;
 		return traits; 
@@ -103,20 +127,30 @@ public class Animal
 	}
 	
 	public void saveAnimal() throws IOException{
-			DataOutputStream out = new DataOutputStream(new FileOutputStream("AnimalStorage.dat"));
-			out.writeChars(name);
-			out.writeChars(diet);
-			out.writeChars(commonRegion);
-			out.writeChars(animalClass);
-			out.writeChars(prefferedBiome);
+			FileWriter fstream = new FileWriter(filename, true);
+	        BufferedWriter out = new BufferedWriter(fstream);
+			out.write(name);
+			out.newLine();
+			out.write(diet);
+			out.newLine();
+			out.write(commonRegion);
+			out.newLine();
+			out.write(prefferedBiome);
+			out.newLine();
+			out.write(animalClass);
+			out.newLine();
 			out.write(numOfLimbs);
+			out.newLine();
 			out.write(averageLifespan);
-			out.writeBoolean(coldOrWarmBlooded);
+			out.newLine();
+			out.write(coldOrWarmBlooded);
+			out.newLine();
 			for(int i = 0; i < lastComment; i++) {
-				out.writeChars(comments[i]);
+				out.write(comments[i]);
 			}
+			out.newLine();
 			for(int j = 0; j < methodsOfTravel.length; j++) {
-				out.writeChars(methodsOfTravel[j]);
+				out.write(methodsOfTravel[j]);
 			}
 		out.close();		
 		}
