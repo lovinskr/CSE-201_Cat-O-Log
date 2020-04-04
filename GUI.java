@@ -112,13 +112,32 @@ public class GUI extends Application
 
 		// login
 		// just there to look pretty for now
+		TextField UTF = makeTF(); // lower limb limit
+		UTF.setPromptText("Username");
+		TextField PTF = makeTF(); // upper limb limit
+		PTF.setPromptText("Password");
 		Button login = makeButton("Login");
 		login.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event) 
 			{
-
+				String username = UTF.getText(); 
+				String password = PTF.getText(); 
+				
+				
+				
+			}
+		});
+		
+		Button signUp = makeButton("Sign Up"); 
+		signUp.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				
+				
 			}
 		});
 
@@ -247,8 +266,8 @@ public class GUI extends Application
 			}
 		});
 
-		CheckBox chkInvertebratesJointedLegs = makeChkBox("Invertebrates with Jointed Legs");
-		chkInvertebratesJointedLegs.setOnAction(new EventHandler<ActionEvent>() 
+		CheckBox chkArthropods = makeChkBox("Arthropods");
+		chkArthropods.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event)
@@ -257,8 +276,8 @@ public class GUI extends Application
 			}
 		});
 
-		CheckBox chkInvertebratesNoJointedLegs = makeChkBox("Invertebrates No Jointed Legs");
-		chkInvertebratesNoJointedLegs.setOnAction(new EventHandler<ActionEvent>() 
+		CheckBox chkVertebrates = makeChkBox("Vertebrates");
+		chkVertebrates.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event) 
@@ -276,8 +295,10 @@ public class GUI extends Application
 		CheckBox chkLifespan = makeChkBox("Lifespan");
 		TextField lifeLimitL = makeTF(); // lower limb limit
 		lifeLimitL.setPromptText("Min Years");
+		lifeLimitL.setMaxHeight(20);
 		TextField lifeLimitU = makeTF(); // upper limb limit
 		lifeLimitU.setPromptText("Max Years");
+		lifeLimitU.setMaxHeight(20); 
 		chkLifespan.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
@@ -290,10 +311,11 @@ public class GUI extends Application
 		// have to include a text box to get the limb range
 		CheckBox limbLimits = makeChkBox("Limit Limbs");
 		TextField limbLimitL = makeTF(); // lower limb limit
-		limbLimitL.setPromptText("Min Limbs");
+		limbLimitL.setPromptText("Min Limbs"); 
+		limbLimitL.setMaxHeight(20);
 		TextField limbLimitU = makeTF(); // upper limb limit
 		limbLimitU.setPromptText("Max Limbs");
-
+		limbLimitU.setMaxHeight(20);
 		limbLimits.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -302,7 +324,9 @@ public class GUI extends Application
 				System.out.println("Uses the entered limb max and min as boundries");
 			}
 		});
-
+		
+		
+		
 		// diet drop down
 		// can make a couple of check boxes later
 		String[] dietOptions = { "Carnivore", "Omnivore", "Herbavore" };
@@ -335,7 +359,7 @@ public class GUI extends Application
 		tp.setText("Filters");
 		GridPane checkBoxes = new GridPane();
 		checkBoxes.setVgap(4);
-		checkBoxes.setPadding(new Insets(5, 5, 5, 5));
+		checkBoxes.setPadding(new Insets(5, 5, 5,5));
 		checkBoxes.add(chkColdBlooded, 0, 0);
 		checkBoxes.add(chkWarmBlooded, 0, 1);
 		checkBoxes.add(chkflies, 0, 2);
@@ -347,8 +371,8 @@ public class GUI extends Application
 		checkBoxes.add(chkReptiles, 0, 8);
 		checkBoxes.add(chkInsect, 0, 9);
 		checkBoxes.add(chkAmphibians, 0, 10);
-		checkBoxes.add(chkInvertebratesJointedLegs, 0, 11);
-		checkBoxes.add(chkInvertebratesNoJointedLegs, 0, 12);
+		checkBoxes.add(chkArthropods, 0, 11);
+		checkBoxes.add(chkVertebrates, 0, 12);
 		checkBoxes.add(dietDropDown, 0, 13);
 		checkBoxes.add(lifeLimitL, 0, 14);
 		checkBoxes.add(lifeLimitU, 0, 15);
@@ -359,22 +383,30 @@ public class GUI extends Application
 
 		tp.setExpanded(false);
 		tp.setContent(checkBoxes);
-
+		
+		/*
+		 * permanent search bar header 
+		 * 
+		 */
+		
+		root.setStyle("-fx-background-color: ForestGreen;");
+		
 		GridPane grid = new GridPane();
 		grid.setStyle("-fx-background-color: LightSkyBlue;"); // background color
 		grid.setVgap(10); // gap between rows
 		grid.setHgap(10); // gap between columns
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
 
-		grid.addRow(0, searchBar, submit, sortByDropDown, login);
+		grid.addRow(0, searchBar, submit, sortByDropDown, UTF, PTF, login, signUp);
 		grid.addColumn(0, tp);
-		grid.prefWidthProperty().bind(root.widthProperty());
-		grid.prefHeightProperty().bind(root.heightProperty());
-		root.getChildren().add(grid);
+		
 		
 		
 		ScrollPane sp = new ScrollPane(grid);
 		sp.setPannable(true); 
+		grid.prefWidthProperty().bind(root.widthProperty());
+		grid.prefHeightProperty().bind(root.heightProperty());
+		root.getChildren().add(grid);
 		root.getChildren().add(sp);
 		
         Scene startPage = new Scene(root, 500, 500);
