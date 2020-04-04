@@ -22,6 +22,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
@@ -36,6 +37,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
@@ -109,7 +111,10 @@ public class GUI extends Application
 				// will return animals that include the word(s) entered
 			}
 		});
-
+		
+		root.getChildren().add(searchBar); 
+		root.getChildren().add(submit); 
+		
 		// login
 		// just there to look pretty for now
 		TextField UTF = makeTF(); // lower limb limit
@@ -389,15 +394,16 @@ public class GUI extends Application
 		 * 
 		 */
 		
-		root.setStyle("-fx-background-color: ForestGreen;");
+		root.setStyle("-fx-background-color: MediumAquaMarine;");
 		
 		GridPane grid = new GridPane();
 		grid.setStyle("-fx-background-color: LightSkyBlue;"); // background color
 		grid.setVgap(10); // gap between rows
 		grid.setHgap(10); // gap between columns
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
-
-		grid.addRow(0, searchBar, submit, sortByDropDown, UTF, PTF, login, signUp);
+		
+		
+		grid.addRow(1, sortByDropDown, UTF, PTF, login, signUp);
 		grid.addColumn(0, tp);
 		
 		
@@ -406,6 +412,8 @@ public class GUI extends Application
 		sp.setPannable(true); 
 		grid.prefWidthProperty().bind(root.widthProperty());
 		grid.prefHeightProperty().bind(root.heightProperty());
+		
+		
 		root.getChildren().add(grid);
 		root.getChildren().add(sp);
 		
@@ -418,7 +426,11 @@ public class GUI extends Application
 	{
 		CheckBox temp = new CheckBox(boxName);
 		temp.setMaxHeight(5);
-		temp.setStyle("-fx-color: lightblue;" + "-fx-font-size: 12;");
+		temp.setStyle(
+			      "-fx-color: DarkSeaGreen; " // make this color match the animal front page
+			    + "-fx-font-size: 12;"
+			    + ";"
+			);
 		//temp.prefHeightProperty().bind(root.heightProperty());
 		//temp.prefWidthProperty().bind(root.widthProperty());
 
@@ -459,7 +471,6 @@ public class GUI extends Application
 		return temp;
 	}
 	
-	
 	/*
 	 * there will also need to be buttons for 
 	 * 
@@ -471,9 +482,9 @@ public class GUI extends Application
 		
 	}
 
-	void makeScroll() 
+	void nextAnimalPage() 
 	{
-
+		
 	}
 
 }
