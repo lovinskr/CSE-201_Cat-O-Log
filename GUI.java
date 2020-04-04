@@ -349,19 +349,18 @@ public class GUI extends Application
 		});
 
 		/*
-		 * !!!!!!!!!!!!!!! PLEASE DON'T MESS WITH THE CODE LINE ORDER THE GRID CAN BE
-		 * EASILY FCKED UP !!!! !!!!!!!!!!!!!!!!!!
+		 * !!!!!!!!!!!!!!! 
+		 * PLEASE DON'T MESS WITH THE CODE LINE ORDER THE GRID CAN BE
+		 * EASILY MESSEDUP 
+		 * !!!! !!!!!!!!!!!!!!!!!!
 		 * 
 		 * Filter Column is grid column 0
 		 */
-		// add filters to this column
-		// sets up for where the filters and such will be added and organized later in
-		// the code
 
-		// the grid holds the accordion that holds a smaller grid that holds the
+		// the big grid's holds the titledPane that holds a smaller grid that holds the
 		// checkboxes
 		TitledPane tp = new TitledPane();
-		tp.setText("Filters");
+		tp.setText("Filter");
 		GridPane checkBoxes = new GridPane();
 		checkBoxes.setVgap(4);
 		checkBoxes.setPadding(new Insets(5, 5, 5,5));
@@ -403,7 +402,7 @@ public class GUI extends Application
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
 		
 		
-		grid.addRow(1, sortByDropDown, UTF, PTF, login, signUp);
+		grid.addRow(0, sortByDropDown, UTF, PTF, login, signUp);
 		grid.addColumn(0, tp);
 		
 		
@@ -427,7 +426,7 @@ public class GUI extends Application
 		CheckBox temp = new CheckBox(boxName);
 		temp.setMaxHeight(5);
 		temp.setStyle(
-			      "-fx-color: DarkSeaGreen; " // make this color match the animal front page
+			      "-fx-color: MediumAquaMarine; " // make this color match the animal front page
 			    + "-fx-font-size: 12;"
 			    + ";"
 			);
