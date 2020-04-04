@@ -1,10 +1,7 @@
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.Scanner;
 
 public class Catalog 
@@ -32,28 +29,20 @@ public class Catalog
 	public void readAnimal(Animal animal) throws IOException {
 		String fileName = animal.filename;
         Scanner scanner;
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
-        animal.name = br.readLine();
-        System.out.println(animal.name);
-        animal.diet = br.readLine();
-        System.out.println(animal.diet);
-        animal.commonRegion = br.readLine();
-        System.out.println(animal.commonRegion);
-        animal.prefferedBiome = br.readLine();
-        System.out.println(animal.prefferedBiome);
-        animal.animalClass = br.readLine();
-        System.out.println(animal.animalClass);
-        animal.numOfLimbs = Integer.parseInt(br.readLine());
-        System.out.println(animal.numOfLimbs);
-        animal.averageLifespan = Integer.parseInt(br.readLine());
-        System.out.println(animal.averageLifespan);
-        animal.coldOrWarmBlooded = Integer.parseInt(br.readLine());
-        System.out.println(animal.coldOrWarmBlooded);
-        animal.comments[0] = br.readLine();
-        animal.printComments();
-        animal.methodsOfTravel[0] = br.readLine();
-        animal.printTravel();
-        br.close();
+        scanner = new Scanner(fileName);
+        System.out.println(scanner.hasNextLine());
+        animal.name = scanner.nextLine();
+        animal.diet = scanner.nextLine();
+        animal.commonRegion = scanner.nextLine();
+        animal.prefferedBiome = scanner.nextLine();
+        animal.animalClass = scanner.nextLine();
+        animal.numOfLimbs = Integer.parseInt(scanner.nextLine());
+        animal.averageLifespan = Integer.parseInt(scanner.nextLine());
+        animal.coldOrWarmBlooded = Integer.parseInt(scanner.nextLine());
+        animal.comments[0] = scanner.nextLine();
+        animal.methodsOfTravel[0] = scanner.nextLine();
+        scanner.close();
 		
 	}
 }
+
