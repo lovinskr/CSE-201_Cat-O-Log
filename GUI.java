@@ -117,7 +117,7 @@ public class GUI extends Application
 		root.getChildren().add(submit);
 
 		// drop down sortBy
-		String[] sortBy = { "Name", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet", "Species",
+		String[] sortBy = { "A-Z", "Z-A", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet",
 				"Method of Travel", "Cold Blooded", "Warm Blooded" };
 		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
 		sortByDropDown.setPromptText("Sort By");
@@ -265,6 +265,102 @@ public class GUI extends Application
 			}
 		});
 		
+		CheckBox chkTundra = makeChkBox("Tundra");
+		chkTundra.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkTundra.setStyle("-fx-color: LightSkyBlue");
+				if(chkTundra.isSelected() == false)
+					chkTundra.setStyle("-fx-color: MediumAquaMarine");
+			}
+		});
+		
+		CheckBox chkTaiga = makeChkBox("Taiga");
+		chkTaiga.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkTaiga.setStyle("-fx-color: LightSkyBlue");
+				if(chkTaiga.isSelected() == false)
+					chkTaiga.setStyle("-fx-color: MediumAquaMarine");
+			}
+		});
+		
+		CheckBox chkTDForest = makeChkBox("Temperate Deciduous Forest");
+		chkTDForest.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkTDForest.setStyle("-fx-color: LightSkyBlue");
+				if(chkTDForest.isSelected() == false)
+					chkTDForest.setStyle("-fx-color: MediumAquaMarine");
+			}
+		});
+		
+		CheckBox chkScrubForest = makeChkBox("Scrub Forest");
+		chkScrubForest.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkScrubForest.setStyle("-fx-color: LightSkyBlue");
+				if(chkScrubForest.isSelected() == false)
+					chkScrubForest.setStyle("-fx-color: MediumAquaMarine");
+			}
+		});
+		
+		CheckBox chkGrassland = makeChkBox("Grassland");
+		chkGrassland.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkGrassland.setStyle("-fx-color: LightSkyBlue");
+				if(chkGrassland.isSelected() == false)
+					chkGrassland.setStyle("-fx-color: MediumAquaMarine");
+			}
+		});
+		
+		CheckBox chkDesert = makeChkBox("Desert");
+		chkDesert.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkDesert.setStyle("-fx-color: LightSkyBlue");
+				if(chkDesert.isSelected() == false)
+					chkDesert.setStyle("-fx-color: MediumAquaMarine");
+			}
+		});
+		
+		CheckBox chkTempRForest = makeChkBox("Temperate Rain Forest");
+		chkTempRForest.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkTempRForest.setStyle("-fx-color: LightSkyBlue");
+				if(chkTempRForest.isSelected() == false)
+					chkTempRForest.setStyle("-fx-color: MediumAquaMarine");
+			}
+		});
+		
+		CheckBox chkTropRForest = makeChkBox("Tropical Rain Forest");
+		chkTropRForest.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkTropRForest.setStyle("-fx-color: LightSkyBlue");
+				if(chkTropRForest.isSelected() == false)
+					chkTropRForest.setStyle("-fx-color: MediumAquaMarine");
+			}
+		});
+		
 		/*
 		 * 
 		 * 
@@ -331,23 +427,64 @@ public class GUI extends Application
 		
 		TitledPane tp = new TitledPane();
 		tp.setText("Filter");
+		
+		TitledPane biomesTP = new TitledPane(); 
+		biomesTP.setText("Preferred Biome");
+		GridPane biomesGP = new GridPane(); 
+		biomesGP.add(chkTundra, 0, 0);
+		biomesGP.add(chkTaiga, 0, 1);
+		biomesGP.add(chkTDForest, 0, 2);
+		biomesGP.add(chkScrubForest, 0, 3);
+		biomesGP.add(chkGrassland, 0, 4);
+		biomesGP.add(chkDesert, 0, 5);
+		biomesGP.add(chkTropRForest, 0, 6);
+		biomesGP.add(chkTempRForest, 0, 7);
+		biomesTP.setContent(biomesGP);
+		biomesTP.setExpanded(false);
+		
+		TitledPane cwBloodedTP = new TitledPane();
+		cwBloodedTP.setText("Blood Type");
+		GridPane cwBloodedGP = new GridPane();
+		cwBloodedGP.add(chkColdBlooded, 0, 1);
+		cwBloodedGP.add(chkWarmBlooded, 0, 2);
+		cwBloodedTP.setContent(cwBloodedGP);
+		cwBloodedTP.setExpanded(false);
+		
+		
+		TitledPane animalClassTP = new TitledPane();
+		animalClassTP.setText("Class");
+		GridPane animalClassGP = new GridPane(); 
+		animalClassGP.setVgap(4);
+		animalClassGP.add(chkMammal, 0, 0);
+		animalClassGP.add(chkFish, 0, 1);
+		animalClassGP.add(chkBird, 0, 2);
+		animalClassGP.add(chkReptiles, 0, 3);
+		animalClassGP.add(chkInsect, 0, 4);
+		animalClassGP.add(chkAmphibians, 0, 5);
+		animalClassGP.add(chkArthropods, 0, 6);
+		animalClassGP.add(chkVertebrates, 0, 7);
+		animalClassTP.setContent(animalClassGP); 
+		animalClassTP.setExpanded(false);
+		
+		TitledPane travelsByTP = new TitledPane();
+		travelsByTP.setText("Method of Travel");
+		GridPane travelsByGP = new GridPane(); 
+		travelsByGP.add(chkFlies, 0, 0);
+		travelsByGP.add(chkSlithers, 0, 1);
+		travelsByGP.add(chkWalk, 0, 2);
+		travelsByGP.add(chkSwim, 0, 3);
+		travelsByTP.setContent(travelsByGP);
+		travelsByTP.setExpanded(false);
+		
 		GridPane checkBoxes = new GridPane();
 		checkBoxes.setVgap(4);
 		checkBoxes.setPadding(new Insets(5, 5, 5,5));
-		checkBoxes.add(chkColdBlooded, 0, 0);
-		checkBoxes.add(chkWarmBlooded, 0, 1);
-		checkBoxes.add(chkFlies, 0, 2);
-		checkBoxes.add(chkSlithers, 0, 3);
-		checkBoxes.add(chkWalk, 0, 4);
-		checkBoxes.add(chkMammal, 0, 5);
-		checkBoxes.add(chkFish, 0, 6);
-		checkBoxes.add(chkBird, 0, 7);
-		checkBoxes.add(chkReptiles, 0, 8);
-		checkBoxes.add(chkInsect, 0, 9);
-		checkBoxes.add(chkAmphibians, 0, 10);
-		checkBoxes.add(chkArthropods, 0, 11);
-		checkBoxes.add(chkVertebrates, 0, 12);
-		checkBoxes.add(dietDropDown, 0, 13);
+		checkBoxes.add(cwBloodedTP, 0, 0);
+		checkBoxes.add(animalClassTP, 0, 1);
+		checkBoxes.add(biomesTP, 0, 2);
+		checkBoxes.add(travelsByTP, 0, 3);
+		checkBoxes.add(dietDropDown, 0, 4);
+		
 		checkBoxes.add(lifeLimitL, 0, 14);
 		checkBoxes.add(lifeLimitU, 0, 15);
 		checkBoxes.add(chkLifespan, 0, 16);
@@ -426,7 +563,7 @@ public class GUI extends Application
 		                
 		                StackPane popup = new StackPane();
 		                popup.setStyle("-fx-background-color: AZURE");
-		                Text text = new Text("Your password or username were incorrect.");
+		                Text text = new Text("Your password or username was incorrect.");
 		                if(loginAttempts > 1)
 		                {
 		                	text = new Text("Your password or username were incorrect."
