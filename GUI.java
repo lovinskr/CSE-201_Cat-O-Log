@@ -114,99 +114,14 @@ public class GUI extends Application
 		
 		// adding them directly to root keeps them at the top 
 		root.getChildren().add(searchBar); 
-		root.getChildren().add(submit); 
-		 
-		TextField UTF = makeTF(); // username
-		UTF.setPromptText("Username");
-		TextField PTF = makeTF(); // password
-		PTF.setPromptText("Password");
-		Button login = makeButton("Login");
-		login.setOnAction(new EventHandler<ActionEvent>() 
-		{
-			 
-			@Override
-			public void handle(ActionEvent event) 
-			{
-				String username = UTF.getText(); 
-				String password = PTF.getText(); 
-				// check with accounts class 
-				Accounts temp = new Accounts(username, password); 
-				try 
-				{ 
-					Boolean hasAccount = temp.canLogin();
-					if(hasAccount == true && isLoggedIn == false)
-					{
-						loggedIn(); 
-						Stage dialog = new Stage();
-		                dialog.initModality(Modality.APPLICATION_MODAL);
-		                dialog.initOwner(primaryStage);
-		                
-		                StackPane popup = new StackPane();
-		                popup.setStyle("-fx-background-color: AZURE");
-		                Text text = new Text("You are logged in!");
-		               
-		                popup.getChildren().add(text);
-		                 
-		                Scene dialogScene = new Scene(popup, 400, 200);
-		                dialog.setScene(dialogScene);
-		                dialog.show();
-		                
-		                // get rid of tfs and change login to logout 
-		                
-					}
-					if(hasAccount == true && isLoggedIn == true)
-					{
-						loggedOut(); 
-						// make tfs show up and change back to login 
-					}
-					else
-					{ 
-						counter();
-						Stage dialog = new Stage();
-		                dialog.initModality(Modality.APPLICATION_MODAL);
-		                dialog.initOwner(primaryStage);
-		                
-		                StackPane popup = new StackPane();
-		                popup.setStyle("-fx-background-color: AZURE");
-		                Text text = new Text("Your password or username were incorrect.");
-		                if(loginAttempts > 1)
-		                {
-		                	text = new Text("Your password or username were incorrect."
-		                				  + "You have tried " + loginAttempts + " times.");
-		                }
-		                popup.getChildren().add(text);
-		                 
-		                Scene dialogScene = new Scene(popup, 400, 200);
-		                dialog.setScene(dialogScene);
-		                dialog.show(); 
-					}
-				} 
-				catch (IOException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-			}
-			 
-		});
-		
-		Button signUp = makeButton("Sign Up"); 
-		signUp.setOnAction(new EventHandler<ActionEvent>() 
-		{
-			@Override
-			public void handle(ActionEvent event) 
-			{
-				Scene loginScene = new Scene(root); 
-				primaryStage.getScene().setRoot(loginScene.getRoot());
-				
-			}
-		});
+		root.getChildren().add(submit);
 
 		// drop down sortBy
 		String[] sortBy = { "Name", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet", "Species",
 				"Method of Travel", "Cold Blooded", "Warm Blooded" };
 		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
 		sortByDropDown.setPromptText("Sort By");
+		sortByDropDown.setMaxHeight(20);
 		sortByDropDown.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
@@ -215,7 +130,8 @@ public class GUI extends Application
 				
 			}
 		});
-
+		
+		
 		// the check boxes that will be filters
 		CheckBox chkColdBlooded = makeChkBox("Cold Blooded");
 		chkColdBlooded.setOnAction(new EventHandler<ActionEvent>() 
@@ -455,9 +371,99 @@ public class GUI extends Application
 		grid.setHgap(10); // gap between columns
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
 		
+		 
+		TextField UTF = makeTF(); // username
+		UTF.setPromptText("Username");
+		TextField PTF = makeTF(); // password
+		PTF.setPromptText("Password");
+		Button login = makeButton("Login");
+		login.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			 
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				String username = UTF.getText(); 
+				String password = PTF.getText(); 
+				// check with accounts class 
+				Accounts temp = new Accounts(username, password); 
+				try 
+				{ 
+					Boolean hasAccount = temp.canLogin();
+					if(hasAccount == true && isLoggedIn == false)
+					{
+						loggedIn(); 
+						Stage dialog = new Stage();
+		                dialog.initModality(Modality.APPLICATION_MODAL);
+		                dialog.initOwner(primaryStage);
+		                
+		                StackPane popup = new StackPane();
+		                popup.setStyle("-fx-background-color: AZURE");
+		                Text text = new Text("You are logged in!");
+		               
+		                popup.getChildren().add(text);
+		                 
+		                Scene dialogScene = new Scene(popup, 400, 200);
+		                dialog.setScene(dialogScene);
+		                dialog.show();
+		                
+		                // get rid of tfs and change login to logout 
+		                login.setText("Logout");
+		                
+					}
+					if(hasAccount == true && isLoggedIn == true)
+					{
+						loggedOut(); 
+						// make tfs show up and change back to login 
+						login.setText("Login");
+					}
+					else
+					{ 
+						counter();
+						Stage dialog = new Stage();
+		                dialog.initModality(Modality.APPLICATION_MODAL);
+		                dialog.initOwner(primaryStage);
+		                
+		                StackPane popup = new StackPane();
+		                popup.setStyle("-fx-background-color: AZURE");
+		                Text text = new Text("Your password or username were incorrect.");
+		                if(loginAttempts > 1)
+		                {
+		                	text = new Text("Your password or username were incorrect."
+		                				  + "You have tried " + loginAttempts + " times.");
+		                }
+		                popup.getChildren().add(text);
+		                 
+		                Scene dialogScene = new Scene(popup, 400, 200);
+		                dialog.setScene(dialogScene);
+		                dialog.show(); 
+					}
+				} 
+				catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			}
+			 
+		});
 		
-		grid.addRow(0, sortByDropDown, UTF, PTF, login, signUp);
-		grid.addColumn(0, tp);
+		
+		Button signUp = makeButton("Sign Up"); 
+		signUp.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				Scene loginScene = new Scene(root); 
+				primaryStage.getScene().setRoot(loginScene.getRoot());
+				
+			}
+		});
+
+		
+		grid.addRow(0, UTF, PTF, login, signUp);
+		grid.addColumn(0, sortByDropDown, tp);
 		
 		
 		
