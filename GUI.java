@@ -1,14 +1,12 @@
 
 /*
- * Help from:
- * http://www.java2s.com/Tutorials/Java/JavaFX/0590__JavaFX_ComboBox.htm 
+ * This is the entire front end of the Cat-o-log. 
  * 
  * 
  * color options:
  * https://www.w3schools.com/colors/colors_names.asp 
  *
  *
- *	This is the front end of the Cat-o-log. 
  *
  *
  * The line order can NOT be altered AT ALL
@@ -16,9 +14,7 @@
  * the Stage primaryStage holds the search bar and Vbox root 
  * 		which holds the grid that holds the titledPane filter and 
  * 		row that holds sortby, login, and signup  
- * 		
- * 
- * add in species biome 
+ * 		 
  * 
  */
 
@@ -116,9 +112,18 @@ public class GUI extends Application
 		root.getChildren().add(searchBar); 
 		root.getChildren().add(submit);
 
-		// drop down sortBy
+		/* drop down sortBy
+		 * each is alphabetical as default 
+		 * for example if method of travel is chosen then 
+		 * it goes fly slither swim walk 
+		 * 
+		 * with each animal sorted by the travel method
+		 * alphabetically first 
+		 * 
+		 * cold blooded then warm blooded if cold blooded is chosen 
+		*/ 
 		String[] sortBy = { "A-Z", "Z-A", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet",
-				"Method of Travel", "Cold Blooded", "Warm Blooded" };
+				"Travel Method", "Cold Blooded", "Warm Blooded" };
 		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
 		sortByDropDown.setPromptText("Sort By");
 		sortByDropDown.setMaxHeight(20);
@@ -127,7 +132,43 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				
+				String chosen = sortByDropDown.getValue(); 
+				if(chosen.contentEquals("A-Z"))
+				{
+					
+				}
+				else if(chosen.contentEquals("Z-A"))
+				{
+					
+				}
+				else if(chosen.contentEquals("Number of Limbs"))
+				{
+					
+				}
+				else if(chosen.contentEquals("Preffered Biome"))
+				{
+					
+				}
+				else if(chosen.contentEquals("Travel Method"))
+				{
+					
+				}
+				else if(chosen.contentEquals("Cold Blooded"))
+				{
+					
+				}
+				else if(chosen.contentEquals("Warm Blooded"))
+				{
+					
+				}
+				else if(chosen.contentEquals("Lifespan"))
+				{
+					
+				}
+				else if(chosen.contentEquals("Diet"))
+				{
+					
+				}
 			}
 		});
 		
@@ -431,6 +472,7 @@ public class GUI extends Application
 		TitledPane biomesTP = new TitledPane(); 
 		biomesTP.setText("Preferred Biome");
 		GridPane biomesGP = new GridPane(); 
+		biomesGP.setVgap(4);
 		biomesGP.add(chkTundra, 0, 0);
 		biomesGP.add(chkTaiga, 0, 1);
 		biomesGP.add(chkTDForest, 0, 2);
@@ -445,6 +487,7 @@ public class GUI extends Application
 		TitledPane cwBloodedTP = new TitledPane();
 		cwBloodedTP.setText("Blood Type");
 		GridPane cwBloodedGP = new GridPane();
+		cwBloodedGP.setVgap(4);
 		cwBloodedGP.add(chkColdBlooded, 0, 1);
 		cwBloodedGP.add(chkWarmBlooded, 0, 2);
 		cwBloodedTP.setContent(cwBloodedGP);
@@ -469,6 +512,7 @@ public class GUI extends Application
 		TitledPane travelsByTP = new TitledPane();
 		travelsByTP.setText("Method of Travel");
 		GridPane travelsByGP = new GridPane(); 
+		travelsByGP.setVgap(4);
 		travelsByGP.add(chkFlies, 0, 0);
 		travelsByGP.add(chkSlithers, 0, 1);
 		travelsByGP.add(chkWalk, 0, 2);
@@ -485,12 +529,12 @@ public class GUI extends Application
 		checkBoxes.add(travelsByTP, 0, 3);
 		checkBoxes.add(dietDropDown, 0, 4);
 		
-		checkBoxes.add(lifeLimitL, 0, 14);
-		checkBoxes.add(lifeLimitU, 0, 15);
-		checkBoxes.add(chkLifespan, 0, 16);
-		checkBoxes.add(limbLimitL, 0, 17);
-		checkBoxes.add(limbLimitU, 0, 18);
-		checkBoxes.add(limbLimits, 0, 19);
+		checkBoxes.add(lifeLimitL, 0, 5);
+		checkBoxes.add(lifeLimitU, 0, 6);
+		checkBoxes.add(chkLifespan, 0, 7);
+		checkBoxes.add(limbLimitL, 0, 8);
+		checkBoxes.add(limbLimitU, 0, 9);
+		checkBoxes.add(limbLimits, 0, 10);
 
 		tp.setExpanded(false);
 		tp.setContent(checkBoxes);
