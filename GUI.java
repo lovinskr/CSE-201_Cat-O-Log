@@ -4,9 +4,21 @@
  * http://www.java2s.com/Tutorials/Java/JavaFX/0590__JavaFX_ComboBox.htm 
  * 
  * 
- * background color options:
+ * color options:
  * https://www.w3schools.com/colors/colors_names.asp 
+ *
+ *
+ *	This is the front end of the Cat-o-log. 
+ *
+ *
+ * The line order can NOT be altered AT ALL
  * 
+ * the Stage primaryStage holds the search bar and Vbox root 
+ * 		which holds the grid that holds the titledPane filter and 
+ * 		row that holds sortby, login, and signup  
+ * 		
+ * 
+ * add in species biome 
  * 
  */
 
@@ -21,6 +33,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
@@ -55,14 +70,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class GUI extends Application 
 {
-	int width = 500;
-	int height = 500;
+	private int width = 500;
+	private int height = 500;
+	int loginAttempts = 0;
+	private boolean isLoggedIn = false; 
 	VBox root = new VBox(); 
-	Boolean[] checked = new Boolean[10]; // the list of checkboxes checked or not
+	Boolean[] checked = new Boolean[10]; // the list of check boxes checked or not
 
 	public static void main(String[] args) 
 	{
@@ -70,38 +88,20 @@ public class GUI extends Application
 	}
 
 	@Override
-	public void start(Stage primaryStage) 
+	public void start(Stage primaryStage)  
 	{
-		/*
-		 * DO NOT CHANGE ORDER !!!!
-		 * 
-		 * 
-		 * 
-		 */
+		// sets up the stage that holds all the parts 
 		primaryStage.setTitle("Cat-o-log");
 		root.getChildren().addAll(); 
 		root.setSpacing(10);
 		root.setPadding(new Insets(10)); 
-
-		// a mini abstract earth
-		// fix later and put by login
-		Circle C = new Circle(15, 15, 15);
-		RadialGradient gradient1 = new RadialGradient(0, // focus angle
-				.01, // focus distance
-				0, // centerX
-				0, // centerY
-				75, // radius
-				false, // proportional
-				CycleMethod.NO_CYCLE, new Stop(0, Color.GREEN), new Stop(1, Color.BLUE));
-		C.setFill(gradient1);
-		C.setTranslateY(-150);
-		C.setTranslateX(270);
-
-		// search bar
+		
+		
+		// search bar 
 		TextField searchBar = makeTF();
 		searchBar.setPromptText("Search the Cat-o-log");
 
-		// submit search button
+		// submit the search button 
 		Button submit = makeButton("Search");
 		submit.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -112,27 +112,82 @@ public class GUI extends Application
 			}
 		});
 		
+		// adding them directly to root keeps them at the top 
 		root.getChildren().add(searchBar); 
 		root.getChildren().add(submit); 
-		
-		// login
-		// just there to look pretty for now
-		TextField UTF = makeTF(); // lower limb limit
+		 
+		TextField UTF = makeTF(); // username
 		UTF.setPromptText("Username");
-		TextField PTF = makeTF(); // upper limb limit
+		TextField PTF = makeTF(); // password
 		PTF.setPromptText("Password");
 		Button login = makeButton("Login");
 		login.setOnAction(new EventHandler<ActionEvent>() 
 		{
+			 
 			@Override
 			public void handle(ActionEvent event) 
 			{
 				String username = UTF.getText(); 
 				String password = PTF.getText(); 
-				
-				
-				
+				// check with accounts class 
+				Accounts temp = new Accounts(username, password); 
+				try 
+				{ 
+					Boolean hasAccount = temp.canLogin();
+					if(hasAccount == true && isLoggedIn == false)
+					{
+						loggedIn(); 
+						Stage dialog = new Stage();
+		                dialog.initModality(Modality.APPLICATION_MODAL);
+		                dialog.initOwner(primaryStage);
+		                
+		                StackPane popup = new StackPane();
+		                popup.setStyle("-fx-background-color: AZURE");
+		                Text text = new Text("You are logged in!");
+		               
+		                popup.getChildren().add(text);
+		                 
+		                Scene dialogScene = new Scene(popup, 400, 200);
+		                dialog.setScene(dialogScene);
+		                dialog.show();
+		                
+		                // get rid of tfs and change login to logout 
+		                
+					}
+					if(hasAccount == true && isLoggedIn == true)
+					{
+						loggedOut(); 
+						// make tfs show up and change back to login 
+					}
+					else
+					{ 
+						counter();
+						Stage dialog = new Stage();
+		                dialog.initModality(Modality.APPLICATION_MODAL);
+		                dialog.initOwner(primaryStage);
+		                
+		                StackPane popup = new StackPane();
+		                popup.setStyle("-fx-background-color: AZURE");
+		                Text text = new Text("Your password or username were incorrect.");
+		                if(loginAttempts > 1)
+		                {
+		                	text = new Text("Your password or username were incorrect."
+		                				  + "You have tried " + loginAttempts + " times.");
+		                }
+		                popup.getChildren().add(text);
+		                 
+		                Scene dialogScene = new Scene(popup, 400, 200);
+		                dialog.setScene(dialogScene);
+		                dialog.show(); 
+					}
+				} 
+				catch (IOException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 			}
+			 
 		});
 		
 		Button signUp = makeButton("Sign Up"); 
@@ -141,7 +196,8 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				
+				Scene loginScene = new Scene(root); 
+				primaryStage.getScene().setRoot(loginScene.getRoot());
 				
 			}
 		});
@@ -156,7 +212,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-
+				
 			}
 		});
 
@@ -167,7 +223,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-
+				chkColdBlooded.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -177,17 +233,17 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Filter includes only warm blooded animals");
+				chkWarmBlooded.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
-		CheckBox chkflies = makeChkBox("Flies");
-		chkflies.setOnAction(new EventHandler<ActionEvent>() 
+		CheckBox chkFlies = makeChkBox("Flies");
+		chkFlies.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Animals that fly");
+				chkFlies.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -197,7 +253,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Animals that slither");
+				chkSlithers.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -207,7 +263,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Animals that walk");
+				chkWalk.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -217,7 +273,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Animals that swim");
+				chkSwim.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -227,7 +283,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Fish");
+				chkFish.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -237,7 +293,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Birds");
+				chkBird.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -247,7 +303,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Reptiles");
+				chkReptiles.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -257,7 +313,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event)
 			{
-				System.out.println("Insects");
+				chkInsect.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -267,7 +323,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				System.out.println("Amphibians");
+				chkAmphibians.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -277,7 +333,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event)
 			{
-				
+				chkArthropods.setStyle("-fx-color: LightSkyBlue");
 			}
 		});
 
@@ -287,10 +343,12 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				
+				chkVertebrates.setStyle("-fx-color: LightSkyBlue");
+				if(chkVertebrates.isSelected() == false)
+					chkVertebrates.setStyle("-fx-color: MediumAquaMarine");
 			}
 		});
-
+		
 		/*
 		 * 
 		 * 
@@ -348,17 +406,13 @@ public class GUI extends Application
 			}
 		});
 
-		/*
-		 * !!!!!!!!!!!!!!! 
-		 * PLEASE DON'T MESS WITH THE CODE LINE ORDER THE GRID CAN BE
-		 * EASILY MESSEDUP 
-		 * !!!! !!!!!!!!!!!!!!!!!!
-		 * 
+		
+		 /* 
 		 * Filter Column is grid column 0
+		 * the big grid's holds the titledPane 
+		 * that holds a smaller grid that holds the check boxes 
 		 */
-
-		// the big grid's holds the titledPane that holds a smaller grid that holds the
-		// checkboxes
+		
 		TitledPane tp = new TitledPane();
 		tp.setText("Filter");
 		GridPane checkBoxes = new GridPane();
@@ -366,7 +420,7 @@ public class GUI extends Application
 		checkBoxes.setPadding(new Insets(5, 5, 5,5));
 		checkBoxes.add(chkColdBlooded, 0, 0);
 		checkBoxes.add(chkWarmBlooded, 0, 1);
-		checkBoxes.add(chkflies, 0, 2);
+		checkBoxes.add(chkFlies, 0, 2);
 		checkBoxes.add(chkSlithers, 0, 3);
 		checkBoxes.add(chkWalk, 0, 4);
 		checkBoxes.add(chkMammal, 0, 5);
@@ -470,13 +524,33 @@ public class GUI extends Application
 		return temp;
 	}
 	
+	/* exists only because javafx can't handle a button counter 
+	 * increments the login attempt counter 
+	 */
+	void counter()
+	{
+		loginAttempts++; 
+	}
+	
+	void loggedIn()
+	{
+		isLoggedIn = true; 
+	}
+	
+	void loggedOut()
+	{
+		isLoggedIn = false; 
+	}
+	
 	/*
-	 * there will also need to be buttons for 
+	 * OTHER SCENES AND PAGES ECT 
 	 * 
 	 */
 	void makeAnimalFrontPageSection(Animal weirdDog) 
 	{
 		GridPane shownAnimals = new GridPane();
+		
+		
 		
 		
 	}
