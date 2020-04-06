@@ -550,9 +550,21 @@ public class GUI extends Application
 		grid.setStyle("-fx-background-color: LightSkyBlue;"); // background color
 		grid.setVgap(10); // gap between rows
 		grid.setHgap(10); // gap between columns
-		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
+		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges 
 		
-		 
+		
+		Button signUp = makeButton("Sign Up"); 
+		signUp.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				Scene loginScene = new Scene(root); 
+				primaryStage.getScene().setRoot(loginScene.getRoot());
+				
+			}
+		});
+	
 		TextField UTF = makeTF(); // username
 		UTF.setPromptText("Username");
 		TextField PTF = makeTF(); // password
@@ -574,29 +586,16 @@ public class GUI extends Application
 					if(hasAccount == true && isLoggedIn == false)
 					{
 						loggedIn(); 
-						Stage dialog = new Stage();
-		                dialog.initModality(Modality.APPLICATION_MODAL);
-		                dialog.initOwner(primaryStage);
-		                
-		                StackPane popup = new StackPane();
-		                popup.setStyle("-fx-background-color: AZURE");
-		                Text text = new Text("You are logged in!");
-		               
-		                popup.getChildren().add(text);
-		                 
-		                Scene dialogScene = new Scene(popup, 400, 200);
-		                dialog.setScene(dialogScene);
-		                dialog.show();
-		                
-		                // get rid of tfs and change login to logout 
-		                login.setText("Logout");
+						login.setText("Logout");
+						grid.getChildren().removeAll(UTF, PTF); 
 		                
 					}
-					if(hasAccount == true && isLoggedIn == true)
+					else if(hasAccount == true && isLoggedIn == true)
 					{
 						loggedOut(); 
+						grid.addRow(0, UTF, PTF, login, signUp);
 						// make tfs show up and change back to login 
-						login.setText("Login");
+						
 					}
 					else
 					{ 
@@ -629,24 +628,8 @@ public class GUI extends Application
 			 
 		});
 		
-		
-		Button signUp = makeButton("Sign Up"); 
-		signUp.setOnAction(new EventHandler<ActionEvent>() 
-		{
-			@Override
-			public void handle(ActionEvent event) 
-			{
-				Scene loginScene = new Scene(root); 
-				primaryStage.getScene().setRoot(loginScene.getRoot());
-				
-			}
-		});
-
-		
 		grid.addRow(0, UTF, PTF, login, signUp);
 		grid.addColumn(0, sortByDropDown, tp);
-		
-		
 		
 		ScrollPane sp = new ScrollPane(grid);
 		sp.setPannable(true); 
