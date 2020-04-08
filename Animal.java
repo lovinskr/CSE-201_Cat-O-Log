@@ -6,14 +6,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-public class Animal 
+public class Animal implements Comparable<Animal>
 {
 	String name, diet, commonRegion, prefferedBiome, animalClass;
-	int numOfLimbs, averageLifespan; 
+	Integer numOfLimbs, averageLifespan, coldOrWarmBlooded; // 1 = cold blooded 0 = warmblooded
 	String[] methodsOfTravel = new String[10];
 	String[] comments = new String[500]; 
-	int lastComment = 0;
-	int coldOrWarmBlooded; // 1 = cold blooded 0 = warmblooded
+	int lastComment = 0; 
 	File animalStorage;
 	String filename;
 	
@@ -27,7 +26,7 @@ public class Animal
 	}
 	
 	public Animal(String Aname, String Adiet, String region, String biome, String Aclass,
-			int limbs, int lifespan, String[] travel, String[] anycomments, String identifier, String blood) throws IOException {
+			int limbs, int lifespan, String[] travel, String identifier, String blood) throws IOException {
 		name = Aname;
 		diet = Adiet;
 		commonRegion = region;
@@ -36,7 +35,6 @@ public class Animal
 		numOfLimbs = limbs;
 		averageLifespan = lifespan;
 		methodsOfTravel = travel;
-		comments = anycomments;
 		if(blood.contains("cold")) {
 			coldOrWarmBlooded = 1;
 		} else {
@@ -65,6 +63,10 @@ public class Animal
 	
 	String getAnimalClass() {
 		return animalClass;
+	}
+	
+	String[] getTravelMethods() {
+		return methodsOfTravel;
 	}
 	
 	int getNumOfLimbs() {
@@ -125,8 +127,24 @@ public class Animal
 		lastComment++;
 		return true; 
 	}
+	void printComments() {
+		System.out.println(comments[0]);
+		for(int i = 0; i < lastComment; i++) {
+			System.out.println(comments[i]);
+		}
+	}
 	
-	public void saveAnimal() throws IOException{
+	void printTravel() {
+		for(int i = 0; i < methodsOfTravel.length; i++) {
+			System.out.println(methodsOfTravel[i]);
+		}
+	}
+	
+	public void saveAnimal() throws IOException {
+		File checker = new File(filename);
+		if(checker.exists()) {
+			checker.delete();
+		}
 			FileWriter fstream = new FileWriter(filename, true);
 	        BufferedWriter out = new BufferedWriter(fstream);
 			out.write(name);
@@ -139,11 +157,11 @@ public class Animal
 			out.newLine();
 			out.write(animalClass);
 			out.newLine();
-			out.write(numOfLimbs);
+			out.write(String.valueOf(getNumOfLimbs()));
 			out.newLine();
-			out.write(averageLifespan);
+			out.write(String.valueOf(getAverageLifespan()));
 			out.newLine();
-			out.write(coldOrWarmBlooded);
+			out.write(String.valueOf(getColdOrWarmBlooded()));
 			out.newLine();
 			for(int i = 0; i < lastComment; i++) {
 				out.write(comments[i]);
@@ -154,4 +172,9 @@ public class Animal
 			}
 		out.close();		
 		}
+
+	public int compareTo(Animal o) {
+		Animal a = (Animal) o;
+		return this.name.compareTo(a.name);
 	}
+}
