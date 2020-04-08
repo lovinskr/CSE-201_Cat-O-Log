@@ -551,7 +551,10 @@ public class GUI extends Application
 		grid.setVgap(10); // gap between rows
 		grid.setHgap(10); // gap between columns
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges 
-		
+		ScrollPane sp = new ScrollPane(grid);
+		sp.setPannable(true); 
+		grid.prefWidthProperty().bind(root.widthProperty());
+		grid.prefHeightProperty().bind(root.heightProperty());
 		
 		Button signUp = makeButton("Sign Up"); 
 		signUp.setOnAction(new EventHandler<ActionEvent>() 
@@ -596,7 +599,12 @@ public class GUI extends Application
 					else if(hasAccount == true && isLoggedIn == true)
 					{
 						loggedOut(); 
+						login.setText("login");
+						constantSearchAndLogin.getChildren().remove(login);
+						UTF.clear();
+						PTF.clear();
 						constantSearchAndLogin.addRow(0, UTF, PTF, login, signUp);
+						
 						// make tfs show up and change back to login 
 						
 					}
@@ -651,11 +659,6 @@ public class GUI extends Application
 		lS.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
 		grid.addRow(1, name, classAni, mOT, numLi, prefBiome, bT, d, lS);
 		
-		
-		ScrollPane sp = new ScrollPane(grid);
-		sp.setPannable(true); 
-		grid.prefWidthProperty().bind(root.widthProperty());
-		grid.prefHeightProperty().bind(root.heightProperty());
 		
 		
 		root.getChildren().add(grid);
