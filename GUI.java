@@ -408,7 +408,7 @@ public class GUI extends Application
 		 */
 
 		// Lifespan range
-		CheckBox chkLifespan = makeChkBox("Lifespan");
+		CheckBox chkLifespan = makeChkBox("Average Lifespan");
 		TextField lifeLimitL = makeTF(); // lower limb limit
 		lifeLimitL.setPromptText("Min Years");
 		lifeLimitL.setMaxHeight(20);
@@ -570,6 +570,9 @@ public class GUI extends Application
 		TextField PTF = makeTF(); // password
 		PTF.setPromptText("Password");
 		Button login = makeButton("Login");
+		GridPane constantSearchAndLogin = new GridPane();
+		constantSearchAndLogin.addRow(1, UTF, PTF, login, signUp);
+		root.getChildren().addAll(constantSearchAndLogin);
 		login.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			 
@@ -587,13 +590,13 @@ public class GUI extends Application
 					{
 						loggedIn(); 
 						login.setText("Logout");
-						grid.getChildren().removeAll(UTF, PTF); 
+						constantSearchAndLogin.getChildren().removeAll(UTF, PTF, signUp); 
 		                
 					}
 					else if(hasAccount == true && isLoggedIn == true)
 					{
 						loggedOut(); 
-						grid.addRow(0, UTF, PTF, login, signUp);
+						constantSearchAndLogin.addRow(0, UTF, PTF, login, signUp);
 						// make tfs show up and change back to login 
 						
 					}
@@ -628,8 +631,26 @@ public class GUI extends Application
 			 
 		});
 		
-		grid.addRow(0, UTF, PTF, login, signUp);
-		grid.addColumn(0, sortByDropDown, tp);
+		
+		// eight columns under row 0 for the animals 
+		Text name = new Text("Name");
+		name.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		Text prefBiome = new Text("Preferred Biome");
+		prefBiome.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		Text classAni = new Text("Class");
+		classAni.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		Text numLi = new Text("Limb Number");
+		numLi.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		Text mOT = new Text("Travel Method");
+		mOT.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		Text bT = new Text("Blood Type");
+		bT.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		Text d = new Text("Diet");
+		d.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		Text lS = new Text("Average Lifespan");
+		lS.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		grid.addRow(1, name, classAni, mOT, numLi, prefBiome, bT, d, lS);
+		
 		
 		ScrollPane sp = new ScrollPane(grid);
 		sp.setPannable(true); 
