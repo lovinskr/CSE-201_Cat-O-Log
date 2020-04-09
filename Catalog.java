@@ -62,6 +62,7 @@ public class Catalog
 	 * 1=action
 	 * 2=species
 	 * 3=biome
+	 * 4=diet
 	 */
 	public Animal[] filterAnimals(String filter, int type) {
 		Animal[] filteredAnimals = new Animal[500];
@@ -113,6 +114,14 @@ public class Catalog
 				}
 			}
 			break;
+		//diet
+		case 4:
+			for (int x = 0; x < lastAnimal; x++) {
+				if (animals[x].getDiet().equals(filter)) {
+					filteredAnimals[index] = animals[x];
+					index++;
+				}
+			}
 		}
 		return filteredAnimals;
 	}
