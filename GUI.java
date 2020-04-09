@@ -562,9 +562,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				Scene loginScene = new Scene(root); 
-				primaryStage.getScene().setRoot(loginScene.getRoot());
-				
+				signUpPopUp(); 
 			}
 		});
 	
@@ -582,13 +580,13 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				String username = UTF.getText(); 
-				String password = PTF.getText(); 
+				String username = UTF.getText().trim(); 
+				String password = PTF.getText().trim(); 
 				// check with accounts class 
-				Accounts temp = new Accounts(username, password); 
 				try 
 				{ 
-					Boolean hasAccount = temp.canLogin();
+					Accounts temp = new Accounts();
+					boolean hasAccount = temp.hasAccount(username, password); 
 					if(hasAccount == true && isLoggedIn == false)
 					{
 						loggedIn(); 
@@ -604,9 +602,6 @@ public class GUI extends Application
 						UTF.clear();
 						PTF.clear();
 						constantSearchAndLogin.addRow(0, UTF, PTF, login, signUp);
-						
-						// make tfs show up and change back to login 
-						
 					}
 					else
 					{ 
@@ -620,7 +615,7 @@ public class GUI extends Application
 		                Text text = new Text("Your password or username was incorrect.");
 		                if(loginAttempts > 1)
 		                {
-		                	text = new Text("Your password or username were incorrect."
+		                	text = new Text("Your password or username was incorrect."
 		                				  + "You have tried " + loginAttempts + " times.");
 		                }
 		                popup.getChildren().add(text);
@@ -643,6 +638,7 @@ public class GUI extends Application
 		// eight columns under row 0 for the animals 
 		Text name = new Text("Name");
 		name.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		//name.setFill(Color.DARKCYAN);
 		Text prefBiome = new Text("Preferred Biome");
 		prefBiome.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
 		Text classAni = new Text("Class");
@@ -718,6 +714,27 @@ public class GUI extends Application
 		return temp;
 	}
 	
+	void signUpPopUp()
+	{
+		Stage signup = new Stage();
+		StackPane popup = new StackPane();
+        popup.setStyle("-fx-background-color: darkgreen");
+        
+        
+        
+        
+        
+        Scene dialogScene = new Scene(popup, 400, 400);
+        
+        
+        
+        
+        
+        signup.setScene(dialogScene);
+        signup.show(); 
+	}
+	
+	
 	/* exists only because javafx can't handle a button counter 
 	 * increments the login attempt counter 
 	 */
@@ -734,19 +751,6 @@ public class GUI extends Application
 	void loggedOut()
 	{
 		isLoggedIn = false; 
-	}
-	
-	/*
-	 * OTHER SCENES AND PAGES ECT 
-	 * 
-	 */
-	void makeAnimalFrontPageSection(Animal weirdDog) 
-	{
-		GridPane shownAnimals = new GridPane();
-		
-		
-		
-		
 	}
 
 	void nextAnimalPage() 

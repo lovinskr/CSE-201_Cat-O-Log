@@ -1,13 +1,17 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class Accounts {
 	public LinkedList userlist;
 	public String filename = "accounts.txt";
 	
-	public Accounts() {
+	public Accounts() throws IOException {
 		userlist = new LinkedList();
+		readUsers(); 
 	}
 	
 	public void Makeaccount(String username, String password) {
@@ -25,19 +29,56 @@ public class Accounts {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		String line;
 		while((line = br.readLine()) !=null) {
-			String name = br.readLine();
-			System.out.println(name);
-			String pass = br.readLine();
-			System.out.println(pass);
+			String name = br.readLine().trim();
+			String pass = br.readLine().trim();
 			int admin = Integer.parseInt(br.readLine());
-			System.out.println(admin);
+			User user = new User(name, pass, true);
 			if(admin == 1) {
-				userlist.add(name, pass, true);
+				userlist.add(user);
 			} else {
-				userlist.add(name, pass, false);
+				userlist.add(user);
 			}
 		}
 		br.close();
-
 	}
+	
+	
+	/*
+	 * NEED FOR GUI PLEASE DON'T CHANGE 
+	 * checks that account exists or not 
+	 */
+	boolean hasAccount(String username, String password) throws IOException
+	{
+		ListIterator<User> userIterator = userlist.listIterator();
+		for(int c  = 0; c < userlist.size(); c++)
+		{
+			User temp = userIterator.next();
+			if((temp.username).equals(username))
+			{
+				return true; 
+			}
+		}
+		
+		return false; 
+	}
+	
+	/*
+	 * NEED FOR GUI PLEASE DON'T CHANGE 
+	 * checks that passowrd matches account 
+	 */
+	boolean canLogIn(String username, String password)
+	{
+		ListIterator<User> userIterator = userlist.listIterator();
+		for(int c  = 0; c < userlist.size(); c++)
+		{
+			User temp = userIterator.next();
+			if((temp.username).equals(username) && (temp.password).equals(password))
+			{
+				return true; 
+			}
+		}
+		return false; 
+	}
+	
+	
 }
