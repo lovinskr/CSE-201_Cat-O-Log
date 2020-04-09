@@ -21,21 +21,27 @@ public class Catalog
 		String[] travel = {"Walk"};
 		tiger = new Animal("Tiger", "Carnivore", "Asia", "Tropical Rain Forest", 
 				"Mammal", 4, 15, travel, "m1", "warm");
+		addAnimal(tiger);
 		String[] travel1 = {"Swim"};
 		Animal seaBass = new Animal("Sea Bass", "Carnivore", "U.S.", "Ocean", 
 				"Fish", 0, 10, travel1, "f1", "cold");
+		addAnimal(seaBass);
 		String[] travel2 = {"Walk"};
-		Animal salamamder = new Animal("Spotted Salamander", "Carnivore", "Canada", 
+		Animal salamander = new Animal("Spotted Salamander", "Carnivore", "Canada", 
 				"Temperate Deciduous Forest", "Amphibian", 4, 20, travel2, "a1", "cold");
+		addAnimal(salamander);
 		String[] travel3 = {"Flies", "Walk"};
 		Animal rook = new Animal("Rook", "Omnivore", "Europe", "Grassland", 
 				"Bird", 4, 20, travel3, "b1", "warm");
+		addAnimal(rook);
 		String[] travel4 = {"Walk"};
 		Animal iguana = new Animal("Green Iguana", "Herbivore", "Americas", 
 				"Tropical Rain Forest", "Reptile", 4, 20, travel4, "r1", "cold");
+		addAnimal(iguana);
 		String[] travel5 = {"Slithers"};
 		Animal ballPython = new Animal("Ball Python", "Carnivore", "Africa", "Grassland",
 				"Reptile", 0, 30, travel5, "r2", "cold");
+		addAnimal(ballPython);
 	}
 	public Catalog(Animal[] animal, int index) {
 		animals = animal;
@@ -45,7 +51,7 @@ public class Catalog
 		if (lastAnimal == animals.length) return false;
 		animals[lastAnimal] = newAnimal;
 		lastAnimal++;
-		Arrays.sort(animals);
+		Arrays.sort(animals, 0, lastAnimal);
 		return true;
 	}
 	public Animal[] getAnimals() {
