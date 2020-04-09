@@ -71,7 +71,7 @@ public class Catalog
 		case 0:
 			int bloodType = 0;
 			if (filter.contentEquals("cold")) bloodType = 1;
-			for (int x = 0; x < animals.length; x++) {
+			for (int x = 0; x < lastAnimal; x++) {
 				if (animals[x].getColdOrWarmBlooded() == bloodType) {
 					filteredAnimals[index] = animals[x];
 					index++;
@@ -80,7 +80,7 @@ public class Catalog
 			break;
 		//action
 		case 1:
-			for (int x = 0; x < animals.length; x++) {
+			for (int x = 0; x < lastAnimal; x++) {
 				String[] travel = animals[x].getTravelMethods();
 				boolean add = false;
 				for (int y = 0; y < travel.length; y++) {
@@ -97,7 +97,7 @@ public class Catalog
 			break;
 		//class
 		case 2:
-			for (int x = 0; x < animals.length; x++) {
+			for (int x = 0; x < lastAnimal; x++) {
 				if (animals[x].getAnimalClass().equals(filter)) {
 					filteredAnimals[index] = animals[x];
 					index++;
@@ -106,7 +106,7 @@ public class Catalog
 			break;
 		//biome
 		case 3:
-			for (int x = 0; x < animals.length; x++) {
+			for (int x = 0; x < lastAnimal; x++) {
 				if (animals[x].getPreferredBiome().equals(filter)) {
 					filteredAnimals[index] = animals[x];
 					index++;
@@ -123,7 +123,7 @@ public class Catalog
 		Animal[] filteredAnimals = new Animal[500];
 		int index = 0;
 		if (type == 0) {
-			for (int x = 0; x < animals.length; x++) {
+			for (int x = 0; x < lastAnimal; x++) {
 				if (animals[x].getAverageLifespan() >= min && 
 						animals[x].getAverageLifespan() <= max) {
 					filteredAnimals[index] = animals[x];
@@ -132,7 +132,7 @@ public class Catalog
 			}
 		}
 		else {
-			for (int x = 0; x < animals.length; x++) {
+			for (int x = 0; x < lastAnimal; x++) {
 				if (animals[x].getNumOfLimbs() >= min && 
 						animals[x].getNumOfLimbs() <= max) {
 					filteredAnimals[index] = animals[x];
