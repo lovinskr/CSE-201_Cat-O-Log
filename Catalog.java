@@ -14,9 +14,11 @@ public class Catalog
 	Animal[] animals;
 	int lastAnimal = 0;
 	String searchFor;
+	Animal[] currentlyDisplaying;
 	
 	public Catalog() throws IOException {
 		animals = new Animal[500];
+		currentlyDisplaying = animals;
 		Animal tiger;
 		String[] travel = {"Walk"};
 		tiger = new Animal("Tiger", "Carnivore", "Asia", "Tropical Rain Forest", 
@@ -150,6 +152,62 @@ public class Catalog
 			}
 		}
 		return filteredAnimals;
+	}
+	
+	public boolean changeDisplay(Animal[] newArray) {
+		currentlyDisplaying = newArray;
+		return true;
+	}
+	
+	public Animal[] joinArrays(Animal[] a1, Animal[] a2) {
+		Animal[] newArray = new Animal[500];
+		int index = 0;
+		for (int x = 0; x < 500; x++) {
+			if (a1[x] != null) {
+				newArray[index] = a1[x];
+				index++;
+			}
+		}
+		for (int x = 0; x < 500; x++) {
+			if (a2[x] != null) {
+				boolean contains = false;
+				for (int y = 0; y < index; y++) {
+					if (a2[x].compareTo(newArray[y]) == 0) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
+					newArray[index] = a2[x];
+					index++;
+				}
+			}
+		}
+		Arrays.sort(newArray, 0, index);
+		return newArray;
+	}
+	/*
+	 * removes anything in remove from main array
+	 */
+	public Animal[] separateArrays(Animal[] main, Animal[] remove) {
+		Animal[] newArray = new Animal[500];
+		int index = 0;
+		for (int x = 0; x < 500; x++) {
+			if (main[x] != null) {
+				boolean contains = false;
+				for (int y = 0; y < 500; y++) {
+					if (remove[y] != null && remove[y].compareTo(main[x]) == 0) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
+					newArray[index] = main[x];
+					index++;
+				}
+			}
+		}
+		return newArray;
 	}
 	
 	public void readAnimal(Animal animal) throws IOException {
