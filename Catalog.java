@@ -15,8 +15,27 @@ public class Catalog
 	int lastAnimal = 0;
 	String searchFor;
 	
-	public Catalog() {
+	public Catalog() throws IOException {
 		animals = new Animal[500];
+		Animal tiger;
+		String[] travel = {"Walk"};
+		tiger = new Animal("Tiger", "Carnivore", "Asia", "Tropical Rain Forest", 
+				"Mammal", 4, 15, travel, "m1", "warm");
+		String[] travel1 = {"Swim"};
+		Animal seaBass = new Animal("Sea Bass", "Carnivore", "U.S.", "Ocean", 
+				"Fish", 0, 10, travel1, "f1", "cold");
+		String[] travel2 = {"Walk"};
+		Animal salamamder = new Animal("Spotted Salamander", "Carnivore", "Canada", 
+				"Temperate Deciduous Forest", "Amphibian", 4, 20, travel2, "a1", "cold");
+		String[] travel3 = {"Flies", "Walk"};
+		Animal rook = new Animal("Rook", "Omnivore", "Europe", "Grassland", 
+				"Bird", 4, 20, travel3, "b1", "warm");
+		String[] travel4 = {"Walk"};
+		Animal iguana = new Animal("Green Iguana", "Herbivore", "Americas", 
+				"Tropical Rain Forest", "Reptile", 4, 20, travel4, "r1", "cold");
+		String[] travel5 = {"Slithers"};
+		Animal ballPython = new Animal("Ball Python", "Carnivore", "Africa", "Grassland",
+				"Reptile", 0, 30, travel5, "r2", "cold");
 	}
 	public Catalog(Animal[] animal, int index) {
 		animals = animal;
@@ -88,6 +107,32 @@ public class Catalog
 				}
 			}
 			break;
+		}
+		return filteredAnimals;
+	}
+	/*
+	 * 0 for lifespan, 1 for limbs
+	 */
+	public Animal[] rangeAnimals(int min, int max, int type) {
+		Animal[] filteredAnimals = new Animal[500];
+		int index = 0;
+		if (type == 0) {
+			for (int x = 0; x < animals.length; x++) {
+				if (animals[x].getAverageLifespan() >= min && 
+						animals[x].getAverageLifespan() <= max) {
+					filteredAnimals[index] = animals[x];
+					index++;
+				}
+			}
+		}
+		else {
+			for (int x = 0; x < animals.length; x++) {
+				if (animals[x].getNumOfLimbs() >= min && 
+						animals[x].getNumOfLimbs() <= max) {
+					filteredAnimals[index] = animals[x];
+					index++;
+				}
+			}
 		}
 		return filteredAnimals;
 	}
