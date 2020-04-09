@@ -5,10 +5,16 @@ public class User
 	private String[] email = new String[2]; 
 	private String[] phoneNumber = new String[2]; 
 	private String lastName, firstName; 
-	private boolean administrator = false; 
+	public boolean administrator = false;
+	public String username;
+	public String password;
 	
-	public User()
+	
+	public User(String name, String pass, boolean admin)
 	{
+	}
+	
+	public User(String name, String pass) {
 	}
 	
 	boolean setFName(String firstName)
@@ -50,9 +56,9 @@ public class User
 		return false;
 	}
 	
-	boolean isAdmin()
+	boolean isAdmin(String name)
 	{
-		return administrator ? true : false ; 
+		return false;
 	}
 	
 	void commentOnAnimal(String comment)
@@ -60,4 +66,6 @@ public class User
 		
 	}
 	
+	
 }
+

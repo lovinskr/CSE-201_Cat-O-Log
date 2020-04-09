@@ -94,7 +94,6 @@ public class Catalog
 	
 	public void readAnimal(Animal animal) throws IOException {
 		String fileName = animal.filename;
-        Scanner scanner;
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         animal.name = br.readLine();
         System.out.println(animal.name);
