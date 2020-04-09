@@ -14,7 +14,15 @@
  * the Stage primaryStage holds the search bar and Vbox root 
  * 		which holds the grid that holds the titledPane filter and 
  * 		row that holds sortby, login, and signup  
- * 		 
+ * 
+ * 
+ * To Do:
+ * make passwords private 
+ * get animals to have their own page 
+ * get animals on front page 
+ * sign up fully working
+ * search working 
+ * filter working 
  * 
  */
 
@@ -717,18 +725,118 @@ public class GUI extends Application
 	void signUpPopUp()
 	{
 		Stage signup = new Stage();
-		StackPane popup = new StackPane();
-        popup.setStyle("-fx-background-color: darkgreen");
+		StackPane signupSP = new StackPane();
+        signupSP.setStyle("-fx-background-color: MediumAquaMarine");
+        
+        TextField newUsername = new TextField(); 
+        newUsername.setPromptText("Username");
+        TextField newPassword = new TextField(); 
+        newPassword.setPromptText("Password");
+        TextField newPasswordCheck = new TextField();
+        newPasswordCheck.setPromptText("Re-Enter Password");
+        TextField newFN = new TextField(); 
+        newFN.setPromptText("First Name");
+        TextField newLN = new TextField(); 
+        newLN.setPromptText("Last Name");
+        TextField newE = new TextField();
+        newE.setPromptText("Email");
+        
+        Button signingUp = new Button("Sign Up");
+        
+        GridPane signUpGP = new GridPane(); 
+        signUpGP.prefWidthProperty().bind(signupSP.widthProperty());
+        signUpGP.prefHeightProperty().bind(signupSP.heightProperty());
+        signUpGP.setVgap(10); // gap between rows
+        signUpGP.setHgap(10); // gap between columns
+        signUpGP.addRow(0, newFN, newLN);
+        signUpGP.addRow(1, newE);
+        signUpGP.addRow(2, newUsername);
+        signUpGP.addRow(3, newPassword, newPasswordCheck);  
+        signUpGP.addRow(4, signingUp);
+        signupSP.getChildren().add(signUpGP);
+        signUpGP.setAlignment(Pos.CENTER);
+        signingUp.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				String p = newPassword.getText(); 
+				String pc = newPasswordCheck.getText();
+				String u = newUsername.getText(); 
+				String e = newE.getText(); 
+				// if the passwords do not match 
+				if(p.equals(pc) == false)
+		        {
+					Stage dialog = new Stage();
+	                dialog.initModality(Modality.APPLICATION_MODAL);
+	                dialog.initOwner(signup);
+	                
+	                StackPane popup = new StackPane();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("Your passwords do not match.");
+	                
+	                popup.getChildren().add(text);
+	                 
+	                Scene dialogScene = new Scene(popup, 200, 200);
+	                dialog.setScene(dialogScene);
+	                dialog.show(); 
+		        }
+				// if the password textfield is empty 
+				else if(p.isEmpty()) 
+				{
+					Stage dialog = new Stage();
+	                dialog.initModality(Modality.APPLICATION_MODAL);
+	                dialog.initOwner(signup);
+	                
+	                StackPane popup = new StackPane();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("Please enter in a password.");
+	                
+	                popup.getChildren().add(text);
+	                 
+	                Scene dialogScene = new Scene(popup, 200, 200);
+	                dialog.setScene(dialogScene);
+	                dialog.show(); 
+				}
+				// if the username textfield is empty 
+				else if(u.isEmpty())
+				{
+					Stage dialog = new Stage();
+	                dialog.initModality(Modality.APPLICATION_MODAL);
+	                dialog.initOwner(signup);
+	                
+	                StackPane popup = new StackPane();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("Please enter in a username.");
+	                
+	                popup.getChildren().add(text);
+	                 
+	                Scene dialogScene = new Scene(popup, 200, 200);
+	                dialog.setScene(dialogScene);
+	                dialog.show(); 
+				}
+				else if(e.isEmpty())
+				{
+					Stage dialog = new Stage();
+	                dialog.initModality(Modality.APPLICATION_MODAL);
+	                dialog.initOwner(signup);
+	                
+	                StackPane popup = new StackPane();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("Please enter in an email.");
+	                
+	                popup.getChildren().add(text);
+	                 
+	                Scene dialogScene = new Scene(popup, 200, 200);
+	                dialog.setScene(dialogScene);
+	                dialog.show(); 
+				}
+				
+			}
+		});
         
         
-        
-        
-        
-        Scene dialogScene = new Scene(popup, 400, 400);
-        
-        
-        
-        
+        Scene dialogScene = new Scene(signupSP, 400, 400);
         
         signup.setScene(dialogScene);
         signup.show(); 
