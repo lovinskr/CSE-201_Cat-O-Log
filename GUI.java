@@ -341,19 +341,19 @@ public class GUI extends Application
 			}
 		});
 
-		CheckBox chkVertebrates = makeChkBox("Vertebrates");
-		chkVertebrates.setOnAction(new EventHandler<ActionEvent>() 
+		CheckBox chkAquatic = makeChkBox("Aquatic");
+		chkAquatic.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				chkVertebrates.setStyle("-fx-color: LightSkyBlue");
+				chkAquatic.setStyle("-fx-color: LightSkyBlue");
 				
-				if(chkVertebrates.isSelected() == false)
-					chkVertebrates.setStyle("-fx-color: MediumAquaMarine");
+				if(chkAquatic.isSelected() == false)
+					chkAquatic.setStyle("-fx-color: MediumAquaMarine");
 				else
 				{
-					frontPage = animalCatalog.filterAnimals("Vertebrates", 2);
+					frontPage = animalCatalog.filterAnimals("Aquatic", 3);
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 			}
@@ -687,6 +687,7 @@ public class GUI extends Application
 		biomesGP.add(chkDesert, 0, 5);
 		biomesGP.add(chkTropRForest, 0, 6);
 		biomesGP.add(chkTempRForest, 0, 7);
+		biomesGP.add(chkAquatic, 0, 8);
 		biomesTP.setContent(biomesGP);
 		biomesTP.setExpanded(false);
 		
@@ -724,7 +725,6 @@ public class GUI extends Application
 		animalClassGP.add(chkInsect, 0, 4);
 		animalClassGP.add(chkAmphibians, 0, 5);
 		animalClassGP.add(chkArthropods, 0, 6);
-		animalClassGP.add(chkVertebrates, 0, 7);
 		animalClassTP.setContent(animalClassGP); 
 		animalClassTP.setExpanded(false);
 		
