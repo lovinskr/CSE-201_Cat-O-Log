@@ -84,6 +84,7 @@ public class GUI extends Application
 	int checkedIndex = 0; 
 	Animal[] frontPage = new Animal[500];
 	
+	
 	public static void main(String[] args) 
 	{
 		launch(args);
@@ -97,9 +98,13 @@ public class GUI extends Application
 		root.getChildren().addAll(); 
 		root.setSpacing(10);
 		root.setPadding(new Insets(10)); 
-		Catalog animalCatalog = new Catalog();
+		Catalog animalCatalog = new Catalog(); 
 		frontPage = animalCatalog.getAnimals(); 
-		 
+		GridPane grid = animalGrid(frontPage);
+		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
+		ScrollPane sp = new ScrollPane(grid);
+		sp.setPannable(true);
+		
 		// search bar 
 		TextField searchBar = makeTF();
 		searchBar.setPromptText("Search the Cat-o-log");
@@ -111,8 +116,13 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				String search = searchBar.getText(); 
-				animalCatalog.searchFor = search; 
+				String search = searchBar.getText();
+				frontPage = animalCatalog.searchFor(search);
+				GridPane g = animalGrid(frontPage);
+				root.getChildren().remove(grid);
+				root.getChildren().remove(sp); 
+				ScrollPane s = new ScrollPane(g);
+				root.getChildren().add(s);
 			}
 		});
 		
@@ -124,7 +134,10 @@ public class GUI extends Application
 		 * with each animal sorted by the travel method
 		 * alphabetically first 
 		 * 
-		 * cold blooded then warm blooded if cold blooded is chosen 
+		 * cold blooded then warm blooded if cold blooded is chosen
+		 * 
+		 *  repetitive code since I can't make global variables 
+		 *  because of the throws IOException 
 		*/ 
 		String[] sortBy = { "A-Z", "Z-A", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet",
 							"Travel Method", "Cold Blooded", "Warm Blooded" };
@@ -139,39 +152,84 @@ public class GUI extends Application
 				String chosen = sortByDropDown.getValue(); 
 				if(chosen.contentEquals("A-Z"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 				else if(chosen.contentEquals("Z-A"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 				else if(chosen.contentEquals("Number of Limbs"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 				else if(chosen.contentEquals("Preffered Biome"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 				else if(chosen.contentEquals("Travel Method"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 				else if(chosen.contentEquals("Cold Blooded"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 				else if(chosen.contentEquals("Warm Blooded"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 				else if(chosen.contentEquals("Lifespan"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 				else if(chosen.contentEquals("Diet"))
 				{
-					
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
 				}
 			}
 		});
@@ -183,11 +241,20 @@ public class GUI extends Application
 		{
 			@Override
 			public void handle(ActionEvent event) 
-			{
-				checked[checkedIndex] = chkColdBlooded; 
-				checkedIndex++; 
+			{	
 				chkColdBlooded.setStyle("-fx-color: LightSkyBlue");
-				animalGrid(animalCatalog.filterAnimals("cold", 0));
+				if(chkColdBlooded.isSelected() == false)
+					chkColdBlooded.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("cold", 0);
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().remove(grid);
+					root.getChildren().remove(sp); 
+					ScrollPane s = new ScrollPane(g);
+					root.getChildren().add(s);
+				}
+				
 			}
 		});
 
@@ -200,6 +267,8 @@ public class GUI extends Application
 				checked[checkedIndex] = chkWarmBlooded; 
 				checkedIndex++; 
 				chkWarmBlooded.setStyle("-fx-color: LightSkyBlue");
+				if(chkWarmBlooded.isSelected() == false)
+					chkWarmBlooded.setStyle("-fx-color: MediumAquaMarine");
 			}
 		});
 
@@ -212,6 +281,8 @@ public class GUI extends Application
 				checked[checkedIndex] = chkFlies; 
 				checkedIndex++; 
 				chkFlies.setStyle("-fx-color: LightSkyBlue");
+				if(chkFlies.isSelected() == false)
+					chkFlies.setStyle("-fx-color: MediumAquaMarine");
 			}
 		});
 
@@ -224,6 +295,8 @@ public class GUI extends Application
 				checked[checkedIndex] = chkSlithers; 
 				checkedIndex++; 
 				chkSlithers.setStyle("-fx-color: LightSkyBlue");
+				if(chkSlithers.isSelected() == false)
+					chkSlithers.setStyle("-fx-color: MediumAquaMarine");
 			}
 		});
 
@@ -236,6 +309,8 @@ public class GUI extends Application
 				checked[checkedIndex] = chkWalk; 
 				checkedIndex++; 
 				chkWalk.setStyle("-fx-color: LightSkyBlue");
+				if(chkWalk.isSelected() == false)
+					chkWalk.setStyle("-fx-color: MediumAquaMarine");
 			}
 		});
 
@@ -248,6 +323,8 @@ public class GUI extends Application
 				checked[checkedIndex] = chkSwim; 
 				checkedIndex++; 
 				chkSwim.setStyle("-fx-color: LightSkyBlue");
+				if(chkSwim.isSelected() == false)
+					chkSwim.setStyle("-fx-color: MediumAquaMarine");
 			}
 		});
 
@@ -698,20 +775,15 @@ public class GUI extends Application
 		
 		/*
 		 * permanent search bar header 
-		 * 
-		 */
-		// adding them directly to root keeps them at the top 
+		 * adding them directly to root keeps them at the top 
+		 */ 
 		GridPane top = new GridPane();
 		top.addRow(0, searchBar, submit); 
 		top.addRow(1, tp, sortByDropDown);
 		root.getChildren().add(top);
 		
 		root.setStyle("-fx-background-color: MediumAquaMarine;");
-		
-		GridPane grid = animalGrid(frontPage);
-		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
-		ScrollPane sp = new ScrollPane(grid);
-		sp.setPannable(true); 
+		 
 		
 		Button signUp = makeButton("Sign Up"); 
 		signUp.setOnAction(new EventHandler<ActionEvent>() 
@@ -805,6 +877,9 @@ public class GUI extends Application
 		primaryStage.show();
 	}
 
+	/*
+	 * standardizes the check boxes used 
+	 */
 	CheckBox makeChkBox(String boxName) 
 	{
 		CheckBox temp = new CheckBox(boxName);
@@ -1012,7 +1087,9 @@ public class GUI extends Application
 		
 		return ca;
 	}
-	
+	/*
+	 * creates the animal grid that is added to the scroll pane 
+	 */
 	GridPane animalGrid(Animal[] useThese)
 	{
 		frontPage = useThese; 
@@ -1072,6 +1149,12 @@ public class GUI extends Application
 			gridRow++;
 		}
 		return grid; 
+	}
+	
+	GridPane updateGrid(Animal[] an)
+	{
+		GridPane g = animalGrid(frontPage);
+		return g; 
 	}
 	
 	void animalPersonalPage(String animalName)
