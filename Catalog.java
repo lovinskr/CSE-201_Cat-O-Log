@@ -25,7 +25,7 @@ public class Catalog
 				"Mammal", 4, 15, travel, "m1", "warm");
 		addAnimal(tiger);
 		String[] travel1 = {"Swim"};
-		Animal seaBass = new Animal("Sea Bass", "Carnivore", "Nearctic", "Ocean", 
+		Animal seaBass = new Animal("Sea Bass", "Carnivore", "Nearctic", "Aquatic", 
 				"Fish", 0, 10, travel1, "f1", "cold");
 		addAnimal(seaBass);
 		String[] travel2 = {"Walk"};
