@@ -59,6 +59,27 @@ public class Catalog
 	public Animal[] getAnimals() {
 		return animals;
 	}
+	public int getIndex() {
+		return lastAnimal;
+	}
+	public Animal[] createSmallArray() {
+		Animal[] small = new Animal[lastAnimal];
+		for (int x = 0; x < lastAnimal; x++) {
+			small[x] = animals[x];
+		}
+		return small;
+	}
+	public Animal[] searchFor(String search) {
+		Animal[] searchArray = new Animal[500];
+		int index = 0;
+		for (int x = 0; x < lastAnimal; x++) {
+			if (animals[x].name.toLowerCase().contains(search.toLowerCase())) {
+				searchArray[index] = animals[x];
+				index++;
+			}
+		}
+		return searchArray;
+	}
 	/*
 	 * 0=blood
 	 * 1=action

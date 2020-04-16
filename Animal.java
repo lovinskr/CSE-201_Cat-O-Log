@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.*;
 
 
 public class Animal implements Comparable<Animal>
@@ -178,3 +179,43 @@ public class Animal implements Comparable<Animal>
 		return this.name.compareTo(a.name);
 	}
 }
+class SortReverse implements Comparator<Animal> {
+	public int compare(Animal a, Animal b) {
+		return b.name.compareTo(a.name);
+	}
+	
+}
+class SortLimbs implements Comparator<Animal> {
+	public int compare(Animal a, Animal b) {
+		int compare = a.numOfLimbs - b.numOfLimbs;
+		if (compare == 0) {
+			return a.filename.compareTo(b.name);
+		}
+		else return compare;
+	}
+}
+class SortBiome implements Comparator<Animal> {
+	public int compare(Animal a, Animal b) {
+		return a.prefferedBiome.compareTo(b.prefferedBiome);
+	}
+}
+/*
+ * still figuring this out rip
+ * havent figured out filtering by blood either
+ */
+class SortTravel implements Comparator<Animal> {
+	public int compare(Animal a, Animal b) {
+		return 0;
+	}
+}
+class SortLifespan implements Comparator<Animal> {
+	public int compare(Animal a, Animal b) {
+		return a.averageLifespan-b.averageLifespan;
+	}
+}
+class SortDiet implements Comparator<Animal> {
+	public int compare(Animal a, Animal b) {
+		return a.diet.compareTo(b.diet);
+	}
+}
+
