@@ -7,22 +7,17 @@
  * https://www.w3schools.com/colors/colors_names.asp 
  *
  *
- *
- *
  * The line order can NOT be altered AT ALL
- * 
- * the Stage primaryStage holds the search bar and Vbox root 
- * 		which holds the grid that holds the titledPane filter and 
- * 		row that holds sortby, login, and signup  
  * 
  * 
  * To Do:
- * make passwords private 
  * get animals to have their own page 
- * get animals on front page 
  * sign up fully working
  * search working 
- * filter working 
+ * get page to change with filters 
+ * add region filter 
+ * username stays after loggedin 
+ * 
  * 
  */
 
@@ -63,6 +58,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -115,7 +111,8 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				// will return animals that include the word(s) entered
+				String search = searchBar.getText(); 
+				animalCatalog.searchFor = search; 
 			}
 		});
 		
@@ -142,7 +139,7 @@ public class GUI extends Application
 				String chosen = sortByDropDown.getValue(); 
 				if(chosen.contentEquals("A-Z"))
 				{
-					animalGrid(animalCatalog.getAnimals());
+					
 				}
 				else if(chosen.contentEquals("Z-A"))
 				{
@@ -162,7 +159,7 @@ public class GUI extends Application
 				}
 				else if(chosen.contentEquals("Cold Blooded"))
 				{
-					animalGrid(animalCatalog.filterAnimals("cold", 0));
+					
 				}
 				else if(chosen.contentEquals("Warm Blooded"))
 				{
@@ -377,12 +374,7 @@ public class GUI extends Application
 				if(chkVertebrates.isSelected() == false)
 				{
 					chkVertebrates.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
 				}
 			}
 		});
@@ -399,12 +391,7 @@ public class GUI extends Application
 				if(chkTundra.isSelected() == false)
 				{
 					chkTundra.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					
 				}
 				animalGrid(animalCatalog.filterAnimals("Tundra", 3));
 			}
@@ -738,7 +725,10 @@ public class GUI extends Application
 	
 		TextField UTF = makeTF(); // user name
 		UTF.setPromptText("Username");
-		TextField PTF = makeTF(); // password
+		PasswordField PTF = new PasswordField(); // password
+		PTF.setMaxHeight(50);
+		PTF.prefHeightProperty().bind(root.heightProperty());
+		PTF.prefWidthProperty().bind(root.widthProperty());
 		PTF.setPromptText("Password");
 		Button login = makeButton("Login");
 		GridPane constantSearchAndLogin = new GridPane();
@@ -752,6 +742,8 @@ public class GUI extends Application
 			{
 				String username = UTF.getText().trim(); 
 				String password = PTF.getText().trim(); 
+				Text u = new Text(username); 
+				
 				// check with accounts class 
 				try 
 				{ 
@@ -762,13 +754,14 @@ public class GUI extends Application
 						loggedIn(); 
 						login.setText("Logout");
 						constantSearchAndLogin.getChildren().removeAll(UTF, PTF, signUp); 
-		                
+						constantSearchAndLogin.getChildren().add(u);
 					}
 					else if(hasAccount == true && isLoggedIn == true)
 					{
 						loggedOut(); 
 						login.setText("login");
 						constantSearchAndLogin.getChildren().remove(login);
+						constantSearchAndLogin.getChildren().remove(u);
 						UTF.clear();
 						PTF.clear();
 						constantSearchAndLogin.addRow(0, UTF, PTF, login, signUp);
@@ -871,9 +864,9 @@ public class GUI extends Application
         
         TextField newUsername = new TextField(); 
         newUsername.setPromptText("Username");
-        TextField newPassword = new TextField(); 
+        PasswordField newPassword = new PasswordField(); 
         newPassword.setPromptText("Password");
-        TextField newPasswordCheck = new TextField();
+        PasswordField newPasswordCheck = new PasswordField();
         newPasswordCheck.setPromptText("Re-Enter Password");
         TextField newFN = new TextField(); 
         newFN.setPromptText("First Name");
@@ -985,6 +978,18 @@ public class GUI extends Application
 					newUser.setLName(l);
 					String[] pp = {pn};
 					newUser.setPhoneNumber(pp);
+					
+					try {
+						Accounts acc = new Accounts();
+						acc.Makaccount(newUser);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} 
+					
+					Text done = new Text("Thank you for signing up!");
+					signupSP.getChildren().clear();
+					signupSP.getChildren().add(done);
 				}
 			}
 		});
@@ -994,7 +999,19 @@ public class GUI extends Application
         signup.setScene(dialogScene);
         signup.show(); 
 	}
-	
+	/*
+	 * figures out what filters are being used and gets 
+	 * the final array to be shown 
+	 */
+	Animal[] currentAnimals()
+	{
+		Animal[] ca = frontPage;
+		// go through check boxes 
+		
+		// go through the 
+		
+		return ca;
+	}
 	
 	GridPane animalGrid(Animal[] useThese)
 	{
@@ -1035,7 +1052,12 @@ public class GUI extends Application
 			Text tempMOT = new Text(tm[0]);
 			Text tempNL = new Text(String.valueOf(frontPage[c].getNumOfLimbs()));
 			Text tempPB = new Text(frontPage[c].getPreferredBiome());
-			Text tempBT = new Text(frontPage[c].getBloodType());
+			int tbt = (frontPage[c].getColdOrWarmBlooded());
+			Text tempBT = new Text("");
+			if(tbt == 1)
+				tempBT = new Text("Cold");
+			else 
+				tempBT = new Text("Warm");
 			Text tempD = new Text(frontPage[c].getDiet());
 			Text tempLS = new Text(String.valueOf(frontPage[c].getAverageLifespan()));
 			grid.addRow(gridRow, tempName, tempClass, tempMOT, tempNL, tempPB, tempBT, tempD, tempLS);
