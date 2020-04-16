@@ -7,7 +7,7 @@
  * https://www.w3schools.com/colors/colors_names.asp 
  *
  *
- * The line order can NOT be altered AT ALL
+ * The line order is extremely particular and CAN NOT be changed
  * 
  * 
  * To Do:
@@ -16,7 +16,7 @@
  * search working 
  * get page to change with filters 
  * add region filter 
- * username stays after loggedin 
+ * 
  * 
  * 
  */
@@ -33,6 +33,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.io.IOException;
+import java.util.Arrays;
+
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
@@ -801,42 +803,50 @@ public class GUI extends Application
 				}
 				else if(chosen.contentEquals("Z-A"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray();
+					Arrays.sort(frontPage, new SortReverse());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Number of Limbs"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray();
+					Arrays.sort(frontPage, new SortLimbs());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Preffered Biome"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray();
+					Arrays.sort(frontPage, new SortBiome());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Travel Method"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray();
+					Arrays.sort(frontPage, new SortTravel());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Cold Blooded"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray();
+					Arrays.sort(frontPage, new SortDiet());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Warm Blooded"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray();
+					Arrays.sort(frontPage, new SortDiet());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Lifespan"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray();
+					Arrays.sort(frontPage, new SortLifespan());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Diet"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray();
+					Arrays.sort(frontPage, new SortDiet());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 			}
@@ -938,7 +948,7 @@ public class GUI extends Application
         TextField newE = new TextField();
         newE.setPromptText("Email");
         TextField newP = new TextField();
-        newE.setPromptText("Phone Number");
+        newP.setPromptText("Phone Number");
         Button signingUp = new Button("Sign Up");
         
         GridPane signUpGP = new GridPane(); 
