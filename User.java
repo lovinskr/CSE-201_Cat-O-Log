@@ -12,9 +12,14 @@ public class User
 	
 	public User(String name, String pass, boolean admin)
 	{
+		username = name;
+		password = pass;
+		administrator = admin;
 	}
 	
 	public User(String name, String pass) {
+		username = name;
+		password = pass;
 	}
 	
 	boolean setFName(String firstName)
