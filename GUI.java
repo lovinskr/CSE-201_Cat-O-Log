@@ -15,7 +15,6 @@
  * sign up fully working
  * search working 
  * get page to change with filters 
- * add region filter 
  * 
  * 
  * 
@@ -505,7 +504,115 @@ public class GUI extends Application
 			}
 		});
 		
+		// preferred region which doesn't have a filter yet 
+		CheckBox chkNearctic = makeChkBox("Nearctic");
+		chkNearctic.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkNearctic.setStyle("-fx-color: LightSkyBlue");
+				
+				if(chkNearctic.isSelected() == false)
+					chkNearctic.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Nearctic", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
+			}
+		});
+		
+		CheckBox chkPalearctic = makeChkBox("Palearctic");
+		chkPalearctic.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkPalearctic.setStyle("-fx-color: LightSkyBlue");
+				
+				if(chkPalearctic.isSelected() == false)
+					chkPalearctic.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Palearctic", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
+			}
+		});
+		
+		CheckBox chkAfrican = makeChkBox("African");
+		chkAfrican.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkAfrican.setStyle("-fx-color: LightSkyBlue");
+				
+				if(chkAfrican.isSelected() == false)
+					chkAfrican.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("African", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
+			}
+		});
 
+		CheckBox chkNeoTropical = makeChkBox("NeoTropical");
+		chkNeoTropical.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkNeoTropical.setStyle("-fx-color: LightSkyBlue");
+				
+				if(chkNeoTropical.isSelected() == false)
+					chkNeoTropical.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("NeoTropical", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
+			}
+		});
+		
+		CheckBox chkOriental = makeChkBox("Oriental");
+		chkOriental.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkOriental.setStyle("-fx-color: LightSkyBlue");
+				
+				if(chkOriental.isSelected() == false)
+					chkOriental.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Oriental", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
+			}
+		});
+		
+		CheckBox chkAustralian = makeChkBox("Australian");
+		chkAustralian.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				chkAustralian.setStyle("-fx-color: LightSkyBlue");
+				
+				if(chkAustralian.isSelected() == false)
+					chkAustralian.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Australian", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
+			}
+		});
+		
 		// Lifespan range
 		CheckBox chkLifespan = makeChkBox("Average Lifespan");
 		TextField lifeLimitL = makeTF(); // lower limb limit
@@ -583,6 +690,19 @@ public class GUI extends Application
 		biomesTP.setContent(biomesGP);
 		biomesTP.setExpanded(false);
 		
+		TitledPane regionsTP = new TitledPane();
+		regionsTP.setText("Average Region");
+		GridPane regionsGP = new GridPane();
+		regionsGP.setVgap(4);
+		regionsGP.add(chkNearctic, 0, 0); 
+		regionsGP.add(chkNeoTropical, 0, 1); 
+		regionsGP.add(chkAfrican, 0, 2); 
+		regionsGP.add(chkPalearctic, 0, 3); 
+		regionsGP.add(chkOriental, 0, 4); 
+		regionsGP.add(chkAustralian, 0, 5); 
+		regionsTP.setContent(regionsGP);
+		regionsTP.setExpanded(false);
+		
 		TitledPane cwBloodedTP = new TitledPane();
 		cwBloodedTP.setText("Blood Type");
 		GridPane cwBloodedGP = new GridPane();
@@ -626,14 +746,14 @@ public class GUI extends Application
 		checkBoxes.add(animalClassTP, 0, 1);
 		checkBoxes.add(biomesTP, 0, 2);
 		checkBoxes.add(travelsByTP, 0, 3);
-		checkBoxes.add(dietDropDown, 0, 4);
-		
-		checkBoxes.add(lifeLimitL, 0, 5);
-		checkBoxes.add(lifeLimitU, 0, 6);
-		checkBoxes.add(chkLifespan, 0, 7);
-		checkBoxes.add(limbLimitL, 0, 8);
-		checkBoxes.add(limbLimitU, 0, 9);
-		checkBoxes.add(limbLimits, 0, 10);
+		checkBoxes.add(regionsTP, 0, 4); 
+		checkBoxes.add(dietDropDown, 0, 5);
+		checkBoxes.add(lifeLimitL, 0, 6);
+		checkBoxes.add(lifeLimitU, 0, 7);
+		checkBoxes.add(chkLifespan, 0, 8);
+		checkBoxes.add(limbLimitL, 0, 9);
+		checkBoxes.add(limbLimitU, 0, 10);
+		checkBoxes.add(limbLimits, 0, 11);
 
 		tp.setExpanded(false);
 		tp.setContent(checkBoxes);
