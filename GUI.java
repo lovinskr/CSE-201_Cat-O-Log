@@ -664,6 +664,8 @@ public class GUI extends Application
 		PTF.setPromptText("Password");
 		Button login = makeButton("Login");
 		GridPane constantSearchAndLogin = new GridPane();
+		constantSearchAndLogin.setVgap(3); // gap between rows
+		constantSearchAndLogin.setHgap(3); // gap between columns
 		constantSearchAndLogin.addRow(1, UTF, PTF, login, signUp);
 		root.getChildren().addAll(constantSearchAndLogin);
 		login.setOnAction(new EventHandler<ActionEvent>() 
@@ -733,6 +735,9 @@ public class GUI extends Application
 		 * adding them directly to root keeps them at the top 
 		 */ 
 		GridPane top = new GridPane();
+		top.setVgap(3); // gap between rows
+		top.setHgap(3); // gap between columns
+		
 		// search bar 
 		TextField searchBar = makeTF();
 		searchBar.setPromptText("Search the Cat-o-log");
@@ -760,7 +765,8 @@ public class GUI extends Application
 				GridPane t = new GridPane();
 				t.addRow(0, searchBar, submit); 
 				t.addRow(1, tp, sortByDropDown);
-				
+				t.setVgap(3); // gap between rows
+				t.setHgap(3); // gap between columns
 				root.getChildren().add(t);
 				root.getChildren().add(s);
 			}
@@ -791,6 +797,9 @@ public class GUI extends Application
 				{
 					frontPage = animalCatalog.getAnimals();
 					GridPane g = animalGrid(frontPage);
+					g.setVgap(10); // gap between rows
+					g.setHgap(10); // gap between columns
+					g.setPadding(new Insets(10, 10, 10, 10)); // pads edges
 					root.getChildren().clear(); 
 					ScrollPane s = new ScrollPane(g);
 					
