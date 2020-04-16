@@ -929,7 +929,7 @@ public class GUI extends Application
 	}
 
 	/*
-	 * standardizes the check boxes used 
+	 * standardizes the check boxes  
 	 */
 	CheckBox makeChkBox(String boxName) 
 	{
@@ -945,7 +945,9 @@ public class GUI extends Application
 
 		return temp;
 	}
-
+	/*
+	 * standardizes the buttons
+	 */
 	Button makeButton(String str) 
 	{
 		Button temp = new Button(str);
@@ -956,7 +958,10 @@ public class GUI extends Application
 
 		return temp;
 	}
-
+	/*
+	 * a tailored drop down (combobox) 
+	 * for our needs 
+	 */
 	ComboBox<String> makeDropDown(String[] values) 
 	{
 		ComboBox temp = new ComboBox(FXCollections.observableArrayList(values));
@@ -968,6 +973,9 @@ public class GUI extends Application
 		return temp;
 	}
 
+	/*
+	 * standardizes the textboxes 
+	 */
 	TextField makeTF() 
 	{
 		TextField temp = new TextField();
@@ -979,6 +987,7 @@ public class GUI extends Application
 
 		return temp;
 	}
+	
 	/*
 	 * Does the sign up stuff 
 	 */
