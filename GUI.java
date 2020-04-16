@@ -103,136 +103,7 @@ public class GUI extends Application
 		GridPane grid = animalGrid(frontPage);
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
 		ScrollPane sp = new ScrollPane(grid);
-		sp.setPannable(true);
-		
-		// search bar 
-		TextField searchBar = makeTF();
-		searchBar.setPromptText("Search the Cat-o-log");
-
-		// submit the search button 
-		Button submit = makeButton("Search");
-		submit.setOnAction(new EventHandler<ActionEvent>() 
-		{
-			@Override
-			public void handle(ActionEvent e) 
-			{
-				String search = searchBar.getText();
-				frontPage = animalCatalog.searchFor(search);
-				GridPane g = animalGrid(frontPage);
-				root.getChildren().remove(grid);
-				root.getChildren().remove(sp); 
-				ScrollPane s = new ScrollPane(g);
-				root.getChildren().add(s);
-			}
-		});
-		
-		/* drop down sortBy
-		 * each is alphabetical as default 
-		 * for example if method of travel is chosen then 
-		 * it goes fly slither swim walk 
-		 * 
-		 * with each animal sorted by the travel method
-		 * alphabetically first 
-		 * 
-		 * cold blooded then warm blooded if cold blooded is chosen
-		 * 
-		 *  repetitive code since I can't make global variables 
-		 *  because of the throws IOException 
-		*/ 
-		String[] sortBy = { "A-Z", "Z-A", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet",
-							"Travel Method", "Cold Blooded", "Warm Blooded" };
-		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
-		sortByDropDown.setPromptText("Sort By");
-		sortByDropDown.setMaxHeight(20);
-		sortByDropDown.setOnAction(new EventHandler<ActionEvent>() 
-		{
-			@Override
-			public void handle(ActionEvent event) 
-			{
-				String chosen = sortByDropDown.getValue(); 
-				if(chosen.contentEquals("A-Z"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-				else if(chosen.contentEquals("Z-A"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-				else if(chosen.contentEquals("Number of Limbs"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-				else if(chosen.contentEquals("Preffered Biome"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-				else if(chosen.contentEquals("Travel Method"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-				else if(chosen.contentEquals("Cold Blooded"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-				else if(chosen.contentEquals("Warm Blooded"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-				else if(chosen.contentEquals("Lifespan"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-				else if(chosen.contentEquals("Diet"))
-				{
-					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
-					ScrollPane s = new ScrollPane(g);
-					root.getChildren().add(s);
-				}
-			}
-		});
+		sp.setPannable(true); 
 		
 				
 		// the check boxes that will be filters
@@ -772,17 +643,6 @@ public class GUI extends Application
 
 		tp.setExpanded(false);
 		tp.setContent(checkBoxes);
-		
-		/*
-		 * permanent search bar header 
-		 * adding them directly to root keeps them at the top 
-		 */ 
-		GridPane top = new GridPane();
-		top.addRow(0, searchBar, submit); 
-		top.addRow(1, tp, sortByDropDown);
-		root.getChildren().add(top);
-		
-		root.setStyle("-fx-background-color: MediumAquaMarine;");
 		 
 		
 		Button signUp = makeButton("Sign Up"); 
@@ -832,8 +692,7 @@ public class GUI extends Application
 					{
 						loggedOut(); 
 						login.setText("login");
-						constantSearchAndLogin.getChildren().remove(login);
-						constantSearchAndLogin.getChildren().remove(u);
+						constantSearchAndLogin.getChildren().clear();
 						UTF.clear();
 						PTF.clear();
 						constantSearchAndLogin.addRow(0, UTF, PTF, login, signUp);
@@ -869,6 +728,189 @@ public class GUI extends Application
 			 
 		});
 		
+		/*
+		 * permanent search bar header 
+		 * adding them directly to root keeps them at the top 
+		 */ 
+		GridPane top = new GridPane();
+		// search bar 
+		TextField searchBar = makeTF();
+		searchBar.setPromptText("Search the Cat-o-log");
+		
+		String[] sortBy = { "A-Z", "Z-A", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet",
+				"Travel Method", "Cold Blooded", "Warm Blooded" };
+		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
+		
+		// submit the search button 
+		Button submit = makeButton("Search");
+		submit.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent e) 
+			{
+				String search = searchBar.getText();
+				frontPage = animalCatalog.searchFor(search);
+				GridPane g = animalGrid(frontPage);
+				root.getChildren().clear();
+				GridPane csl = new GridPane();
+				csl.addRow(1, UTF, PTF, login, signUp);
+				root.getChildren().addAll(csl);
+				ScrollPane s = new ScrollPane(g);
+				
+				GridPane t = new GridPane();
+				t.addRow(0, searchBar, submit); 
+				t.addRow(1, tp, sortByDropDown);
+				
+				root.getChildren().add(t);
+				root.getChildren().add(s);
+			}
+		});
+		
+		/* drop down sortBy
+		 * each is alphabetical as default 
+		 * for example if method of travel is chosen then 
+		 * it goes fly slither swim walk 
+		 * 
+		 * with each animal sorted by the travel method
+		 * alphabetically first 
+		 * 
+		 * cold blooded then warm blooded if cold blooded is chosen
+		 * 
+		 *  repetitive code since I can't make global variables 
+		 *  because of the throws IOException 
+		*/ 
+		sortByDropDown.setPromptText("Sort By");
+		sortByDropDown.setMaxHeight(20);
+		sortByDropDown.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				String chosen = sortByDropDown.getValue(); 
+				if(chosen.contentEquals("A-Z"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+				else if(chosen.contentEquals("Z-A"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+				else if(chosen.contentEquals("Number of Limbs"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+				else if(chosen.contentEquals("Preffered Biome"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+				else if(chosen.contentEquals("Travel Method"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+				else if(chosen.contentEquals("Cold Blooded"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+				else if(chosen.contentEquals("Warm Blooded"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+				else if(chosen.contentEquals("Lifespan"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+				else if(chosen.contentEquals("Diet"))
+				{
+					frontPage = animalCatalog.getAnimals();
+					GridPane g = animalGrid(frontPage);
+					root.getChildren().clear(); 
+					ScrollPane s = new ScrollPane(g);
+					
+					top.addRow(0, searchBar, submit); 
+					top.addRow(1, tp, sortByDropDown);
+					
+					root.getChildren().add(top);
+					root.getChildren().add(s);
+				}
+			}
+		});
+		
+		top.addRow(0, searchBar, submit); 
+		top.addRow(1, tp, sortByDropDown);
+		root.getChildren().add(top);
+		root.setStyle("-fx-background-color: MediumAquaMarine;");
 		root.getChildren().add(grid);
 		root.getChildren().add(sp);
 		
@@ -1151,20 +1193,24 @@ public class GUI extends Application
 		return grid; 
 	}
 	
-	GridPane updateGrid(Animal[] an)
-	{
-		GridPane g = animalGrid(frontPage);
-		return g; 
-	}
+	
 	
 	void animalPersonalPage(String animalName)
 	{
 		
 	}
 	
-	/* exists only because javafx can't handle a button counter 
-	 * increments the login attempt counter 
+	/* 
+	 * This stuff below 
+	 * exists only because javafx can't handle button counters 
+	 * or certain global variables 
 	 */
+	
+	GridPane updateGrid(Animal[] an)
+	{
+		GridPane g = animalGrid(frontPage);
+		return g; 
+	}
 	void counter()
 	{
 		loginAttempts++; 
