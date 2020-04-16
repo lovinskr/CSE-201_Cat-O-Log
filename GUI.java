@@ -759,8 +759,7 @@ public class GUI extends Application
 				GridPane g = animalGrid(frontPage);
 				root.getChildren().clear();
 				GridPane csl = new GridPane();
-				csl.addRow(1, UTF, PTF, login, signUp);
-				root.getChildren().addAll(csl);
+				root.getChildren().addAll(constantSearchAndLogin);
 				ScrollPane s = new ScrollPane(g);
 				
 				GridPane t = new GridPane();
