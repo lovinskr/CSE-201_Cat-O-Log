@@ -104,7 +104,7 @@ public class GUI extends Application
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
 		ScrollPane sp = new ScrollPane(grid);
 		sp.setPannable(true); 
-		
+		GridPane constantSearchAndLogin = new GridPane();
 				
 		// the check boxes that will be filters
 		CheckBox chkColdBlooded = makeChkBox("Cold Blooded");
@@ -120,14 +120,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("cold", 0);
-					GridPane g = animalGrid(frontPage);
-					
-					g.setVgap(3); // gap between rows
-					g.setHgap(3); // gap between columns
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				
 			}
@@ -139,11 +132,15 @@ public class GUI extends Application
 			@Override 
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkWarmBlooded; 
-				checkedIndex++; 
 				chkWarmBlooded.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkWarmBlooded.isSelected() == false)
 					chkWarmBlooded.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Warm", 0);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -153,11 +150,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkFlies; 
-				checkedIndex++; 
 				chkFlies.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkFlies.isSelected() == false)
 					chkFlies.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Flies", 1);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -167,11 +168,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkSlithers; 
-				checkedIndex++; 
 				chkSlithers.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkSlithers.isSelected() == false)
 					chkSlithers.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Slithers", 1);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -181,11 +186,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkWalk; 
-				checkedIndex++; 
 				chkWalk.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkWalk.isSelected() == false)
 					chkWalk.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Walks", 1);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -195,11 +204,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkSwim; 
-				checkedIndex++; 
 				chkSwim.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkSwim.isSelected() == false)
 					chkSwim.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Swims", 1);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -210,11 +223,14 @@ public class GUI extends Application
 			public void handle(ActionEvent event) 
 			{
 				chkFish.setStyle("-fx-color: LightSkyBlue");
-				checked[checkedIndex] = chkFish; 
-				checkedIndex++; 
+				
 				if(chkFish.isSelected() == false)
 					chkFish.setStyle("-fx-color: MediumAquaMarine");
-				animalGrid(animalCatalog.filterAnimals("Fish", 2));
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Fish", 2);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -224,12 +240,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkBird; 
-				checkedIndex++; 
 				chkBird.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkBird.isSelected() == false)
 					chkBird.setStyle("-fx-color: MediumAquaMarine");
-				animalGrid(animalCatalog.filterAnimals("Birds", 2));
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Bird", 2);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -239,12 +258,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkReptiles; 
-				checkedIndex++; 
 				chkReptiles.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkReptiles.isSelected() == false)
 					chkReptiles.setStyle("-fx-color: MediumAquaMarine");
-				animalGrid(animalCatalog.filterAnimals("Reptiles", 2));
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Reptile", 2);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -254,12 +276,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event)
 			{
-				checked[checkedIndex] = chkInsect; 
-				checkedIndex++; 
 				chkInsect.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkInsect.isSelected() == false)
 					chkInsect.setStyle("-fx-color: MediumAquaMarine");
-				animalGrid(animalCatalog.filterAnimals("Insect", 2));
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Insect", 2);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -269,12 +294,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkAmphibians; 
-				checkedIndex++; 
 				chkAmphibians.setStyle("-fx-color: LightSkyBlue");
-				animalGrid(animalCatalog.filterAnimals("Amphibians", 2));
+				
 				if(chkAmphibians.isSelected() == false)
 					chkAmphibians.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Amphibian", 2);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 
@@ -284,9 +312,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkMammal; 
-				checkedIndex++; 
-				animalGrid(animalCatalog.filterAnimals("Mammal", 2));
+				chkMammal.setStyle("-fx-color: LightSkyBlue");
+				
+				if(chkMammal.isSelected() == false)
+					chkMammal.setStyle("-fx-color: MediumAquaMarine");
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Mammal", 2);
+					refreshAnimalGrid(constantSearchAndLogin);
+				}
 			}
 		});
 		
@@ -296,19 +330,14 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event)
 			{
-				checked[checkedIndex] = chkArthropods; 
-				checkedIndex++; 
 				chkArthropods.setStyle("-fx-color: LightSkyBlue");
-				animalGrid(animalCatalog.filterAnimals("Arthropods", 2));
+				
 				if(chkArthropods.isSelected() == false)
-				{
 					chkArthropods.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Arthropod", 2);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 			}
 		});
@@ -319,14 +348,14 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkVertebrates; 
-				checkedIndex++; 
 				chkVertebrates.setStyle("-fx-color: LightSkyBlue");
-				animalGrid(animalCatalog.filterAnimals("Vertebrates", 2));
+				
 				if(chkVertebrates.isSelected() == false)
-				{
 					chkVertebrates.setStyle("-fx-color: MediumAquaMarine");
-					
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Vertebrates", 2);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 			}
 		});
@@ -337,15 +366,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkTundra; 
-				checkedIndex++; 
 				chkTundra.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkTundra.isSelected() == false)
-				{
 					chkTundra.setStyle("-fx-color: MediumAquaMarine");
-					
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Tundra", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
-				animalGrid(animalCatalog.filterAnimals("Tundra", 3));
 			}
 		});
 		
@@ -355,20 +384,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkTaiga; 
-				checkedIndex++; 
 				chkTaiga.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkTaiga.isSelected() == false)
-				{
 					chkTaiga.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Taiga", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
-				animalGrid(animalCatalog.filterAnimals("Taiga", 3));
 			}
 		});
 		
@@ -378,20 +402,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkTDForest; 
-				checkedIndex++; 
 				chkTDForest.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkTDForest.isSelected() == false)
-				{
 					chkTDForest.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Temperate Deciduous Forest", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
-				animalGrid(animalCatalog.filterAnimals("Temperate Deciduous Forest", 3));
 			}
 		});
 		
@@ -401,20 +420,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkScrubForest; 
-				checkedIndex++; 
 				chkScrubForest.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkScrubForest.isSelected() == false)
-				{
 					chkScrubForest.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Scrub Forest", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
-				animalGrid(animalCatalog.filterAnimals("Scrub Forest", 3));
 			}
 		});
 		
@@ -424,20 +438,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkGrassland; 
-				checkedIndex++; 
 				chkGrassland.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkGrassland.isSelected() == false)
-				{
 					chkGrassland.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Grassland", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
-				animalGrid(animalCatalog.filterAnimals("Grassland", 3));
 			}
 		});
 		
@@ -447,20 +456,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkDesert; 
-				checkedIndex++; 
 				chkDesert.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkDesert.isSelected() == false)
-				{
 					chkDesert.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Desert", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
-				animalGrid(animalCatalog.filterAnimals("Desert", 3));
 			}
 		});
 		
@@ -470,19 +474,15 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkTempRForest; 
-				checkedIndex++; 
+				
 				chkTempRForest.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkTempRForest.isSelected() == false)
-				{
-					animalGrid(animalCatalog.filterAnimals("Temperate Rain Forest", 3));
 					chkTempRForest.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Temperate Rain Forest", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 			}
 		});
@@ -493,27 +493,18 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkTropRForest; 
-				checkedIndex++; 
-				animalGrid(animalCatalog.filterAnimals("Tropical Rain Forest", 3));
 				chkTropRForest.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkTropRForest.isSelected() == false)
-				{
 					chkTropRForest.setStyle("-fx-color: MediumAquaMarine");
-					try {
-						animalGrid(new Catalog().getAnimals());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				else
+				{
+					frontPage = animalCatalog.filterAnimals("Tropical Rain Forest", 3);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 			}
 		});
 		
-		/*
-		 * 
-		 * 
-		 */
 
 		// Lifespan range
 		CheckBox chkLifespan = makeChkBox("Average Lifespan");
@@ -528,9 +519,8 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				checked[checkedIndex] = chkLifespan; 
-				checkedIndex++; 
-				animalGrid(animalCatalog.rangeAnimals(Integer.parseInt(lifeLimitL.getText()), Integer.parseInt(lifeLimitU.getText()), 0));
+				frontPage  = animalCatalog.rangeAnimals(Integer.parseInt(lifeLimitL.getText()), Integer.parseInt(lifeLimitU.getText()), 0);
+				refreshAnimalGrid(constantSearchAndLogin);
 			}
 		});
 
@@ -546,10 +536,9 @@ public class GUI extends Application
 		{
 			@Override
 			public void handle(ActionEvent event) 
-			{
-				checked[checkedIndex] = limbLimits; 
-				checkedIndex++; 
-				animalGrid(animalCatalog.rangeAnimals(Integer.parseInt(limbLimitL.getText()), Integer.parseInt(limbLimitU.getText()), 1));
+			{	
+				frontPage = animalCatalog.rangeAnimals(Integer.parseInt(limbLimitL.getText()), Integer.parseInt(limbLimitU.getText()), 1);
+				refreshAnimalGrid(constantSearchAndLogin);
 			}
 		});
 		
@@ -564,7 +553,8 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				animalGrid(animalCatalog.filterAnimals(dietDropDown.getValue(), 4));
+				frontPage = animalCatalog.filterAnimals(dietDropDown.getValue(), 4);
+				refreshAnimalGrid(constantSearchAndLogin);
 			}
 		});
 
@@ -667,7 +657,6 @@ public class GUI extends Application
 		PTF.prefWidthProperty().bind(root.widthProperty());
 		PTF.setPromptText("Password");
 		Button login = makeButton("Login");
-		GridPane constantSearchAndLogin = new GridPane();
 		constantSearchAndLogin.setVgap(3); // gap between rows
 		constantSearchAndLogin.setHgap(3); // gap between columns
 		constantSearchAndLogin.addRow(1, UTF, PTF, login, signUp);
