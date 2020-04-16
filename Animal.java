@@ -199,12 +199,22 @@ class SortBiome implements Comparator<Animal> {
 		return a.prefferedBiome.compareTo(b.prefferedBiome);
 	}
 }
-/*
- * still figuring this out rip
- * havent figured out filtering by blood either
- */
 class SortTravel implements Comparator<Animal> {
 	public int compare(Animal a, Animal b) {
+		List<String> listA = Arrays.asList(a.methodsOfTravel);
+		List<String> listB = Arrays.asList(b.methodsOfTravel);
+		if (listA.contains("Flies") || listB.contains("Flies")) {
+			if (listA.contains("Flies")) return -1;
+			else return 1;
+		}
+		else if (listA.contains("Slithers") || listB.contains("Slithers")) {
+			if (listA.contains("Slithers")) return -1;
+			else return 1;
+		}
+		else if (listA.contains("Swim") || listB.contains("Swim")) {
+			if (listA.contains("Swim")) return -1;
+			else return 1;
+		}
 		return 0;
 	}
 }
