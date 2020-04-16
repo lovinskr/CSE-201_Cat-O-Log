@@ -1,7 +1,11 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -14,21 +18,30 @@ public class Accounts {
 		readUsers(); 
 	}
 	
-	public void Makeaccount(String username, String password) {
+	public void Makaccount(User newUser) throws IOException
+	{
+		userlist.add(newUser);
+		writeUser(newUser);
+	}
+	
+	public void Makeaccount(String username, String password) throws IOException {
 		User user = new User(username, password);
 		userlist.add(user);
+		writeUser(user);
 	}
 	
-	public void Makeaccount(String username, String password, boolean admin) {
+	public void Makeaccount(String username, String password, boolean admin) throws IOException {
 		User user = new User(username, password, admin);
 		userlist.add(user);
+		writeUser(user);
 	}
 	
-	
+	// I added trim() to get rid of the loose edge spaces 
 	public void readUsers() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(filename));
 		String line;
-		while((line = br.readLine()) !=null) {
+		while((line = br.readLine()) != null) {
+			System.out.println(line);
 			String name = br.readLine().trim();
 			String pass = br.readLine().trim();
 			int admin = Integer.parseInt(br.readLine());
@@ -55,30 +68,29 @@ public class Accounts {
 			User temp = userIterator.next();
 			if((temp.username).equals(username))
 			{
-				return true; 
+				if((temp.password).equals(password))
+				{
+					return true;
+				}
 			}
 		}
 		
 		return false; 
 	}
 	
-	/*
-	 * NEED FOR GUI PLEASE DON'T CHANGE 
-	 * checks that passowrd matches account 
-	 */
-	boolean canLogIn(String username, String password)
+	void writeUser(User usr) throws IOException 
 	{
-		ListIterator<User> userIterator = userlist.listIterator();
-		for(int c  = 0; c < userlist.size(); c++)
-		{
-			User temp = userIterator.next();
-			if((temp.username).equals(username) && (temp.password).equals(password))
-			{
-				return true; 
-			}
-		}
-		return false; 
+		readUsers(); // get all current accounts in the linked list
+		
+		PrintWriter to = new PrintWriter(new File(filename));
+		String line;
+		ListIterator<User> ui = userlist.listIterator();
+		to.println(); 
+		
+		to.println(usr.username);
+		to.println(usr.password);
+		to.println(usr.isAdmin());
+		to.println();
+		to.close();
 	}
-	
-	
 }
