@@ -32,9 +32,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
@@ -83,7 +81,7 @@ public class GUI extends Application
 	CheckBox[] checked = new CheckBox[25]; // the list of check boxes checked or not
 	int checkedIndex = 0; 
 	Animal[] frontPage = new Animal[500];
-	
+	GridPane top = new GridPane(); 
 	
 	public static void main(String[] args) 
 	{
@@ -114,15 +112,19 @@ public class GUI extends Application
 			public void handle(ActionEvent event) 
 			{	
 				chkColdBlooded.setStyle("-fx-color: LightSkyBlue");
+				
 				if(chkColdBlooded.isSelected() == false)
 					chkColdBlooded.setStyle("-fx-color: MediumAquaMarine");
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("cold", 0);
 					GridPane g = animalGrid(frontPage);
-					root.getChildren().remove(grid);
-					root.getChildren().remove(sp); 
+					
+					g.setVgap(3); // gap between rows
+					g.setHgap(3); // gap between columns
+					root.getChildren().clear(); 
 					ScrollPane s = new ScrollPane(g);
+					
 					root.getChildren().add(s);
 				}
 				
@@ -693,7 +695,7 @@ public class GUI extends Application
 					else if(hasAccount == true && isLoggedIn == true)
 					{
 						loggedOut(); 
-						login.setText("login");
+						login.setText("Login");
 						constantSearchAndLogin.getChildren().clear();
 						UTF.clear();
 						PTF.clear();
@@ -734,7 +736,6 @@ public class GUI extends Application
 		 * permanent search bar header 
 		 * adding them directly to root keeps them at the top 
 		 */ 
-		GridPane top = new GridPane();
 		top.setVgap(3); // gap between rows
 		top.setHgap(3); // gap between columns
 		
@@ -782,7 +783,8 @@ public class GUI extends Application
 		 * 
 		 * cold blooded then warm blooded if cold blooded is chosen
 		 * 
-		 *  repetitive code since I can't make global variables 
+		 *  repetitive code since I can't make global variables
+		 *  that a function/method would need  
 		 *  because of the throws IOException 
 		*/ 
 		sortByDropDown.setPromptText("Sort By");
@@ -796,122 +798,47 @@ public class GUI extends Application
 				if(chosen.contentEquals("A-Z"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					g.setVgap(10); // gap between rows
-					g.setHgap(10); // gap between columns
-					g.setPadding(new Insets(10, 10, 10, 10)); // pads edges
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Z-A"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Number of Limbs"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Preffered Biome"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Travel Method"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Cold Blooded"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Warm Blooded"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Lifespan"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Diet"))
 				{
 					frontPage = animalCatalog.getAnimals();
-					GridPane g = animalGrid(frontPage);
-					root.getChildren().clear(); 
-					ScrollPane s = new ScrollPane(g);
-					
-					top.addRow(0, searchBar, submit); 
-					top.addRow(1, tp, sortByDropDown);
-					
-					root.getChildren().add(top);
-					root.getChildren().add(s);
+					refreshAnimalGrid(constantSearchAndLogin);
 				}
 			}
 		});
@@ -927,7 +854,7 @@ public class GUI extends Application
 		primaryStage.setScene(startPage);
 		primaryStage.show();
 	}
-
+	
 	/*
 	 * standardizes the check boxes  
 	 */
@@ -945,6 +872,7 @@ public class GUI extends Application
 
 		return temp;
 	}
+	
 	/*
 	 * standardizes the buttons
 	 */
@@ -958,6 +886,7 @@ public class GUI extends Application
 
 		return temp;
 	}
+	
 	/*
 	 * a tailored drop down (combobox) 
 	 * for our needs 
@@ -1134,19 +1063,7 @@ public class GUI extends Application
         signup.setScene(dialogScene);
         signup.show(); 
 	}
-	/*
-	 * figures out what filters are being used and gets 
-	 * the final array to be shown 
-	 */
-	Animal[] currentAnimals()
-	{
-		Animal[] ca = frontPage;
-		// go through check boxes 
-		
-		// go through the 
-		
-		return ca;
-	}
+
 	/*
 	 * creates the animal grid that is added to the scroll pane 
 	 */
@@ -1211,7 +1128,20 @@ public class GUI extends Application
 		return grid; 
 	}
 	
-	
+	void refreshAnimalGrid(GridPane constantSearchAndLogin)
+	{
+		root.getChildren().clear(); 
+		GridPane g = animalGrid(frontPage);
+		g.setVgap(3); // gap between rows
+		g.setHgap(3); // gap between columns
+		root.getChildren().clear(); 
+		top.setVgap(3); // gap between rows
+		top.setHgap(3); // gap between columns
+		root.getChildren().add(constantSearchAndLogin);
+		ScrollPane s = new ScrollPane(g);
+		root.getChildren().add(top);
+		root.getChildren().add(s);
+	}
 	
 	void animalPersonalPage(String animalName)
 	{
@@ -1223,12 +1153,6 @@ public class GUI extends Application
 	 * exists only because javafx can't handle button counters 
 	 * or certain global variables 
 	 */
-	
-	GridPane updateGrid(Animal[] an)
-	{
-		GridPane g = animalGrid(frontPage);
-		return g; 
-	}
 	void counter()
 	{
 		loginAttempts++; 
@@ -1237,6 +1161,7 @@ public class GUI extends Application
 	void loggedIn()
 	{
 		isLoggedIn = true; 
+		loginAttempts = 0;
 	}
 	
 	void loggedOut()
