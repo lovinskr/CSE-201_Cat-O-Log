@@ -1,46 +1,61 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Scanner;
 
 public class Accounts {
-	public LinkedList<User> userlist;
-	public String filename = "account.txt";
+	public LinkedList userlist;
+	public String filename = "accounts.txt";
 	
 	public Accounts() throws IOException {
 		userlist = new LinkedList();
 		readUsers(); 
 	}
 	
+	public void Makaccount(User newUser) throws IOException
+	{
+		userlist.add(newUser);
+		writeUser(newUser);
+	}
+	
 	public void Makeaccount(String username, String password) throws IOException {
 		User user = new User(username, password);
 		userlist.add(user);
-		saveUser(user);
+		writeUser(user);
 	}
 	
 	public void Makeaccount(String username, String password, boolean admin) throws IOException {
 		User user = new User(username, password, admin);
 		userlist.add(user);
-		saveUser(user);
+		writeUser(user);
 	}
 	
-	
-	public void readUsers() throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(filename));
-		String line;
-		while((line = br.readLine()) != null) {
-			String name = br.readLine().trim();
-			String pass = br.readLine().trim();
-			int admin = Integer.parseInt(br.readLine());
-			User user = new User(name, pass, true);
-				userlist.add(user);
-			
+	// I added trim() to get rid of the loose edge spaces 
+	public void readUsers() throws IOException 
+	{
+		Scanner read = new Scanner(new File(filename));
+		
+		while(read.hasNext())
+		{
+			String username = read.next().trim();
+			String password = read.next().trim();
+			int a = read.nextInt(); 
+			 
+			Boolean admin = false; 
+			if(a == 1)
+				admin = true; 
+			User user = new User(username, password, admin);
+			userlist.add(user); 
 		}
-		br.close();
+		
+		read.close();
 	}
 	
 	
@@ -56,52 +71,37 @@ public class Accounts {
 			User temp = userIterator.next();
 			if((temp.username).equals(username))
 			{
-				return true; 
+				if((temp.password).equals(password))
+				{
+					return true;
+				}
 			}
 		}
 		
 		return false; 
 	}
 	
-	/*
-	 * NEED FOR GUI PLEASE DON'T CHANGE 
-	 * checks that passowrd matches account 
-	 */
-	boolean canLogIn(String username, String password)
+	void writeUser(User usr) throws IOException 
 	{
-		ListIterator<User> userIterator = userlist.listIterator();
-		for(int c  = 0; c < userlist.size(); c++)
-		{
-			User temp = userIterator.next();
-			if((temp.username).equals(username) && (temp.password).equals(password))
-			{
-				return true; 
-			}
-		}
-		return false; 
-	}
-
-	public void Makaccount(User newUser) throws IOException {
-		userlist.add(newUser);
-		saveUser(newUser);
+		readUsers(); // get all current accounts in the linked list
 		
+		PrintWriter to = new PrintWriter(new File(filename));
+		String line;
+		ListIterator<User> ui = userlist.listIterator();
+		to.println(); 
+		
+		while(ui.hasNext())
+		{
+			User temp = ui.next(); 
+			to.println(temp.username);
+			to.println(temp.password);
+			to.println(temp.isAdmin());
+		}
+		
+		to.println(usr.username);
+		to.println(usr.password);
+		to.println(usr.isAdmin());
+		to.println();
+		to.close();
 	}
-	
-	public void saveUser(User user) throws IOException {
-		FileWriter fstream = new FileWriter(filename);
-        BufferedWriter out = new BufferedWriter(fstream);
-        out.write(user.username);
-    	out.newLine();
-    	out.write(user.password);
-    	out.newLine();
-    	if(user.administrator) {
-    		out.write(1);
-    	} else {
-    		out.write(0);
-    	}
-    	fstream.close();
-    	out.close();
-	}
-	
-	
 }
