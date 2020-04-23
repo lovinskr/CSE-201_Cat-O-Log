@@ -1240,7 +1240,7 @@ public class GUI extends Application
 					Animal lookAt = new Animal(); 
 					for(int l = 0; l < frontPage.length && frontPage[l] != null; l++)
 					{
-						if(frontPage[l].getName().equals(tempName))
+						if(frontPage[l].getName().equalsIgnoreCase(tempName.getText()));
 							lookAt = frontPage[l];
 					}
 					animalPersonalPage(lookAt);
@@ -1325,11 +1325,42 @@ public class GUI extends Application
 		info.addColumn(1, a, c, d, e, b, g, f, h, i);
 		
 		// animal info 
-		Text name = new Text(weirdDog.getName()); 
-		Text cl = new Text(weirdDog.getAnimalClass());
-		Text di = new Text(weirdDog.getDiet());
+		a = new Text(weirdDog.getName()); 
+		a.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		b = new Text(weirdDog.getPreferredBiome()); 
+		b.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		c = new Text(weirdDog.getAnimalClass());
+		c.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		d = new Text(weirdDog.getDiet());
+		d.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		e = new Text(weirdDog.getCommonRegion());
+		e.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		if(weirdDog.getColdOrWarmBlooded() == 0)
+			f = new Text("Warm");
+		else 
+			f = new Text("cold");
+		f.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		g = new Text(weirdDog.getNumOfLimbs() + "");
+		g.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		h = new Text(weirdDog.getAverageLifespan() + " years"); 
+		h.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
 		
-		info.addColumn(2, name, cl, di);
+		String travelMetho = ""; 
+		String[] tm = weirdDog.getTravelMethods();
+		
+		for(int j = 0; j < tm.length && tm[j] != null; j++)
+		{
+			travelMetho += tm[j];
+			if(j > 0)
+				travelMetho += ", ";
+			else
+				travelMetho += " ";
+		}
+		
+		i = new Text(travelMetho); 
+		i.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
+		
+		info.addColumn(2, a, c, d, e, b, g, f, h, i);
 		
 		
 		ScrollPane scroller = new ScrollPane(info); 
