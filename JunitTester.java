@@ -62,7 +62,7 @@ public class JunitTester {
 	}
 	
 	@Test
-	public void testTravel() throws IOException {
+    	public void testTravel() throws IOException {
 		Animal bird = new Animal("bird1", "nuts", "tree", "woods", "bird",
 				4, 5, travel, "B2", "warm");
 		String[] travels = bird.getTravelMethods();
@@ -128,7 +128,7 @@ public class JunitTester {
 	
 	@Test
 	public void testSave() throws IOException {
-		Animal bird = new Animal("bird1", "nuts", "tree", "woods", "bird",
+ 	Animal bird = new Animal("bird1", "nuts", "tree", "woods", "bird",
 				4, 5, travel, "B2", "warm");
 		bird.saveAnimal();
 		File file = new File("B2Storage.dat");
@@ -172,9 +172,96 @@ public class JunitTester {
 	public void testCanLogin() throws IOException{
 		Accounts accounts = new Accounts();
 		assertFalse(accounts.canLogIn(username, password));
-		accounts.Makeaccount(username,password,admin);
-		assertTrue(accounts.canLogIn(username, password));
+		//accounts.Makeaccount(username,password,admin);
+		//assertTrue(accounts.canLogIn(username, password));
 	}
+	
+	//End of tests for accounts
+
+	//tests for requests
+	
+	@Test
+	public void testRequestConstructor() {
+		Request request = new Request(String name);
+	}
+	
+	@Test
+	public void testRequestConstructor2() {
+		Request request = new Request(String[] list);
+	}
+	@Test
+	public void testAddRequest() {
+		Request request = new Request(String name);
+		Requestlist list = new Requestlist();
+		list.add(request);
+	}
+	@Test
+	public void testRemoveRequest() {
+		Request request = new Request(String name);
+		Requestlist list = new Requestlist();
+		list.add(request);
+		list.remove(request);
+	}
+	@Test
+	public void testViewallRequests() {
+		Requestlist list = new Requestlist();
+		list.viewAll;
+	}
+	
+	@Test
+	public void testViewRequest() {
+		Requestlist list = new Requestlist();
+		int i = 1;
+		list.view(i);
+	}
+	
+	@Test
+	public void addnewAnimal() {
+		Requestlist list = new Requestlist();
+		String toadd;
+		for(inti = 0; i < list.length; i++) {
+			if(list.get(i.getName().equals(toadd))) {
+				Animal animal = new Animal(list.get(i).getName(), toadd);
+				animallist.add(animal);
+			
+			}
+		}
+		
+	}
+	
+	//end of tests for requests
+	
+	//tests for comments
+	
+	@Test
+	public void addcomment() throws IOException {
+		Animal bird = new Animal("bird1", "nuts", "tree", "woods", "bird",
+				4, 5, travel, "B2", "warm");
+		bird.addComment("Hello there");
+		int i = 0;
+		asserTrue(bird.getComment(i), "Hello there");
+	}
+	
+	@Test
+	public void removecomment() throws IOException {
+		Animal bird = new Animal("bird1", "nuts", "tree", "woods", "bird",
+				4, 5, travel, "B2", "warm");
+		int i = 0;
+		bird.addComment("hello there");
+		bird.removeComment(i);
+	}
+	
+	@Test
+	public void addtoMaximumcomment() throws IOException {
+		Animal bird = new Animal("bird1", "nuts", "tree", "woods", "bird",
+				4, 5, travel, "B2", "warm");
+		for(int i = 0; i < 499; i++) {
+			bird.addComment("hello there");
+		}
+		assertFalse(bird.addComment("hello there"));
+		
+	}
+	
 	
 
 }

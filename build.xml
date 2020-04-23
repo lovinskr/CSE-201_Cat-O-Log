@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="GUI" name="CSE201_Catalog">
+    <property environment="env"/>
+    <property name="junit.output.dir" value="junit"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
+    <path id="JavaFx.userclasspath">
+        <pathelement location="../../../../Program Files/Java/jdk1.8.0_201/jre/lib/jfxswt.jar"/>
+        <pathelement location="../../../../Program Files/Java/jdk1.8.0_201/jre/lib/ext/jfxrt.jar"/>
+    </path>
+    <path id="JUnit 4.libraryclasspath">
+        <pathelement location="../../.p2/pool/plugins/org.junit_4.12.0.v201504281640/junit.jar"/>
+        <pathelement location="../../.p2/pool/plugins/org.hamcrest.core_1.3.0.v20180420-1519.jar"/>
+    </path>
+    <path id="CSE201_Catalog.classpath">
+        <pathelement location="bin"/>
+        <path refid="JavaFx.userclasspath"/>
+        <path refid="JUnit 4.libraryclasspath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.xtend"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="CSE201_Catalog.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target name="GUI" depends="build">
+        <java classname="GUI" failonerror="true" fork="yes">
+            <classpath refid="CSE201_Catalog.classpath"/>
+        </java>
+    </target>
+    <target name="Tester">
+        <java classname="Tester" failonerror="true" fork="yes">
+            <classpath refid="CSE201_Catalog.classpath"/>
+        </java>
+    </target>
+    <target name="Accounts">
+    	<java classname="Accounts" failonerror="true" fork="yes">
+    	<classpath refid="CSE201_Catalog.classpath"/>
+    	</java>
+      </target>
+              	<target name="Animal">
+              	    	<java classname="Animal" failonerror="true" fork="yes">
+              	    	<classpath refid="CSE201_Catalog.classpath"/>
+              	    	</java>
+              	      </target>
+              	<target name="Catalog">
+              	    	<java classname="Catalog" failonerror="true" fork="yes">
+              	    	<classpath refid="CSE201_Catalog.classpath"/>
+              	    	</java>
+              	      </target>
+              	<target name="User">
+              	    	<java classname="User" failonerror="true" fork="yes">
+              	    	<classpath refid="CSE201_Catalog.classpath"/>
+              	    	</java>
+              	      </target>
+    <target name="JunitTester">
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="JunitTester" todir="${junit.output.dir}"/>
+            <jvmarg line="-ea"/>
+            <classpath refid="CSE201_Catalog.classpath"/>
+        </junit>
+    </target>
+    <target name="junitreport">
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+              	<target name="war" description="Bundles the application as a WAR file" depends="clean, build">
+              	<mkdir dir = "WebContent/WEB-INF/classes"/>
+              	<copy includeemptydirs="false" todir="WebContent/WEB-INF/classes">
+              	<fileset dir = "bin">
+              	<include name = "**/*.class"/>
+              	</fileset>
+              	</copy>
+              	<war destfile="CSE201_Catalog.war"
+              	basedir="WebContent"
+              	needxmlfile="false">
+              	</war>
+              	</target>
+
+	<target name = "run" depends="run1">
+		<java classname="User">
+			<classpath path = ".\bin"/>
+		</java>
+		<java classname = "Catalog">
+			<classpath path = ".\bin"/>
+		</java>
+		<java classname = "Animal">
+			<classpath path = ".\bin"/>
+			</java>
+		<java classname = "GUI">
+					<classpath path = ".\bin"/>
+			</java>
+
+	</target>
+	<target name = "run1" depends="run2">
+			<java classname = "GUI$1">
+								<classpath path = ".\bin"/>
+							</java>
+		</target>
+			<target name = "run2" depends="run3">
+						<java classname = "GUI$2">
+											<classpath path = ".\bin"/>
+										</java>
+					</target>
+		<target name = "run3" depends="run4">
+					<java classname = "GUI$3">
+				<classpath path = ".\bin"/>
+			</java>
+		</target>
+			<target name = "run4" depends="run5">
+								<java classname = "GUI$4">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run5" depends="run6">
+								<java classname = "GUI$5">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run6" depends="run7">
+								<java classname = "GUI$6">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run7" depends="run8">
+								<java classname = "GUI$7">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run8" depends="run9">
+								<java classname = "GUI$8">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run9" depends="run10">
+								<java classname = "GUI$9">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+	<target name = "run10" depends="run11">
+						<java classname = "GUI$10">
+					<classpath path = ".\bin"/>
+				</java>
+			</target>
+			<target name = "run11" depends="run12">
+								<java classname = "GUI$11">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run12" depends="run13">
+								<java classname = "GUI$12">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run13" depends="run14">
+								<java classname = "GUI$13">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run14" depends="run15">
+								<java classname = "GUI$14">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run15" depends="run16">
+								<java classname = "GUI$15">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run16" depends="run17">
+								<java classname = "GUI$16">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run17" depends="run18">
+								<java classname = "GUI$17">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run18" depends="run19">
+								<java classname = "GUI$18">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run19" depends="run20">
+								<java classname = "GUI$19">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run20" depends="run21">
+								<java classname = "GUI$20">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run21" depends="run22">
+								<java classname = "GUI$21">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run22" depends="run23">
+								<java classname = "GUI$22">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run23" depends="run24">
+								<java classname = "GUI$23">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run24" depends="run25">
+								<java classname = "GUI$24">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run25" depends="run26">
+								<java classname = "GUI$25">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+	<target name = "run26" depends="run27">
+						<java classname = "GUI$26">
+					<classpath path = ".\bin"/>
+				</java>
+			</target>
+			<target name = "run27" depends="run28">
+								<java classname = "GUI$27">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run28" depends="run29">
+								<java classname = "GUI$28">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run29" depends="run30">
+								<java classname = "GUI$29">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run30" depends="run31">
+								<java classname = "GUI$30">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run31" depends="run32">
+								<java classname = "GUI$31">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run32" depends="run33">
+								<java classname = "GUI$32">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run33" depends="run34">
+								<java classname = "GUI$33">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run34" depends="run35">
+								<java classname = "GUI$34">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run35" depends="run36">
+								<java classname = "GUI$35">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run36" depends="run37">
+								<java classname = "GUI$36">
+							<classpath path = ".\bin"/>
+						</java>
+					</target>
+			<target name = "run37" depends="build, init">
+							<java classname = "GUI$37">
+							<classpath path = ".\bin"/>
+							</java>
+						</target>
+</project>
