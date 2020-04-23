@@ -908,7 +908,6 @@ public class GUI extends Application
 		 *  because of the throws IOException 
 		 *  
 		 *  
-		 *  
 		*/ 
 		sortByDropDown.setPromptText("Sort By");
 		sortByDropDown.setMaxHeight(20);
@@ -951,13 +950,13 @@ public class GUI extends Application
 				else if(chosen.contentEquals("Cold Blooded"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
-					Arrays.sort(frontPage, new SortDiet());
+					Arrays.sort(frontPage, new SortCold());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Warm Blooded"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
-					Arrays.sort(frontPage, new SortDiet());
+					Arrays.sort(frontPage, new SortWarm());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Lifespan"))
