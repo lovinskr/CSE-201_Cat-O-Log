@@ -1237,10 +1237,10 @@ public class GUI extends Application
 				@Override
 				public void handle(ActionEvent event) 
 				{
-					Animal lookAt = new Animal(); 
+					Animal lookAt = null; 
 					for(int l = 0; l < frontPage.length && frontPage[l] != null; l++)
 					{
-						if(frontPage[l].getName().equalsIgnoreCase(tempName.getText()));
+						if(frontPage[l].getName().equalsIgnoreCase(tempName.getText()))
 							lookAt = frontPage[l];
 					}
 					animalPersonalPage(lookAt);
