@@ -1389,7 +1389,14 @@ public class GUI extends Application
 		userPage.prefHeightProperty().bind(root.heightProperty());
 		userPage.setStyle("-fx-background-color: CadetBlue;"); // background color
 		
+		Text i = new Text("Your Listed Information"); 
+		Text un = new Text("Username: ");
+		Button cu = makeButton("Change Username"); 
+		Button cp = makeButton("Change Password"); 
+		Button ce = makeButton("Change or Add Email"); 
+		Button cph = makeButton("Change or Add Phone Number"); 
 		
+		userPage.addColumn(0, i, un, cu, cp, ce, cph);
 		
 		ScrollPane scroller = new ScrollPane(userPage); 
 		root.getChildren().add(constantLogin);
@@ -1397,6 +1404,10 @@ public class GUI extends Application
 		root.getChildren().add(scroller); 
 	}
 	
+	void changePasswordPopup()
+	{
+		
+	}
 	
 	
 	
