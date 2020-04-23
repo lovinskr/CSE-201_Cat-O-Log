@@ -1,4 +1,5 @@
 
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -69,6 +70,24 @@ public class Catalog
 		}
 		return small;
 	}
+	
+	public Animal[] createSmallArray(Animal[] temp) 
+	{
+		int c = 0; 
+		Animal[] small = new Animal[temp.length];
+		for (int x = 0; x < temp.length && temp[x] != null; x++) {
+			small[x] = temp[x];
+			c = x; 
+		}
+		c++;
+		Animal[] a = new Animal[c]; 
+		for(int i = 0; i < c; i++)
+		{
+			a[i] = small[i];
+		}
+		return a;
+	}
+	
 	public Animal[] searchFor(String search) {
 		Animal[] searchArray = new Animal[500];
 		int index = 0;
@@ -258,4 +277,3 @@ public class Catalog
 		
 	}
 }
-
