@@ -79,7 +79,7 @@ public class GUI extends Application
 	CheckBox[] checked = new CheckBox[25]; // the list of check boxes checked or not
 	int checkedIndex = 0; 
 	Animal[] frontPage = new Animal[500];
-	
+	GridPane constantLogin = new GridPane();
 	GridPane top = new GridPane(); 
 	
 	public static void main(String[] args) 
@@ -101,7 +101,6 @@ public class GUI extends Application
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
 		ScrollPane sp = new ScrollPane(grid);
 		sp.setPannable(true); 
-		GridPane constantLogin = new GridPane();
 				
 		// the check boxes that will be filters
 		CheckBox chkColdBlooded = makeChkBox("Cold Blooded");
@@ -1238,9 +1237,16 @@ public class GUI extends Application
 				@Override
 				public void handle(ActionEvent event) 
 				{
-					animalPersonalPage(tempName.getText());
+					Animal lookAt = new Animal(); 
+					for(int l = 0; l < frontPage.length && frontPage[l] != null; l++)
+					{
+						if(frontPage[l].getName().equals(tempName))
+							lookAt = frontPage[l];
+					}
+					animalPersonalPage(lookAt);
 				}
 			});
+			
 			gridRow++;
 		}
 		return grid; 
@@ -1284,13 +1290,52 @@ public class GUI extends Application
 		
 	}
 	
-	void animalPersonalPage(String animalNametesting)
+	void animalPersonalPage(Animal weirdDog)
 	{
 		root.getChildren().clear(); 
-		top.setVgap(3); // gap between rows
-		top.setHgap(3); // gap between columns
+		GridPane info = new GridPane(); 
+		info.setVgap(4);
+		info.setHgap(4);
+		info.prefWidthProperty().bind(root.widthProperty());
+		info.prefHeightProperty().bind(root.heightProperty());
+		info.setStyle("-fx-background-color: LightSkyBlue;"); // background color
 		
-		root.getChildren().add(top);
+		// labels stuff 
+		Text a = new Text("Name: ");
+		a.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Text b = new Text("Preferred Biome: ");
+		b.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Text c = new Text("Class: "); 
+		c.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Text d = new Text("Diet Type: "); 
+		d.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Text e = new Text("Common Region: "); 
+		e.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Text f = new Text("Blood Type: "); 
+		f.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Text g = new Text("Limbs: "); 
+		g.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Text h = new Text("Average Lifespan: ");
+		h.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		Text i = new Text("Travel Methods: "); 
+		i.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		
+		// make a place for photos at top of the grid
+		
+		info.addColumn(1, a, c, d, e, b, g, f, h, i);
+		
+		// animal info 
+		Text name = new Text(weirdDog.getName()); 
+		Text cl = new Text(weirdDog.getAnimalClass());
+		Text di = new Text(weirdDog.getDiet());
+		
+		info.addColumn(2, name, cl, di);
+		
+		
+		ScrollPane scroller = new ScrollPane(info); 
+		root.getChildren().add(constantLogin);
+		root.getChildren().add(top); 
+		root.getChildren().add(scroller); 
 	}
 	
 	/* 
