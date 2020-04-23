@@ -30,7 +30,6 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.Arrays;
-
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
@@ -102,7 +101,7 @@ public class GUI extends Application
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
 		ScrollPane sp = new ScrollPane(grid);
 		sp.setPannable(true); 
-		GridPane constantSearchAndLogin = new GridPane();
+		GridPane constantLogin = new GridPane();
 				
 		// the check boxes that will be filters
 		CheckBox chkColdBlooded = makeChkBox("Cold Blooded");
@@ -118,7 +117,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("cold", 0);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 				
 			}
@@ -137,7 +136,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Warm", 0);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -155,7 +154,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Flies", 1);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -173,7 +172,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Slithers", 1);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -191,7 +190,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Walks", 1);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -209,7 +208,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Swims", 1);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -227,7 +226,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Fish", 2);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -245,7 +244,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Bird", 2);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -263,7 +262,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Reptile", 2);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -281,7 +280,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Insect", 2);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -299,7 +298,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Amphibian", 2);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -317,7 +316,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Mammal", 2);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -335,7 +334,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Arthropod", 2);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -353,7 +352,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Aquatic", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -371,7 +370,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Tundra", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -389,7 +388,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Taiga", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -407,7 +406,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Temperate Deciduous Forest", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -425,7 +424,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Scrub Forest", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -443,7 +442,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Grassland", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -461,7 +460,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Desert", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -480,7 +479,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Temperate Rain Forest", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -498,7 +497,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Tropical Rain Forest", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -517,7 +516,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Nearctic", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -535,7 +534,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Palearctic", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -553,7 +552,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("African", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -571,7 +570,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("NeoTropical", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -589,7 +588,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Oriental", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -607,7 +606,7 @@ public class GUI extends Application
 				else
 				{
 					frontPage = animalCatalog.filterAnimals("Australian", 3);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -785,10 +784,10 @@ public class GUI extends Application
 		PTF.prefWidthProperty().bind(root.widthProperty());
 		PTF.setPromptText("Password");
 		Button login = makeButton("Login");
-		constantSearchAndLogin.setVgap(3); // gap between rows
-		constantSearchAndLogin.setHgap(3); // gap between columns
-		constantSearchAndLogin.addRow(1, UTF, PTF, login, signUp);
-		root.getChildren().addAll(constantSearchAndLogin);
+		constantLogin.setVgap(3); // gap between rows
+		constantLogin.setHgap(3); // gap between columns
+		constantLogin.addRow(1, UTF, PTF, login, signUp);
+		root.getChildren().addAll(constantLogin);
 		login.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			 
@@ -808,17 +807,17 @@ public class GUI extends Application
 					{
 						loggedIn(); 
 						login.setText("Logout");
-						constantSearchAndLogin.getChildren().removeAll(UTF, PTF, signUp); 
-						constantSearchAndLogin.getChildren().add(u);
+						constantLogin.getChildren().removeAll(UTF, PTF, signUp); 
+						constantLogin.getChildren().add(u);
 					}
 					else if(hasAccount == true && isLoggedIn == true)
 					{
 						loggedOut(); 
 						login.setText("Login");
-						constantSearchAndLogin.getChildren().clear();
+						constantLogin.getChildren().clear();
 						UTF.clear();
 						PTF.clear();
-						constantSearchAndLogin.addRow(0, UTF, PTF, login, signUp);
+						constantLogin.addRow(0, UTF, PTF, login, signUp);
 					}
 					else
 					{ 
@@ -856,9 +855,7 @@ public class GUI extends Application
 		 * adding them directly to root keeps them at the top 
 		 */ 
 		top.setVgap(3); // gap between rows
-		top.setHgap(3); // gap between columns
-		
-
+		top.setHgap(3); // gap between columns 
 		String[] sortBy = { "A-Z", "Z-A", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet",
 				"Travel Method", "Cold Blooded", "Warm Blooded" };
 		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
@@ -876,22 +873,12 @@ public class GUI extends Application
 			{
 				String search = searchBar.getText();
 				frontPage = animalCatalog.searchFor(search);
-				GridPane g = animalGrid(frontPage);
-				root.getChildren().clear();
-				GridPane csl = new GridPane();
-				root.getChildren().addAll(constantSearchAndLogin);
-				ScrollPane s = new ScrollPane(g);
-				
-				GridPane t = new GridPane();
-				t.addRow(0, searchBar, submit); 
-				t.addRow(1, tp, sortByDropDown);
-				t.setVgap(3); // gap between rows
-				t.setHgap(3); // gap between columns
-				root.getChildren().add(t);
-				root.getChildren().add(s);
+				frontPage = animalCatalog.createSmallArray(frontPage);
+				Arrays.sort(frontPage);
+				refreshAnimalGrid(constantLogin);
 			}
 		});
-		constantSearchAndLogin.addRow(0, searchBar, submit);
+		constantLogin.addRow(0, searchBar, submit);
 		
 		/* drop down sortBy
 		 * each is alphabetical as default 
@@ -921,55 +908,55 @@ public class GUI extends Application
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage);
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 				else if(chosen.contentEquals("Z-A"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortReverse());
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 				else if(chosen.contentEquals("Number of Limbs"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortLimbs());
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
-				else if(chosen.contentEquals("Preffered Biome"))
+				else if(chosen.contentEquals("Preferred Biome"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortBiome());
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 				else if(chosen.contentEquals("Travel Method"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortTravel());
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 				else if(chosen.contentEquals("Cold Blooded"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortCold());
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 				else if(chosen.contentEquals("Warm Blooded"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortWarm());
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 				else if(chosen.contentEquals("Lifespan"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortLifespan());
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 				else if(chosen.contentEquals("Diet"))
 				{
 					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortDiet());
-					refreshAnimalGrid(constantSearchAndLogin);
+					refreshAnimalGrid(constantLogin);
 				}
 			}
 		});
@@ -1259,7 +1246,7 @@ public class GUI extends Application
 		return grid; 
 	}
 	
-	void refreshAnimalGrid(GridPane constantSearchAndLogin)
+	void refreshAnimalGrid(GridPane constantLogin)
 	{
 		root.getChildren().clear(); 
 		GridPane g = animalGrid(frontPage);
@@ -1268,7 +1255,7 @@ public class GUI extends Application
 		root.getChildren().clear(); 
 		top.setVgap(3); // gap between rows
 		top.setHgap(3); // gap between columns
-		root.getChildren().add(constantSearchAndLogin);
+		root.getChildren().add(constantLogin);
 		ScrollPane s = new ScrollPane(g);
 		root.getChildren().add(top);
 		root.getChildren().add(s);
@@ -1299,7 +1286,11 @@ public class GUI extends Application
 	
 	void animalPersonalPage(String animalNametesting)
 	{
+		root.getChildren().clear(); 
+		top.setVgap(3); // gap between rows
+		top.setHgap(3); // gap between columns
 		
+		root.getChildren().add(top);
 	}
 	
 	/* 
