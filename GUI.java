@@ -12,10 +12,7 @@
  * 
  * To Do:
  * get animals to have their own page 
- * sign up fully working
- * search working 
- * get page to change with filters 
- * 
+ * sign up fully working 
  * 
  * 
  */
@@ -41,6 +38,7 @@ import javafx.beans.property.Property;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -82,6 +80,7 @@ public class GUI extends Application
 	CheckBox[] checked = new CheckBox[25]; // the list of check boxes checked or not
 	int checkedIndex = 0; 
 	Animal[] frontPage = new Animal[500];
+	
 	GridPane top = new GridPane(); 
 	
 	public static void main(String[] args) 
@@ -626,8 +625,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				frontPage  = animalCatalog.rangeAnimals(Integer.parseInt(lifeLimitL.getText()), Integer.parseInt(lifeLimitU.getText()), 0);
-				refreshAnimalGrid(constantSearchAndLogin);
+				
 			}
 		});
 
@@ -644,8 +642,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{	
-				frontPage = animalCatalog.rangeAnimals(Integer.parseInt(limbLimitL.getText()), Integer.parseInt(limbLimitU.getText()), 1);
-				refreshAnimalGrid(constantSearchAndLogin);
+				
 			}
 		});
 		
@@ -660,8 +657,7 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				frontPage = animalCatalog.filterAnimals(dietDropDown.getValue(), 4);
-				refreshAnimalGrid(constantSearchAndLogin);
+				
 			}
 		});
 
@@ -739,6 +735,16 @@ public class GUI extends Application
 		travelsByTP.setContent(travelsByGP);
 		travelsByTP.setExpanded(false);
 		
+		Button filterB = makeButton("Apply Filter"); 
+		filterB.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				 checkCheckboxes(); 
+			}
+		});
+		
 		GridPane checkBoxes = new GridPane();
 		checkBoxes.setVgap(4);
 		checkBoxes.setPadding(new Insets(5, 5, 5,5));
@@ -754,7 +760,9 @@ public class GUI extends Application
 		checkBoxes.add(limbLimitL, 0, 9);
 		checkBoxes.add(limbLimitU, 0, 10);
 		checkBoxes.add(limbLimits, 0, 11);
-
+		checkBoxes.add(filterB, 0, 12); 
+		
+		
 		tp.setExpanded(false);
 		tp.setContent(checkBoxes);
 		 
@@ -850,13 +858,14 @@ public class GUI extends Application
 		top.setVgap(3); // gap between rows
 		top.setHgap(3); // gap between columns
 		
-		// search bar 
-		TextField searchBar = makeTF();
-		searchBar.setPromptText("Search the Cat-o-log");
-		
+
 		String[] sortBy = { "A-Z", "Z-A", "Number of Limbs", "Preferred Biome", "Lifespan", "Diet",
 				"Travel Method", "Cold Blooded", "Warm Blooded" };
 		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
+		
+		// search bar 
+		TextField searchBar = makeTF();
+		searchBar.setPromptText("Search the Cat-o-log");
 		
 		// submit the search button 
 		Button submit = makeButton("Search");
@@ -882,6 +891,7 @@ public class GUI extends Application
 				root.getChildren().add(s);
 			}
 		});
+		constantSearchAndLogin.addRow(0, searchBar, submit);
 		
 		/* drop down sortBy
 		 * each is alphabetical as default 
@@ -896,6 +906,9 @@ public class GUI extends Application
 		 *  repetitive code since I can't make global variables
 		 *  that a function/method would need  
 		 *  because of the throws IOException 
+		 *  
+		 *  
+		 *  
 		*/ 
 		sortByDropDown.setPromptText("Sort By");
 		sortByDropDown.setMaxHeight(20);
@@ -907,54 +920,55 @@ public class GUI extends Application
 				String chosen = sortByDropDown.getValue(); 
 				if(chosen.contentEquals("A-Z"))
 				{
-					frontPage = animalCatalog.getAnimals();
+					frontPage = animalCatalog.createSmallArray(frontPage);
+					Arrays.sort(frontPage);
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Z-A"))
 				{
-					frontPage = animalCatalog.createSmallArray();
+					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortReverse());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Number of Limbs"))
 				{
-					frontPage = animalCatalog.createSmallArray();
+					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortLimbs());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Preffered Biome"))
 				{
-					frontPage = animalCatalog.createSmallArray();
+					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortBiome());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Travel Method"))
 				{
-					frontPage = animalCatalog.createSmallArray();
+					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortTravel());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Cold Blooded"))
 				{
-					frontPage = animalCatalog.createSmallArray();
+					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortDiet());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Warm Blooded"))
 				{
-					frontPage = animalCatalog.createSmallArray();
+					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortDiet());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Lifespan"))
 				{
-					frontPage = animalCatalog.createSmallArray();
+					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortLifespan());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
 				else if(chosen.contentEquals("Diet"))
 				{
-					frontPage = animalCatalog.createSmallArray();
+					frontPage = animalCatalog.createSmallArray(frontPage);
 					Arrays.sort(frontPage, new SortDiet());
 					refreshAnimalGrid(constantSearchAndLogin);
 				}
@@ -1261,7 +1275,30 @@ public class GUI extends Application
 		root.getChildren().add(s);
 	}
 	
-	void animalPersonalPage(String animalName)
+	/*
+	 * will check all the other check boxes
+	 */
+	void checkCheckboxes()
+	{
+		Object[] f = root.getChildren().toArray(); 
+		
+		for(int c = 0; c < f.length; c++)
+		{
+			if(f[c] instanceof CheckBox)
+			{
+				CheckBox temp = (CheckBox) f[c]; 
+				if(temp.isSelected())
+				{
+					String t = temp.getText(); 
+					System.out.println(t); 
+					
+				}
+			}
+		}
+		
+	}
+	
+	void animalPersonalPage(String animalNametesting)
 	{
 		
 	}
