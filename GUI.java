@@ -795,7 +795,7 @@ public class GUI extends Application
 			{
 				String username = UTF.getText().trim(); 
 				String password = PTF.getText().trim(); 
-				Text u = new Text(username); 
+				Button u = makeButton(username); 
 				
 				// check with accounts class 
 				try 
@@ -806,8 +806,18 @@ public class GUI extends Application
 					{
 						loggedIn(); 
 						login.setText("Logout");
-						constantLogin.getChildren().removeAll(UTF, PTF, signUp); 
-						constantLogin.getChildren().add(u);
+						constantLogin.getChildren().removeAll(UTF, PTF, signUp, login); 
+						constantLogin.getChildren().addAll(u, login);
+						u.setOnAction(new EventHandler<ActionEvent>() 
+						{
+							@Override
+							public void handle(ActionEvent event) 
+							{
+								userPersonalPage(); 
+							}
+						});
+						
+						
 					}
 					else if(hasAccount == true && isLoggedIn == true)
 					{
@@ -1368,6 +1378,27 @@ public class GUI extends Application
 		root.getChildren().add(top); 
 		root.getChildren().add(scroller); 
 	}
+	
+	void userPersonalPage()
+	{
+		root.getChildren().clear(); 
+		GridPane userPage = new GridPane();
+		userPage.setVgap(4);
+		userPage.setHgap(4);
+		userPage.prefWidthProperty().bind(root.widthProperty());
+		userPage.prefHeightProperty().bind(root.heightProperty());
+		userPage.setStyle("-fx-background-color: CadetBlue;"); // background color
+		
+		
+		
+		ScrollPane scroller = new ScrollPane(userPage); 
+		root.getChildren().add(constantLogin);
+		root.getChildren().add(top); 
+		root.getChildren().add(scroller); 
+	}
+	
+	
+	
 	
 	/* 
 	 * This stuff below 
