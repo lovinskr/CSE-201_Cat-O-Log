@@ -612,11 +612,9 @@ public class GUI extends Application
 		
 		// Lifespan range
 		CheckBox chkLifespan = makeChkBox("Average Lifespan");
-		TextField lifeLimitL = makeTF(); // lower limb limit
-		lifeLimitL.setPromptText("Min Years");
+		TextField lifeLimitL = makeTF("Min Years"); // lower limb limit 
 		lifeLimitL.setMaxHeight(20);
-		TextField lifeLimitU = makeTF(); // upper limb limit
-		lifeLimitU.setPromptText("Max Years");
+		TextField lifeLimitU = makeTF("Max Years"); // upper limb limit
 		lifeLimitU.setMaxHeight(20); 
 		chkLifespan.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -629,11 +627,9 @@ public class GUI extends Application
 
 		// have to include a text box to get the limb range
 		CheckBox limbLimits = makeChkBox("Limit Limbs");
-		TextField limbLimitL = makeTF(); // lower limb limit
-		limbLimitL.setPromptText("Min Limbs"); 
+		TextField limbLimitL = makeTF("Min Limbs"); // lower limb limit
 		limbLimitL.setMaxHeight(20);
-		TextField limbLimitU = makeTF(); // upper limb limit
-		limbLimitU.setPromptText("Max Limbs");
+		TextField limbLimitU = makeTF("Max Limbs"); // upper limb limit
 		limbLimitU.setMaxHeight(20);
 		limbLimits.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -775,13 +771,12 @@ public class GUI extends Application
 			}
 		});
 	
-		TextField UTF = makeTF(); // user name
-		UTF.setPromptText("Username");
+		TextField UTF = makeTF("Username"); // user name
 		PasswordField PTF = new PasswordField(); // password
+		PTF.setPromptText("Password");
 		PTF.setMaxHeight(50);
 		PTF.prefHeightProperty().bind(root.heightProperty());
 		PTF.prefWidthProperty().bind(root.widthProperty());
-		PTF.setPromptText("Password");
 		Button login = makeButton("Login");
 		constantLogin.setVgap(3); // gap between rows
 		constantLogin.setHgap(3); // gap between columns
@@ -870,8 +865,7 @@ public class GUI extends Application
 		ComboBox<String> sortByDropDown = makeDropDown(sortBy);
 		
 		// search bar 
-		TextField searchBar = makeTF();
-		searchBar.setPromptText("Search the Cat-o-log");
+		TextField searchBar = makeTF("Search the Cat-o-log");
 		
 		// submit the search button 
 		Button submit = makeButton("Search");
@@ -1032,12 +1026,12 @@ public class GUI extends Application
 	/*
 	 * standardizes the textboxes 
 	 */
-	TextField makeTF() 
+	TextField makeTF(String text) 
 	{
 		TextField temp = new TextField();
 		temp.setMaxHeight(50);
 		
-		temp.getText(); // use this to access text
+		temp.setPromptText(text);
 		temp.prefHeightProperty().bind(root.heightProperty());
 		temp.prefWidthProperty().bind(root.widthProperty());
 
@@ -1396,7 +1390,18 @@ public class GUI extends Application
 		Button ce = makeButton("Change or Add Email"); 
 		Button cph = makeButton("Change or Add Phone Number"); 
 		
-		userPage.addColumn(0, i, un, cu, cp, ce, cph);
+		Button ra = makeButton("Request Animal"); 
+		ra.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				requestAnimal();
+			}
+		});
+		
+		
+		userPage.addColumn(0, i, un, cu, cp, ce, cph, ra);
 		
 		ScrollPane scroller = new ScrollPane(userPage); 
 		root.getChildren().add(constantLogin);
@@ -1409,7 +1414,53 @@ public class GUI extends Application
 		
 	}
 	
-	
+	void requestAnimal()
+	{
+		root.getChildren().clear(); 
+		
+		GridPane userPage = new GridPane();
+		userPage.setVgap(4);
+		userPage.setHgap(4);
+		userPage.prefWidthProperty().bind(root.widthProperty());
+		userPage.prefHeightProperty().bind(root.heightProperty());
+		userPage.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
+		
+		TextField animalName = makeTF("Animal Name"); 
+		TextField animalClass = makeTF("Animal Class"); 
+		
+		 
+		Button submitRequest = makeButton("Submit Request");
+		submitRequest.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                //dialog.initOwner(scroller);
+                
+                StackPane popup = new StackPane();
+                popup.setStyle("-fx-background-color: AZURE");
+                Text text = new Text("Thank you for requesting an animal!");
+                Text textb = new Text("An adminstator will approve or deny your request.");
+                popup.getChildren().add(text);
+                popup.getChildren().add(textb);
+                 
+                Scene dialogScene = new Scene(popup, 300, 300);
+                dialog.setScene(dialogScene);
+                dialog.show();
+			}
+		});
+		
+		userPage.addColumn(0, animalName, animalClass, submitRequest);
+		
+		ScrollPane scroller = new ScrollPane(userPage); 
+		root.getChildren().add(constantLogin);
+		root.getChildren().add(top); 
+		Text a = new Text("Enter in the animal you would like the Cat-o-log to add!");
+		root.getChildren().add(a); 
+		root.getChildren().add(scroller); 
+	}
 	
 	/* 
 	 * This stuff below 
