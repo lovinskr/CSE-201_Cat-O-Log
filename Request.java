@@ -1,3 +1,4 @@
+import java.io.IOException;
 
 public class Request 
 {
@@ -28,6 +29,9 @@ public class Request
 		}
 		}
 		this.date = date;
+	}
+	public String getName() {
+		return name;
 	}
 	public boolean exists(Catalog catalog) {
 		Animal[] animals = catalog.createSmallArray();
@@ -68,5 +72,15 @@ public class Request
 				coldOrWarmBlooded = 0;
 			}
 		}
+	}
+	public Animal changeToAnimal() throws IOException {
+		String blood;
+		if (coldOrWarmBlooded == 1) {
+			blood = "cold";
+		}
+		else blood = "warm";
+		Animal animal = new Animal(name, diet, commonRegion, prefferedBiome, animalClass,
+				numOfLimbs, averageLifespan, methodsOfTravel, "a", blood);
+		return animal;
 	}
 }
