@@ -825,7 +825,7 @@ public class GUI extends Application
 						
 						
 					}
-					else if(hasAccount != -66 && isLoggedIn == true)
+					else if(hasAccount != -66 && isLoggedIn == true || login.getText().equals("Logout"))
 					{
 						loggedOut(); 
 						login.setText("Login");
@@ -1607,9 +1607,7 @@ public class GUI extends Application
 	                popup.setStyle("-fx-background-color: AZURE");
 	                Text text = new Text("Your username has been changed! Logout and back in to update.");
 	                
-	                popup.getChildren().add(text);
-	                
-	                
+	                popup.getChildren().add(text); 
 				}
 			
 		});
