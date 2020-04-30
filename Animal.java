@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -12,7 +13,7 @@ public class Animal implements Comparable<Animal>
 	String name, diet, commonRegion, prefferedBiome, animalClass;
 	Integer numOfLimbs, averageLifespan, coldOrWarmBlooded; // 1 = cold blooded 0 = warmblooded
 	String[] methodsOfTravel = new String[10];
-	String[] comments = new String[500]; 
+	LinkedList comments = new LinkedList(); 
 	int lastComment = 0; 
 	File animalStorage;
 	String filename;
@@ -24,6 +25,12 @@ public class Animal implements Comparable<Animal>
 	public Animal(String Aname, String identifier) {
 		name = Aname;
 		filename = identifier + "Storage.dat";
+		try {
+			readComments();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Animal(String Aname, String Adiet, String region, String biome, String Aclass,
@@ -44,6 +51,7 @@ public class Animal implements Comparable<Animal>
 		filename = identifier + "Storage.dat";
 		animalStorage = new File(filename);
 		saveAnimal();
+		readComments(); 
 	}
 	
 	String getName() {
@@ -116,22 +124,63 @@ public class Animal implements Comparable<Animal>
 		return false;
 	}
 	
-	String[] getComments()
+	String[] getComments() throws IOException
 	{
-		return comments; 
+		String[] com = new String[comments.size()];
+		
+		ListIterator<String> commentIterator = comments.listIterator();
+		for(int c = 0; c < com.length; c++)
+		{
+			com[c] = commentIterator.next(); 
+		}
+		
+		return com; 
 	}
 	
-	boolean addComment(String comment)
-	{
-		if (lastComment == 499) return false;
-		comments[lastComment] = comment;
+	boolean addComment(String comment) throws IOException
+	{ 
 		lastComment++;
+		writeComments(comment); 
 		return true; 
 	}
-	void printComments() {
-		System.out.println(comments[0]);
-		for(int i = 0; i < lastComment; i++) {
-			System.out.println(comments[i]);
+	
+	public void readComments() throws IOException 
+	{
+		Scanner read = new Scanner(new File(name + " Comments.txt"));
+		
+		while(read.hasNext())
+		{
+			String line = read.nextLine(); 
+			if(!line.isEmpty())
+				comments.add(line); 
+		}
+		
+		read.close();
+	}
+	
+	void writeComments(String newCom) throws IOException 
+	{
+		//readUsers(); // get all current accounts in the linked list
+		comments.add(newCom); 
+		PrintWriter to = new PrintWriter(new File(filename));
+		String line;
+		ListIterator<String> ui = comments.listIterator();
+		to.println(); 
+		
+		while(ui.hasNext())
+		{
+			
+		}
+		
+		to.println();
+		to.close();
+	}
+	
+	void printComments() throws IOException {
+		String[] com = getComments(); 
+		System.out.println(com[0]);
+		for(int i = 0; i < com.length; i++) {
+			System.out.println(com[i]);
 		}
 	}
 	
@@ -164,8 +213,9 @@ public class Animal implements Comparable<Animal>
 			out.newLine();
 			out.write(String.valueOf(getColdOrWarmBlooded()));
 			out.newLine();
-			for(int i = 0; i < lastComment; i++) {
-				out.write(comments[i]);
+			String[] com = getComments(); 
+			for(int i = 0; i < com.length; i++) {
+				out.write(com[i]);
 			}
 			out.newLine();
 			for(int j = 0; j < methodsOfTravel.length; j++) {
@@ -195,7 +245,7 @@ class SortLimbs implements Comparator<Animal> {
 	}
 }
 class SortBiome implements Comparator<Animal> {
-	public int compare(Animal a, Animal b) {
+	public int compare(Animal a, Animal b) { 
 		return a.prefferedBiome.compareTo(b.prefferedBiome);
 	}
 }

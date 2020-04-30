@@ -61,6 +61,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.BorderPane;
@@ -1256,7 +1257,12 @@ public class GUI extends Application
 						if(frontPage[l].getName().equalsIgnoreCase(tempName.getText()))
 							lookAt = frontPage[l];
 					}
-					animalPersonalPage(lookAt);
+					try {
+						animalPersonalPage(lookAt);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			});
 			
@@ -1303,7 +1309,16 @@ public class GUI extends Application
 		
 	}
 	
-	void animalPersonalPage(Animal weirdDog)
+	/*
+	 * Animal's personal page where 
+	 * 	logged in users can 
+	 * 			add comments
+	 * 			
+	 * 	not logged in users can 
+	 * 			view comments 
+	 * 
+	 */
+	void animalPersonalPage(Animal weirdDog) throws IOException
 	{
 		root.getChildren().clear(); 
 		GridPane info = new GridPane(); 
@@ -1351,7 +1366,7 @@ public class GUI extends Application
 		if(weirdDog.getColdOrWarmBlooded() == 0)
 			f = new Text("Warm");
 		else 
-			f = new Text("cold");
+			f = new Text("Cold");
 		f.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
 		g = new Text(weirdDog.getNumOfLimbs() + "");
 		g.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
@@ -1374,8 +1389,43 @@ public class GUI extends Application
 		i.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
 		
 		info.addColumn(2, a, c, d, e, b, g, f, h, i);
+		Text commentsHeader = new Text("Comments");
+		commentsHeader.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+		info.addColumn(3, commentsHeader);
 		
+		// can comment  
+		if(!loggedInUN.equals(""))
+		{
+			TextArea newComment = new TextArea(); 
+			newComment.setPromptText("Type Your Comment Here");
+			Button addComment = makeButton("Submit Comment");
+			
+			addComment.setOnAction(new EventHandler<ActionEvent>() 
+			{
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					try {
+						weirdDog.addComment(newComment.getText());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					newComment.clear();
+				}
+			});
+			
+			info.addColumn(3, newComment,addComment);
+		}
 		
+		String[] currentComments = weirdDog.getComments(); 
+		for(int x = 0; x < currentComments.length; x++)
+		{
+			Text te = new Text(currentComments[x]); 
+			info.addColumn(3, te);
+		}
+			
 		ScrollPane scroller = new ScrollPane(info); 
 		root.getChildren().add(constantLogin);
 		root.getChildren().add(top); 
