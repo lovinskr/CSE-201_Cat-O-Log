@@ -1509,8 +1509,20 @@ public class GUI extends Application
 				}
 			}
 		});
+		Button seeRequests = makeButton("Animal Requests"); 
+		seeRequests.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				viewAnimalRequests(); 
+			}
+
+		});
+		userPage.addColumn(0, i, un, p, e, cu, cp, ce, cph, ra);
 		
-		userPage.addColumn(0, i, un, p, cu, cp, ce, cph, ra);
+		if(currentUser.administrator)
+			userPage.addColumn(0, seeRequests);
 		
 		ScrollPane scroller = new ScrollPane(userPage); 
 		root.getChildren().add(constantLogin);
@@ -1576,6 +1588,26 @@ public class GUI extends Application
         dialog.show();
 	}
 	
+	
+	void viewAnimalRequests()
+	{
+		root.getChildren().clear(); 
+		
+		GridPane reqs = new GridPane();
+		reqs.setVgap(4);
+		reqs.setHgap(4);
+		reqs.prefWidthProperty().bind(root.widthProperty());
+		reqs.prefHeightProperty().bind(root.heightProperty());
+		reqs.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
+		
+	
+		
+		
+		ScrollPane scroller = new ScrollPane(reqs); 
+		root.getChildren().add(constantLogin);
+		root.getChildren().add(top); 
+		root.getChildren().add(scroller); 
+	}
 	void changePhonePopup() throws IOException
 	{
 		Accounts acc = new Accounts(); 
