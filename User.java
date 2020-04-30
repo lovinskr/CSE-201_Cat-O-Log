@@ -6,20 +6,21 @@ public class User
 	private String[] phoneNumber = new String[2]; 
 	private String lastName, firstName; 
 	public boolean administrator = false;
-	public String username;
-	public String password;
+	public String username = ""; // so checkEquals doesn't throw nullPointer exception
+	public String password = "";
 	
 	
 	public User(String name, String pass, boolean admin)
 	{
-		username = name;
-		password = pass;
-		administrator = admin;
+		username = name; 
+		password = pass; 
+		administrator = admin; 
 	}
 	
-	public User(String name, String pass) {
-		username = name;
-		password = pass;
+	public User(String name, String pass) 
+	{
+		username = name; 
+		password = pass; 
 	}
 	
 	boolean setFName(String firstName)
@@ -46,11 +47,22 @@ public class User
 		return true; 
 	}
 	
+	String getPhoneNumber()
+	{
+		return phoneNumber[0]; 
+	}
+	
+	String getEmail()
+	{
+		return email[0]; 
+	}
+	
 	boolean setAdmin(boolean admin)
 	{
 		administrator = admin; 
 		return true; 
 	}
+	
 	boolean requestAnimal(Animal newAnimal)
 	{
 		return false; 
@@ -61,10 +73,12 @@ public class User
 		return false;
 	}
 	
-	boolean isAdmin(String name)
+	// returns 1 if admin and 0 if not 
+	int isAdmin()
 	{
-		return false;
+		return administrator ? 1 : 0;
 	}
+	
 	
 	void commentOnAnimal(String comment)
 	{

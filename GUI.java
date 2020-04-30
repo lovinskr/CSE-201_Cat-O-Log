@@ -7,12 +7,7 @@
  * https://www.w3schools.com/colors/colors_names.asp 
  *
  *
- * The line order is extremely particular and CAN NOT be changed
- * 
- * 
- * To Do:
- * get animals to have their own page 
- * sign up fully working 
+ * The line order is extremely particular and CAN NOT be changed 
  * 
  * 
  */
@@ -88,6 +83,8 @@ public class GUI extends Application
 	GridPane top = new GridPane(); 
 	String loggedInUN = ""; 
 	String loggedInPW = ""; 
+	Boolean isAdminLoggedIn = false; 
+	
 	public static void main(String[] args) 
 	{
 		launch(args);
@@ -803,11 +800,16 @@ public class GUI extends Application
 				try 
 				{ 
 					Accounts temp = new Accounts();
-					boolean hasAccount = temp.hasAccount(username, password); 
-					if(hasAccount == true && isLoggedIn == false)
+					int hasAccount = temp.hasAccount(username, password); 
+					if(hasAccount != -66 && isLoggedIn == false)
 					{
 						loggedInUN = username; 
 						loggedInPW = password; 
+						User user = (User) temp.userlist.get(hasAccount); 
+						if(user.administrator)
+						{
+							isAdminLoggedIn = true; 
+						}
 						loggedIn(); 
 						login.setText("Logout");
 						constantLogin.getChildren().removeAll(UTF, PTF, signUp, login); 
@@ -823,7 +825,7 @@ public class GUI extends Application
 						
 						
 					}
-					else if(hasAccount == true && isLoggedIn == true)
+					else if(hasAccount != -66 && isLoggedIn == true)
 					{
 						loggedOut(); 
 						login.setText("Login");
@@ -1445,6 +1447,19 @@ public class GUI extends Application
 		Text i = new Text("Your Listed Information"); 
 		Text un = new Text("Username: ");
 		Button cu = makeButton("Change Username"); 
+		cu.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				try {
+					changeUsernamePopup();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		Button cp = makeButton("Change Password"); 
 		Button ce = makeButton("Change or Add Email"); 
 		Button cph = makeButton("Change or Add Phone Number"); 
@@ -1550,10 +1565,9 @@ public class GUI extends Application
         StackPane popup = new StackPane();
         popup.setStyle("-fx-background-color: AZURE");
         
-        TextField oldP = makeTF("Confirm Current Password"); 
-        TextField newP = makeTF("New Password"); 
-        TextField newPC = makeTF("Confirm New Password"); 
-        Button pB = makeButton("Change Password"); 
+        TextField oldU = makeTF("Confirm Current Username"); 
+        TextField newU = makeTF("New Username"); 
+        Button uB = makeButton("Change Username"); 
         
         GridPane cp = new GridPane();
 		cp.setVgap(4);
@@ -1562,12 +1576,12 @@ public class GUI extends Application
 		cp.prefHeightProperty().bind(popup.heightProperty());
 		cp.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
 		
-		cp.addColumn(0, oldP, newP, newPC, pB);
+		cp.addColumn(0, oldU, newU, uB);
 		ScrollPane s = new ScrollPane(cp); 
 		popup.getChildren().add(s); 
 		Scene dialogScene = new Scene(popup, 300, 300);
 		
-        pB.setOnAction(new EventHandler<ActionEvent>() 
+        uB.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event) 
@@ -1576,11 +1590,11 @@ public class GUI extends Application
 				{
 					
 				}
-				if(loggedInPW.equals((oldP.getText().trim())))
+				if(loggedInPW.equals((oldU.getText().trim())))
 				{
 					
 					try {
-						acc.changePassword(loggedInUN, newP.getText());
+						acc.changePassword(loggedInUN, newU.getText());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -1588,7 +1602,7 @@ public class GUI extends Application
 					
 					cp.getChildren().clear();
 	                popup.setStyle("-fx-background-color: AZURE");
-	                Text text = new Text("Your password has been changed!");
+	                Text text = new Text("Your username has been changed! Logout and back in to update.");
 	                
 	                popup.getChildren().add(text);
 	                
@@ -1683,6 +1697,7 @@ public class GUI extends Application
 	void loggedOut()
 	{
 		isLoggedIn = false; 
+		isAdminLoggedIn = false;
 		loggedInUN = ""; 
 		loggedInPW = "";
 	}
