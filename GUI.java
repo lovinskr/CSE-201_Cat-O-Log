@@ -1436,7 +1436,22 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				if(oldP.getText() )
+				if(loggedInPW.equals((oldP.getText().trim())))
+				{
+					Accounts acc = null;
+					try {
+						acc = new Accounts();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					try {
+						acc.changePassword(loggedInUN, newP.getText());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		});
         
