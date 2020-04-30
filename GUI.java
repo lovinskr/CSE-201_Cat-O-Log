@@ -32,6 +32,8 @@ import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.DoubleProperty;
@@ -1407,7 +1409,19 @@ public class GUI extends Application
 				requestAnimal();
 			}
 		});
-		
+		cp.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				try {
+					changePasswordPopup();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		
 		userPage.addColumn(0, i, un, cu, cp, ce, cph, ra);
 		
@@ -1417,8 +1431,9 @@ public class GUI extends Application
 		root.getChildren().add(scroller); 
 	}
 	
-	void changePasswordPopup()
+	void changePasswordPopup() throws IOException
 	{
+		Accounts acc = new Accounts(); 
 		Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         //dialog.initOwner(scroller);
@@ -1431,31 +1446,48 @@ public class GUI extends Application
         TextField newPC = makeTF("Confirm New Password"); 
         Button pB = makeButton("Change Password"); 
         
+        GridPane cp = new GridPane();
+		cp.setVgap(4);
+		cp.setHgap(4);
+		cp.prefWidthProperty().bind(popup.widthProperty());
+		cp.prefHeightProperty().bind(popup.heightProperty());
+		cp.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
+		
+		cp.addColumn(0, oldP, newP, newPC, pB);
+		ScrollPane s = new ScrollPane(cp); 
+		popup.getChildren().add(s); 
+		Scene dialogScene = new Scene(popup, 300, 300);
+		
         pB.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event) 
 			{
+				if(loggedInPW.contentEquals(""));
+				{
+					
+				}
 				if(loggedInPW.equals((oldP.getText().trim())))
 				{
-					Accounts acc = null;
-					try {
-						acc = new Accounts();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} 
+					
 					try {
 						acc.changePassword(loggedInUN, newP.getText());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					
+					cp.getChildren().clear();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("You're password has been changed!");
+	                
+	                popup.getChildren().add(text);
+	                
+	                loggedIn(); 
 				}
 			}
 		});
         
-        Scene dialogScene = new Scene(popup, 300, 300);
         dialog.setScene(dialogScene);
         dialog.show();
 	}

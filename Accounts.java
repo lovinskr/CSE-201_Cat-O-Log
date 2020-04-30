@@ -60,6 +60,7 @@ public class Accounts {
 	
 	public void changePassword(String un, String newP) throws IOException
 	{
+		
 		ListIterator<User> userIterator = userlist.listIterator();
 		for(int c  = 0; c < userlist.size(); c++)
 		{
@@ -67,7 +68,9 @@ public class Accounts {
 			if((temp.username).equals(un))
 			{
 				temp.password = newP; 
+				User changedUser = temp; 
 				userlist.remove(temp); 
+				userlist.add(temp); 
 				writeUser(temp);
 			}
 		}
@@ -97,8 +100,8 @@ public class Accounts {
 	
 	void writeUser(User usr) throws IOException 
 	{
-		readUsers(); // get all current accounts in the linked list
-		
+		//readUsers(); // get all current accounts in the linked list
+
 		PrintWriter to = new PrintWriter(new File(filename));
 		String line;
 		ListIterator<User> ui = userlist.listIterator();
@@ -112,9 +115,6 @@ public class Accounts {
 			to.println(temp.isAdmin());
 		}
 		
-		to.println(usr.username);
-		to.println(usr.password);
-		to.println(usr.isAdmin());
 		to.println();
 		to.close();
 	}
