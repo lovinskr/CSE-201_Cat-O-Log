@@ -60,7 +60,6 @@ public class Accounts {
 	
 	public void changePassword(String un, String newP) throws IOException
 	{
-		
 		ListIterator<User> userIterator = userlist.listIterator();
 		for(int c  = 0; c < userlist.size(); c++)
 		{
@@ -76,11 +75,42 @@ public class Accounts {
 		}
 	}
 	
+	public void changeUsername(String un, String newU) throws IOException
+	{
+		ListIterator<User> userIterator = userlist.listIterator();
+		for(int c  = 0; c < userlist.size(); c++)
+		{
+			User temp = userIterator.next();
+			if((temp.username).equals(un))
+			{
+				temp.username = newU; 
+				User changedUser = temp; 
+				userlist.remove(temp); 
+				userlist.add(temp); 
+				writeUser(temp);
+			}
+		}
+	}
+	
+	public void changePhoneNumber(String un, String newN) throws IOException
+	{
+		ListIterator<User> userIterator = userlist.listIterator();
+		for(int c  = 0; c < userlist.size(); c++)
+		{
+			User temp = userIterator.next();
+			if((temp.username).equals(un))
+			{
+			String[] number = {newN}; 
+			temp.setPhoneNumber(number); 
+			}
+		}
+	}
+	
 	/*
 	 * NEED FOR GUI PLEASE DON'T CHANGE 
 	 * checks that user can log in with that username and password  
 	 */
-	boolean hasAccount(String username, String password) throws IOException
+	int hasAccount(String username, String password) throws IOException
 	{
 		ListIterator<User> userIterator = userlist.listIterator();
 		for(int c  = 0; c < userlist.size(); c++)
@@ -90,12 +120,12 @@ public class Accounts {
 			{
 				if((temp.password).equals(password))
 				{
-					return true;
+					return c;
 				}
 			}
 		}
 		
-		return false; 
+		return -66; 
 	}
 	
 	void writeUser(User usr) throws IOException 

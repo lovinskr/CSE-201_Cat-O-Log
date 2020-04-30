@@ -84,7 +84,7 @@ public class GUI extends Application
 	String loggedInUN = ""; 
 	String loggedInPW = ""; 
 	Boolean isAdminLoggedIn = false; 
-	
+	User currentUser = null; 
 	public static void main(String[] args) 
 	{
 		launch(args);
@@ -805,8 +805,8 @@ public class GUI extends Application
 					{
 						loggedInUN = username; 
 						loggedInPW = password; 
-						User user = (User) temp.userlist.get(hasAccount); 
-						if(user.administrator)
+						currentUser = (User) temp.userlist.get(hasAccount); 
+						if(currentUser.administrator)
 						{
 							isAdminLoggedIn = true; 
 						}
@@ -1445,7 +1445,9 @@ public class GUI extends Application
 		userPage.setStyle("-fx-background-color: CadetBlue;"); // background color
 		
 		Text i = new Text("Your Listed Information"); 
-		Text un = new Text("Username: ");
+		Text un = new Text("Username: " + currentUser.username);
+		Text p = new Text("Phone Number: " + currentUser.getPhoneNumber()); 
+		Text e = new Text("Email: " + currentUser.getEmail()); 
 		Button cu = makeButton("Change Username"); 
 		cu.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -1462,6 +1464,15 @@ public class GUI extends Application
 		});
 		Button cp = makeButton("Change Password"); 
 		Button ce = makeButton("Change or Add Email"); 
+		ce.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				
+			}
+		});
+		
 		Button cph = makeButton("Change or Add Phone Number"); 
 		
 		Button ra = makeButton("Request Animal"); 
@@ -1487,7 +1498,7 @@ public class GUI extends Application
 			}
 		});
 		
-		userPage.addColumn(0, i, un, cu, cp, ce, cph, ra);
+		userPage.addColumn(0, i, un, p, cu, cp, ce, cph, ra);
 		
 		ScrollPane scroller = new ScrollPane(userPage); 
 		root.getChildren().add(constantLogin);
@@ -1554,6 +1565,58 @@ public class GUI extends Application
         dialog.setScene(dialogScene);
         dialog.show();
 	}
+	void changePhonePopup() throws IOException
+	{
+		Accounts acc = new Accounts(); 
+		Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        //dialog.initOwner(scroller);
+        
+        StackPane popup = new StackPane();
+        popup.setStyle("-fx-background-color: AZURE");
+        
+        TextField newN = makeTF("New Phone Number"); 
+        Button aN = makeButton("Add Phone Number"); 
+        Button rP = makeButton("Replace Phone Number"); 
+        
+        GridPane cp = new GridPane();
+		cp.setVgap(4);
+		cp.setHgap(4);
+		cp.prefWidthProperty().bind(popup.widthProperty());
+		cp.prefHeightProperty().bind(popup.heightProperty());
+		cp.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
+		
+		cp.addColumn(0, newN, aN, rP);
+		ScrollPane s = new ScrollPane(cp); 
+		popup.getChildren().add(s); 
+		Scene dialogScene = new Scene(popup, 300, 300);
+		
+        rP.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+					try {
+						acc.changePhoneNumber(loggedInUN, newN.getText());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					cp.getChildren().clear();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("Your username has been changed! Logout and back in to update.");
+	                
+	                popup.getChildren().add(text);
+	                
+	                
+				}
+			
+		});
+        
+        dialog.setScene(dialogScene);
+        dialog.show();
+	}
 	
 	void changeUsernamePopup() throws IOException
 	{
@@ -1586,15 +1649,9 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				if(loggedInPW.contentEquals(""));
-				{
-					
-				}
-				if(loggedInPW.equals((oldU.getText().trim())))
-				{
-					
+				
 					try {
-						acc.changePassword(loggedInUN, newU.getText());
+						acc.changeUsername(loggedInUN, newU.getText());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -1607,7 +1664,6 @@ public class GUI extends Application
 	                popup.getChildren().add(text);
 	                
 	                
-				}
 			}
 		});
         
@@ -1698,6 +1754,7 @@ public class GUI extends Application
 	{
 		isLoggedIn = false; 
 		isAdminLoggedIn = false;
+		currentUser = null; 
 		loggedInUN = ""; 
 		loggedInPW = "";
 	}
