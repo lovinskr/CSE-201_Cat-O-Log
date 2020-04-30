@@ -83,7 +83,8 @@ public class GUI extends Application
 	Animal[] frontPage = new Animal[500];
 	GridPane constantLogin = new GridPane();
 	GridPane top = new GridPane(); 
-	
+	String loggedInUN = ""; 
+	String loggedInPW = ""; 
 	public static void main(String[] args) 
 	{
 		launch(args);
@@ -794,6 +795,7 @@ public class GUI extends Application
 				String password = PTF.getText().trim(); 
 				Button u = makeButton(username); 
 				
+				
 				// check with accounts class 
 				try 
 				{ 
@@ -801,6 +803,8 @@ public class GUI extends Application
 					boolean hasAccount = temp.hasAccount(username, password); 
 					if(hasAccount == true && isLoggedIn == false)
 					{
+						loggedInUN = username; 
+						loggedInPW = password; 
 						loggedIn(); 
 						login.setText("Logout");
 						constantLogin.getChildren().removeAll(UTF, PTF, signUp, login); 
@@ -818,6 +822,8 @@ public class GUI extends Application
 					}
 					else if(hasAccount == true && isLoggedIn == true)
 					{
+						loggedInUN = ""; 
+						loggedInPW = "";
 						loggedOut(); 
 						login.setText("Login");
 						constantLogin.getChildren().clear();
@@ -1413,7 +1419,30 @@ public class GUI extends Application
 	
 	void changePasswordPopup()
 	{
-		
+		Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        //dialog.initOwner(scroller);
+        
+        StackPane popup = new StackPane();
+        popup.setStyle("-fx-background-color: AZURE");
+        
+        TextField oldP = makeTF("Confirm Current Password"); 
+        TextField newP = makeTF("New Password"); 
+        TextField newPC = makeTF("Confirm New Password"); 
+        Button pB = makeButton("Change Password"); 
+        
+        pB.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				if(oldP.getText() )
+			}
+		});
+        
+        Scene dialogScene = new Scene(popup, 300, 300);
+        dialog.setScene(dialogScene);
+        dialog.show();
 	}
 	
 	void requestAnimal()

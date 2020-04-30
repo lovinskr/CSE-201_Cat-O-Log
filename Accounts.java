@@ -37,7 +37,7 @@ public class Accounts {
 		writeUser(user);
 	}
 	
-	// I added trim() to get rid of the loose edge spaces 
+	 
 	public void readUsers() throws IOException 
 	{
 		Scanner read = new Scanner(new File(filename));
@@ -58,10 +58,24 @@ public class Accounts {
 		read.close();
 	}
 	
+	public void changePassword(String un, String newP) throws IOException
+	{
+		ListIterator<User> userIterator = userlist.listIterator();
+		for(int c  = 0; c < userlist.size(); c++)
+		{
+			User temp = userIterator.next();
+			if((temp.username).equals(un))
+			{
+				temp.password = newP; 
+				userlist.remove(temp); 
+				writeUser(temp);
+			}
+		}
+	}
 	
 	/*
 	 * NEED FOR GUI PLEASE DON'T CHANGE 
-	 * checks that account exists or not 
+	 * checks that user can log in with that username and password  
 	 */
 	boolean hasAccount(String username, String password) throws IOException
 	{
