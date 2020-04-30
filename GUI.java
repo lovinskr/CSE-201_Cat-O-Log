@@ -28,6 +28,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+
 import java.io.IOException;
 import java.util.Arrays;
 import javafx.application.Application;
@@ -1426,15 +1428,30 @@ public class GUI extends Application
 		userPage.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
 		
 		TextField animalName = makeTF("Animal Name"); 
-		TextField animalClass = makeTF("Animal Class"); 
+		TextField animalDiet= makeTF("Animal Diet"); 
+		TextField animalClass = makeTF("Animal Class");
+		TextField animalRegion = makeTF("Animal Region"); 
+		TextField animalBiome = makeTF("Animal Biome"); 
+		TextField animalLimbs = makeTF("Animal Limbs");
+		TextField animalLS = makeTF("Animal LifeSpan"); 
+		TextField animalTM = makeTF("Animal Travel Method"); //make seperate by commas [] later 
+		TextField animalB = makeTF("Animal Bloodtype"); 
+		TextField todaysDate = makeTF("Today's Date");
 		
-		 
 		Button submitRequest = makeButton("Submit Request");
 		submitRequest.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event) 
 			{
+				String[] tm = {animalTM.getText()}; 
+				// submits the request 
+				Request newR = new Request(animalName.getText(), animalDiet.getText(), animalBiome.getText(),
+						animalRegion.getText(), animalClass.getText(), Integer.parseInt(animalLimbs.getText()),
+						Integer.parseInt(animalLS.getText()), tm, animalB.getText(), todaysDate.getText()); 
+				
+				
+				// popup 
 				Stage dialog = new Stage();
                 dialog.initModality(Modality.APPLICATION_MODAL);
                 //dialog.initOwner(scroller);
@@ -1442,17 +1459,17 @@ public class GUI extends Application
                 StackPane popup = new StackPane();
                 popup.setStyle("-fx-background-color: AZURE");
                 Text text = new Text("Thank you for requesting an animal!");
-                Text textb = new Text("An adminstator will approve or deny your request.");
+                
                 popup.getChildren().add(text);
-                popup.getChildren().add(textb);
-                 
+                
                 Scene dialogScene = new Scene(popup, 300, 300);
                 dialog.setScene(dialogScene);
                 dialog.show();
 			}
 		});
 		
-		userPage.addColumn(0, animalName, animalClass, submitRequest);
+		userPage.addColumn(0, animalName, animalClass, animalBiome, animalLimbs, animalLS,
+				animalRegion, animalDiet, animalB, animalTM, todaysDate, submitRequest);
 		
 		ScrollPane scroller = new ScrollPane(userPage); 
 		root.getChildren().add(constantLogin);
