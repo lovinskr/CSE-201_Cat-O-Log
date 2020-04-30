@@ -810,7 +810,7 @@ public class GUI extends Application
 						loggedIn(); 
 						login.setText("Logout");
 						constantLogin.getChildren().removeAll(UTF, PTF, signUp, login); 
-						constantLogin.getChildren().addAll(u, login);
+						constantLogin.addRow(0, u, login);
 						u.setOnAction(new EventHandler<ActionEvent>() 
 						{
 							@Override
@@ -824,14 +824,13 @@ public class GUI extends Application
 					}
 					else if(hasAccount == true && isLoggedIn == true)
 					{
-						loggedInUN = ""; 
-						loggedInPW = "";
 						loggedOut(); 
 						login.setText("Login");
 						constantLogin.getChildren().clear();
 						UTF.clear();
 						PTF.clear();
 						constantLogin.addRow(0, UTF, PTF, login, signUp);
+						refreshAnimalGrid(constantLogin);
 					}
 					else
 					{ 
@@ -1435,6 +1434,66 @@ public class GUI extends Application
 	{
 		Accounts acc = new Accounts(); 
 		Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL); 
+        
+        StackPane popup = new StackPane();
+        popup.setStyle("-fx-background-color: AZURE");
+        
+        TextField oldP = makeTF("Confirm Current Password"); 
+        TextField newP = makeTF("New Password"); 
+        TextField newPC = makeTF("Confirm New Password"); 
+        Button pB = makeButton("Change Password"); 
+        
+        GridPane cp = new GridPane();
+		cp.setVgap(4);
+		cp.setHgap(4);
+		cp.prefWidthProperty().bind(popup.widthProperty());
+		cp.prefHeightProperty().bind(popup.heightProperty());
+		cp.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
+		
+		cp.addColumn(0, oldP, newP, newPC, pB);
+		ScrollPane s = new ScrollPane(cp); 
+		popup.getChildren().add(s); 
+		Scene dialogScene = new Scene(popup, 300, 300);
+		
+        pB.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				if(loggedInPW.contentEquals(""));
+				{
+					System.out.println("error");
+				}
+				if(loggedInPW.equals((oldP.getText().trim())))
+				{
+					try {
+						acc.changePassword(loggedInUN, newP.getText());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+					cp.getChildren().clear();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("Your password has been changed!");
+	                
+	                popup.getChildren().add(text);
+	                
+	                
+				}
+			}
+		});
+        
+        dialog.setScene(dialogScene);
+        dialog.show();
+	}
+	
+	void changeUsernamePopup() throws IOException
+	{
+		Accounts acc = new Accounts(); 
+		Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         //dialog.initOwner(scroller);
         
@@ -1479,11 +1538,11 @@ public class GUI extends Application
 					
 					cp.getChildren().clear();
 	                popup.setStyle("-fx-background-color: AZURE");
-	                Text text = new Text("You're password has been changed!");
+	                Text text = new Text("Your password has been changed!");
 	                
 	                popup.getChildren().add(text);
 	                
-	                loggedIn(); 
+	                
 				}
 			}
 		});
@@ -1574,5 +1633,7 @@ public class GUI extends Application
 	void loggedOut()
 	{
 		isLoggedIn = false; 
+		loggedInUN = ""; 
+		loggedInPW = "";
 	}
 }
