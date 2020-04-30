@@ -1474,7 +1474,19 @@ public class GUI extends Application
 		});
 		
 		Button cph = makeButton("Change or Add Phone Number"); 
-		
+		cph.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				try {
+					changePhonePopup();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		Button ra = makeButton("Request Animal"); 
 		ra.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -1556,8 +1568,6 @@ public class GUI extends Application
 	                Text text = new Text("Your password has been changed!");
 	                
 	                popup.getChildren().add(text);
-	                
-	                
 				}
 			}
 		});
@@ -1565,6 +1575,7 @@ public class GUI extends Application
         dialog.setScene(dialogScene);
         dialog.show();
 	}
+	
 	void changePhonePopup() throws IOException
 	{
 		Accounts acc = new Accounts(); 
@@ -1577,6 +1588,7 @@ public class GUI extends Application
         
         TextField newN = makeTF("New Phone Number"); 
         Button aN = makeButton("Add Phone Number"); 
+        
         Button rP = makeButton("Replace Phone Number"); 
         
         GridPane cp = new GridPane();
@@ -1590,7 +1602,21 @@ public class GUI extends Application
 		ScrollPane s = new ScrollPane(cp); 
 		popup.getChildren().add(s); 
 		Scene dialogScene = new Scene(popup, 300, 300);
-		
+		aN.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				String[] phs = {newN.getText(), currentUser.getPhoneNumber()};
+				currentUser.setPhoneNumber(phs); 
+				
+				cp.getChildren().clear();
+                popup.setStyle("-fx-background-color: AZURE");
+                Text text = new Text("Your phone number has been added!");
+                
+                popup.getChildren().add(text); 
+			}
+		});
         rP.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
@@ -1605,7 +1631,7 @@ public class GUI extends Application
 					
 					cp.getChildren().clear();
 	                popup.setStyle("-fx-background-color: AZURE");
-	                Text text = new Text("Your username has been changed! Logout and back in to update.");
+	                Text text = new Text("Your phone number has been changed!");
 	                
 	                popup.getChildren().add(text); 
 				}
@@ -1659,9 +1685,7 @@ public class GUI extends Application
 	                popup.setStyle("-fx-background-color: AZURE");
 	                Text text = new Text("Your username has been changed! Logout and back in to update.");
 	                
-	                popup.getChildren().add(text);
-	                
-	                
+	                popup.getChildren().add(text); 
 			}
 		});
         
@@ -1730,6 +1754,72 @@ public class GUI extends Application
 		Text a = new Text("Enter in the animal you would like the Cat-o-log to add!");
 		root.getChildren().add(a); 
 		root.getChildren().add(scroller); 
+	}
+	
+	void changeEmailPopup() throws IOException
+	{
+		Accounts acc = new Accounts(); 
+		Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        //dialog.initOwner(scroller);
+        
+        StackPane popup = new StackPane();
+        popup.setStyle("-fx-background-color: AZURE");
+        
+        TextField newE = makeTF("New Email"); 
+        Button aN = makeButton("Add Email"); 
+       
+        Button rP = makeButton("Replace Email"); 
+        
+        GridPane cp = new GridPane();
+		cp.setVgap(4);
+		cp.setHgap(4);
+		cp.prefWidthProperty().bind(popup.widthProperty());
+		cp.prefHeightProperty().bind(popup.heightProperty());
+		cp.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
+		
+		cp.addColumn(0, newE, aN, rP);
+		ScrollPane s = new ScrollPane(cp); 
+		popup.getChildren().add(s); 
+		Scene dialogScene = new Scene(popup, 300, 300);
+		aN.setOnAction(new EventHandler<ActionEvent>() 
+		{
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					String[] es = {newE.getText(), currentUser.getEmail()};
+					currentUser.setEmail(es); 
+					
+					cp.getChildren().clear();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("Your email has been added!");
+	                
+	                popup.getChildren().add(text); 
+				}
+			});
+        rP.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+					try {
+						acc.changeEmail(loggedInUN, newE.getText());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					cp.getChildren().clear();
+	                popup.setStyle("-fx-background-color: AZURE");
+	                Text text = new Text("Your email has been changed!");
+	                
+	                popup.getChildren().add(text); 
+				}
+			
+		});
+        
+        dialog.setScene(dialogScene);
+        dialog.show();
 	}
 	
 	/* 

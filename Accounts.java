@@ -105,6 +105,19 @@ public class Accounts {
 			}
 		}
 	}
+	public void changeEmail(String un, String newE) throws IOException
+	{
+		ListIterator<User> userIterator = userlist.listIterator();
+		for(int c  = 0; c < userlist.size(); c++)
+		{
+			User temp = userIterator.next();
+			if((temp.username).equals(un))
+			{
+			String[] em = {newE}; 
+			temp.setPhoneNumber(em); 
+			}
+		}
+	}
 	
 	/*
 	 * NEED FOR GUI PLEASE DON'T CHANGE 
