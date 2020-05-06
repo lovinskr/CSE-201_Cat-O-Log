@@ -80,7 +80,7 @@ public class Request
 		}
 		else blood = "warm";
 		Animal animal = new Animal(name, diet, commonRegion, prefferedBiome, animalClass,
-				numOfLimbs, averageLifespan, methodsOfTravel, "a", blood);
+				numOfLimbs, averageLifespan, methodsOfTravel, name, blood);
 		return animal;
 	}
 }
