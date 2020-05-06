@@ -1384,7 +1384,7 @@ public class GUI extends Application
 	void checkCheckboxes() throws IOException
 	{
 		Catalog animalCatalog = new Catalog(); 
-		
+		frontPage = new Animal[0]; 
 		ListIterator<CheckBox> c = checked.listIterator(); 
 		
 		
@@ -1406,13 +1406,13 @@ public class GUI extends Application
 				 * and if both are negative then no filters are applied 
 				 */
 				if(lowerLimbLimit < 0 && upperLimbLimit >= 0)
-					frontPage = animalCatalog.rangeAnimals(0, upperLimbLimit, 1);
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(0, upperLimbLimit, 1));
 				else if(lowerLimbLimit >= 0 && upperLimbLimit >= lowerLimbLimit)
-					frontPage = animalCatalog.rangeAnimals(lowerLimbLimit, upperLimbLimit, 1); 
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(lowerLimbLimit, upperLimbLimit, 1)); 
 				else if(lowerLimbLimit >= 0 && upperLimbLimit < 0)
-					frontPage = animalCatalog.rangeAnimals(lowerLimbLimit, Integer.MAX_VALUE, 1); 
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(lowerLimbLimit, Integer.MAX_VALUE, 1)); 
 				else if(lowerLimbLimit >= 0 && upperLimbLimit < lowerLimbLimit)
-					frontPage = animalCatalog.rangeAnimals(upperLimbLimit, lowerLimbLimit, 1); 
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(upperLimbLimit, lowerLimbLimit, 1)); 
 			}
 			
 			if(temp.getText().equals("Average Lifespan"))
@@ -1429,13 +1429,13 @@ public class GUI extends Application
 				 * and if both are negative then no filters are applied 
 				 */
 				if(lowerAgeLimit <= 0 && upperAgeLimit >= 0)
-					frontPage = animalCatalog.rangeAnimals(0, upperAgeLimit, 0);
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(0, upperAgeLimit, 0));
 				else if(lowerAgeLimit >= 0 && upperAgeLimit >= lowerAgeLimit)
-					frontPage = animalCatalog.rangeAnimals(lowerAgeLimit, upperAgeLimit, 0); 
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(lowerAgeLimit, upperAgeLimit, 0)); 
 				else if(lowerAgeLimit >= 0 && upperAgeLimit < 0)
-					frontPage = animalCatalog.rangeAnimals(lowerAgeLimit, Integer.MAX_VALUE, 0); 
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(lowerAgeLimit, Integer.MAX_VALUE, 0)); 
 				else if(lowerAgeLimit >= 0 && upperAgeLimit < lowerAgeLimit)
-					frontPage = animalCatalog.rangeAnimals(upperAgeLimit, lowerAgeLimit, 0); 
+					frontPage = animalCatalog.joinArrays(frontPage,animalCatalog.rangeAnimals(upperAgeLimit, lowerAgeLimit, 0)); 
 			}
 			
 			
