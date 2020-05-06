@@ -975,7 +975,8 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent e) 
 			{
-				String search = searchBar.getText();
+				String search = ""; 
+				search = searchBar.getText();
 				frontPage = animalCatalog.searchFor(search);
 				frontPage = animalCatalog.createSmallArray(frontPage);
 				Arrays.sort(frontPage);
@@ -1384,7 +1385,7 @@ public class GUI extends Application
 	void checkCheckboxes() throws IOException
 	{
 		Catalog animalCatalog = new Catalog(); 
-		frontPage = new Animal[0]; 
+		frontPage = null; 
 		ListIterator<CheckBox> c = checked.listIterator(); 
 		
 		
@@ -1435,7 +1436,7 @@ public class GUI extends Application
 				else if(lowerAgeLimit >= 0 && upperAgeLimit >= lowerAgeLimit)
 					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(lowerAgeLimit, upperAgeLimit, 0)); 
 				else if(lowerAgeLimit >= 0 && upperAgeLimit < 0)
-					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(lowerAgeLimit, Integer.MAX_VALUE, 0)); 
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(lowerAgeLimit, 700, 0)); 
 				else if(lowerAgeLimit >= 0 && upperAgeLimit < lowerAgeLimit)
 					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(upperAgeLimit, lowerAgeLimit, 0)); 
 			}
