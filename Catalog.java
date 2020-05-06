@@ -9,11 +9,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Scanner;
 import java.util.Arrays;
-/**
- * Creates a storage space for animals to be called from the GUI
- * Also manages the filter sort and search functions in the GUI
- * 
- */
+
 public class Catalog 
 {
 	Animal[] animals;
@@ -21,10 +17,6 @@ public class Catalog
 	String searchFor;
 	Animal[] currentlyDisplaying;
 	
-	/**
-	 * Declares the catalog and enters a few base animals
-	 * @throws IOException
-	 */
 	public Catalog() throws IOException {
 		animals = new Animal[500];
 		currentlyDisplaying = animals;
@@ -58,11 +50,6 @@ public class Catalog
 		animals = animal;
 		lastAnimal = index;
 	}
-	/**
-	 * Adds an animal to the Array of animals
-	 * @param newAnimal
-	 * @return
-	 */
 	public boolean addAnimal(Animal newAnimal) {
 		if (lastAnimal == animals.length) return false;
 		animals[lastAnimal] = newAnimal;
@@ -70,24 +57,12 @@ public class Catalog
 		Arrays.sort(animals, 0, lastAnimal);
 		return true;
 	}
-	/**
-	 * retrieves the animals array
-	 * @return
-	 */
 	public Animal[] getAnimals() {
 		return animals;
 	}
-	/**
-	 * returns the index of the last animal in the array
-	 * @return
-	 */
 	public int getIndex() {
 		return lastAnimal;
 	}
-	/**
-	 * Creates a smaller array to hold specific animals dependent on GUI conditions
-	 * @return
-	 */
 	public Animal[] createSmallArray() {
 		Animal[] small = new Animal[lastAnimal];
 		for (int x = 0; x < lastAnimal; x++) {
@@ -96,11 +71,6 @@ public class Catalog
 		return small;
 	}
 	
-	/**
-	 * Creates a small array given a temporary array of animals used to combine effects of filter and sort
-	 * @param temp
-	 * @return
-	 */
 	public Animal[] createSmallArray(Animal[] temp) 
 	{
 		int c = 0; 
@@ -117,11 +87,7 @@ public class Catalog
 		}
 		return a;
 	}
-	/**
-	 * Searches the array of animals by name for a given string
-	 * @param search
-	 * @return
-	 */
+	
 	public Animal[] searchFor(String search) {
 		Animal[] searchArray = new Animal[500];
 		int index = 0;
@@ -136,15 +102,11 @@ public class Catalog
 	/*
 	 * 0=blood
 	 * 1=action
-	 * 2=species
+	 * 2=class
 	 * 3=biome
 	 * 4=diet
-	 */
-	/**
-	 * Used to filter the animals
-	 * @param filter
-	 * @param type
-	 * @return
+	 * 5 = region 
+	 * 6 = bloodtype 
 	 */
 	public Animal[] filterAnimals(String filter, int type) {
 		Animal[] filteredAnimals = new Animal[500];
@@ -204,6 +166,30 @@ public class Catalog
 					index++;
 				}
 			}
+			break; 
+		// region 
+		case 5:
+			for(int c = 0; c < lastAnimal; c++)
+			{
+				if(animals[c].getCommonRegion().equals(filter))
+				{
+					filteredAnimals[index] = animals[c]; 
+					index++; 
+				}
+			}
+		// cold and warm blooded 	
+		case 6:
+			int x = 0; // warm is default 
+			if(filter.equalsIgnoreCase("cold"))
+				x = 1; 
+			for(int c = 0; c < lastAnimal; c++)
+			{
+				if(animals[c].getColdOrWarmBlooded() == x)
+				{
+					filteredAnimals[index] = animals[c]; 
+					index++; 
+				}
+			}
 		}
 		return filteredAnimals;
 	}
@@ -233,31 +219,22 @@ public class Catalog
 		}
 		return filteredAnimals;
 	}
-	/**
-	 * Updates the display with a new array of animals
-	 * @param newArray
-	 * @return
-	 */
+	
 	public boolean changeDisplay(Animal[] newArray) {
 		currentlyDisplaying = newArray;
 		return true;
 	}
-	/**
-	 * Joins two animal arrays 
-	 * @param a1
-	 * @param a2
-	 * @return
-	 */
+	
 	public Animal[] joinArrays(Animal[] a1, Animal[] a2) {
 		Animal[] newArray = new Animal[500];
 		int index = 0;
-		for (int x = 0; x < 500; x++) {
+		for (int x = 0; x < 500 && a1 != null; x++) {
 			if (a1[x] != null) {
 				newArray[index] = a1[x];
 				index++;
 			}
 		}
-		for (int x = 0; x < 500; x++) {
+		for (int x = 0; x < 500 && a2 != null; x++) {
 			if (a2[x] != null) {
 				boolean contains = false;
 				for (int y = 0; y < index; y++) {
@@ -299,11 +276,6 @@ public class Catalog
 		return newArray;
 	}
 	
-	/**
-	 * Reads in the animals from their text files
-	 * @param animal
-	 * @throws IOException
-	 */
 	public void readAnimal(Animal animal) throws IOException {
 		String fileName = animal.filename;
         BufferedReader br = new BufferedReader(new FileReader(fileName));
