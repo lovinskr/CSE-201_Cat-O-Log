@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-
+/**
+ * Creates an Animal and stores their data in a text file
+ *
+ */
 public class Animal implements Comparable<Animal>
 {
 	String name, diet, commonRegion, prefferedBiome, animalClass;
@@ -18,10 +21,17 @@ public class Animal implements Comparable<Animal>
 	File animalStorage;
 	String filename;
 	
+	/**
+	 * Base empty constructor
+	 */
 	public Animal() {
 		
 	}
-	
+	/**
+	 * Creates an animal from a string name and identifer, used with requests
+	 * @param Aname
+	 * @param identifier
+	 */
 	public Animal(String Aname, String identifier) {
 		name = Aname;
 		filename = identifier + "Storage.dat";
@@ -32,7 +42,20 @@ public class Animal implements Comparable<Animal>
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Creates an animal with all given trait fields
+	 * @param Aname
+	 * @param Adiet
+	 * @param region
+	 * @param biome
+	 * @param Aclass
+	 * @param limbs
+	 * @param lifespan
+	 * @param travel
+	 * @param identifier
+	 * @param blood
+	 * @throws IOException
+	 */
 	public Animal(String Aname, String Adiet, String region, String biome, String Aclass,
 			int limbs, int lifespan, String[] travel, String identifier, String blood) throws IOException {
 		name = Aname;
@@ -53,47 +76,80 @@ public class Animal implements Comparable<Animal>
 		saveAnimal();
 		readComments(); 
 	}
-	
+	/**
+	 * Returns the name
+	 * @return
+	 */
 	String getName() {
 		return name;
 	}
-	
+	/**
+	 * Returns the diet
+	 * @return
+	 */
 	String getDiet() {
 		return diet;
 	}
-	
+	/**
+	 * Returns the region
+	 * @return
+	 */
 	String getCommonRegion() {
 		return commonRegion;
 	}
-	
+	/**
+	 * Returns the Biome
+	 * @return
+	 */
 	String getPreferredBiome() {
 		return prefferedBiome;
 	}
-	
+	/**
+	 * Returns the class
+	 * @return
+	 */
 	String getAnimalClass() {
 		return animalClass;
 	}
-	
+	/**
+	 * Returns the travel methods
+	 * @return
+	 */
 	String[] getTravelMethods() {
 		return methodsOfTravel;
 	}
-	
+	/**
+	 * Returns the number of limbs
+	 * @return
+	 */
 	int getNumOfLimbs() {
 		return numOfLimbs;
 	}
-	
+	/**
+	 * Returns the lifespan
+	 * @return
+	 */
 	int getAverageLifespan() {
 		return averageLifespan;
 	}
-	
+	/**
+	 * Returns the blood type
+	 * @return
+	 */
 	int getColdOrWarmBlooded() {
 		return coldOrWarmBlooded;
 	}
-	
+	/**
+	 * Returns the file where the animal is stored
+	 * @return
+	 */
 	File getAnimalFile() {
 		return animalStorage;
 	}
-	
+	/**
+	 * Returns the name of the file in which the animal is stored
+	 * @return
+	 */
 	String getFilename() {
 		return filename;
 	}
@@ -123,7 +179,10 @@ public class Animal implements Comparable<Animal>
 	{
 		return false;
 	}
-	
+	/**
+	 * Returns the string array of the comments for the animal
+	 * @return
+	 */
 	String[] getComments() throws IOException
 	{
 		String[] com = new String[comments.size()];
@@ -136,14 +195,20 @@ public class Animal implements Comparable<Animal>
 		
 		return com; 
 	}
-	
+	/**
+	 * Adds a comment to the animal's comment list
+	 * @return
+	 */
 	boolean addComment(String comment) throws IOException
 	{ 
 		lastComment++;
 		writeComments(comment); 
 		return true; 
 	}
-	
+	/**
+	 * Reads the animals comments
+	 * @return
+	 */
 	public void readComments() throws IOException 
 	{
 		Scanner read = new Scanner(new File(name + " Comments.txt"));
@@ -157,7 +222,10 @@ public class Animal implements Comparable<Animal>
 		
 		read.close();
 	}
-	
+	/**
+	 * Saves rhe comments to the animals file
+	 * @return
+	 */
 	void writeComments(String newCom) throws IOException 
 	{
 		//readUsers(); // get all current accounts in the linked list
@@ -175,7 +243,10 @@ public class Animal implements Comparable<Animal>
 		to.println();
 		to.close();
 	}
-	
+	/**
+	 *Prints the animals comments
+	 * @return
+	 */
 	void printComments() throws IOException {
 		String[] com = getComments(); 
 		System.out.println(com[0]);
@@ -183,13 +254,19 @@ public class Animal implements Comparable<Animal>
 			System.out.println(com[i]);
 		}
 	}
-	
+	/**
+	 * Prints the animals travel methods
+	 * @return
+	 */
 	void printTravel() {
 		for(int i = 0; i < methodsOfTravel.length; i++) {
 			System.out.println(methodsOfTravel[i]);
 		}
 	}
-	
+	/**
+	 * Saves the animal to a specific unique text file
+	 * @return
+	 */
 	public void saveAnimal() throws IOException {
 		File checker = new File(filename);
 		if(checker.exists()) {
@@ -223,7 +300,7 @@ public class Animal implements Comparable<Animal>
 			}
 		out.close();		
 		}
-
+//Below is the list of comparators for each trait used for sorting with the GUI
 	public int compareTo(Animal o) {
 		Animal a = (Animal) o;
 		return this.name.compareTo(a.name);

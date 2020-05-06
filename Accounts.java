@@ -10,6 +10,10 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Scanner;
 
+/**
+ * Creates a linked list used to hold all user information
+ *
+ */
 public class Accounts {
 	public LinkedList userlist;
 	public String filename = "accounts.txt";
@@ -18,26 +22,44 @@ public class Accounts {
 		userlist = new LinkedList();
 		readUsers(); 
 	}
-	
+	/**
+	 * Creates an account when a new user is made and saves the user in a text file
+	 * @param newUser
+	 * @throws IOException
+	 */
 	public void Makaccount(User newUser) throws IOException
 	{
 		userlist.add(newUser);
 		writeUser(newUser);
 	}
-	
+	/**
+	 * Makes an account and saves their information from a username and password
+	 * @param username
+	 * @param password
+	 * @throws IOException
+	 */
 	public void Makeaccount(String username, String password) throws IOException {
 		User user = new User(username, password);
 		userlist.add(user);
 		writeUser(user);
 	}
-	
+	/**
+	 * Creates an account and saves their information from a username, password and admin privilages
+	 * @param username
+	 * @param password
+	 * @param admin
+	 * @throws IOException
+	 */
 	public void Makeaccount(String username, String password, boolean admin) throws IOException {
 		User user = new User(username, password, admin);
 		userlist.add(user);
 		writeUser(user);
 	}
 	
-	 
+	 /**
+	  * Reads in the list of users from the accounts.txt file and stores then in the account list
+	  * @throws IOException
+	  */
 	public void readUsers() throws IOException 
 	{
 		Scanner read = new Scanner(new File(filename));
@@ -57,7 +79,12 @@ public class Accounts {
 		
 		read.close();
 	}
-	
+	/**
+	 * Allows a user to change their password
+	 * @param un
+	 * @param newP
+	 * @throws IOException
+	 */
 	public void changePassword(String un, String newP) throws IOException
 	{
 		ListIterator<User> userIterator = userlist.listIterator();
@@ -74,7 +101,12 @@ public class Accounts {
 			}
 		}
 	}
-	
+	/**
+	 * Allows a user to change their username
+	 * @param un
+	 * @param newU
+	 * @throws IOException
+	 */
 	public void changeUsername(String un, String newU) throws IOException
 	{
 		ListIterator<User> userIterator = userlist.listIterator();
@@ -91,7 +123,12 @@ public class Accounts {
 			}
 		}
 	}
-	
+	/**
+	 * Allows a user to change their phone number
+	 * @param un
+	 * @param newN
+	 * @throws IOException
+	 */
 	public void changePhoneNumber(String un, String newN) throws IOException
 	{
 		ListIterator<User> userIterator = userlist.listIterator();
@@ -105,6 +142,12 @@ public class Accounts {
 			}
 		}
 	}
+	/**
+	 * Allows a user to change their email
+	 * @param un
+	 * @param newE
+	 * @throws IOException
+	 */
 	public void changeEmail(String un, String newE) throws IOException
 	{
 		ListIterator<User> userIterator = userlist.listIterator();
@@ -140,7 +183,11 @@ public class Accounts {
 		
 		return -66; 
 	}
-	
+	/**
+	 * Writes the user to the accounts file
+	 * @param usr
+	 * @throws IOException
+	 */
 	void writeUser(User usr) throws IOException 
 	{
 		//readUsers(); // get all current accounts in the linked list
