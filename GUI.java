@@ -1392,6 +1392,8 @@ public class GUI extends Application
 		{
 			
 			CheckBox temp = c.next(); 
+			
+			
 			if(temp.getText().equals("Limit Limbs"))
 			{
 				/*
@@ -1435,11 +1437,95 @@ public class GUI extends Application
 				else if(lowerAgeLimit >= 0 && upperAgeLimit < 0)
 					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(lowerAgeLimit, Integer.MAX_VALUE, 0)); 
 				else if(lowerAgeLimit >= 0 && upperAgeLimit < lowerAgeLimit)
-					frontPage = animalCatalog.joinArrays(frontPage,animalCatalog.rangeAnimals(upperAgeLimit, lowerAgeLimit, 0)); 
+					frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.rangeAnimals(upperAgeLimit, lowerAgeLimit, 0)); 
 			}
 			
+			if(temp.getText().equals("Mammals"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Mammal", 2)); 
+			}
 			
+			if(temp.getText().equals("Fish"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Fish", 2)); 
+			}
+			if(temp.getText().equals("Birds"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Bird", 2)); 
+			}
+			if(temp.getText().equals("Reptiles"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Reptile", 2)); 
+			}
+			if(temp.getText().equals("Insect"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Insect", 2)); 
+			}
+			if(temp.getText().equals("Amphibians"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Amphibian", 2)); 
+			}
+			if(temp.getText().equals("Arthropods"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Arthropod", 2)); 
+			}
+			if(temp.getText().equals("Tundra"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Tundra", 3)); 
+			}
+			if(temp.getText().equals("Taiga"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Taiga", 3)); 
+			}
+			if(temp.getText().equals("Temperate Deciduous Forest"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Temperate Deciduous Forest", 3)); 
+			}
+			if(temp.getText().equals("Scrub Forest"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Scrub Forest", 3)); 
+			}
+			if(temp.getText().equals("Grassland"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Grassland", 3)); 
+			}
+			if(temp.getText().equals("Desert"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Desert", 3)); 
+			}
+			if(temp.getText().equals("Tropical Rain Forest"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Tropical Rain Forest", 3)); 
+			}
+			if(temp.getText().equals("Temperate Rain Forest"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Temperate Rain Forest", 3)); 
+			}
+			if(temp.getText().equals("Aquatic"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Aquatic", 3)); 
+			}
+			if(temp.getText().equals("Flies"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Flies", 1)); 
+			}
+			if(temp.getText().equals("Slithers"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Slithers", 1)); 
+			}
+			if(temp.getText().equals("Swims"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Swims", 1)); 
+			}
+			if(temp.getText().equals("Walk"))
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals("Walk", 1)); 
+			}
 			
+			if(dietDropChoice.length() != 0)
+			{
+				frontPage = animalCatalog.joinArrays(frontPage, animalCatalog.filterAnimals(dietDropChoice, 4)); 
+			}
 			
 		}
 		
