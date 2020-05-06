@@ -1390,6 +1390,7 @@ public class GUI extends Application
 		
 		while(c.hasNext())
 		{
+			
 			CheckBox temp = c.next(); 
 			if(temp.getText().equals("Limit Limbs"))
 			{
@@ -1414,6 +1415,28 @@ public class GUI extends Application
 					frontPage = animalCatalog.rangeAnimals(upperLimbLimit, lowerLimbLimit, 1); 
 			}
 			
+			if(temp.getText().equals("Average Lifespan"))
+			{
+				/*
+				 * if they only enter in the upper limit 
+				 * 			the lower limit is automatically 0 
+				 * else if they enter in an upper limit that is higher than or equal to the lower 
+				 * 			both limits sent 
+				 * else if lower is >= 0 and upper empty 
+				 * 			lower is the lower bound 
+				 * else if they enter in a lower limit that is greater than upper limit 
+				 * 			they are swapped 
+				 * and if both are negative then no filters are applied 
+				 */
+				if(lowerAgeLimit <= 0 && upperAgeLimit >= 0)
+					frontPage = animalCatalog.rangeAnimals(0, upperAgeLimit, 0);
+				else if(lowerAgeLimit >= 0 && upperAgeLimit >= lowerAgeLimit)
+					frontPage = animalCatalog.rangeAnimals(lowerAgeLimit, upperAgeLimit, 0); 
+				else if(lowerAgeLimit >= 0 && upperAgeLimit < 0)
+					frontPage = animalCatalog.rangeAnimals(lowerAgeLimit, Integer.MAX_VALUE, 0); 
+				else if(lowerAgeLimit >= 0 && upperAgeLimit < lowerAgeLimit)
+					frontPage = animalCatalog.rangeAnimals(upperAgeLimit, lowerAgeLimit, 0); 
+			}
 			
 			
 			
