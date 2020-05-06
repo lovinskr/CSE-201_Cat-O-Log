@@ -9,6 +9,13 @@
  *
  * The line order is extremely particular and CAN NOT be changed 
  * 
+ * To do: 
+ * sort by travel method 
+ * add comment 
+ * delete comment 
+ * saving users full info 
+ * requests 
+ * fix filters again 
  * 
  */
 
@@ -27,7 +34,9 @@ import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
@@ -51,6 +60,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -71,25 +81,40 @@ import javafx.stage.Stage;
 
 public class GUI extends Application 
 {
+	/* 
+	 * These global variables are used in places where sending them 
+	 * as arguments would make it a very long list of parameters 
+	 * 
+	 */
 	private int width = 500;
 	private int height = 500;
 	int loginAttempts = 0;
 	private boolean isLoggedIn = false; 
-	VBox root = new VBox(); 
-	CheckBox[] checked = new CheckBox[25]; // the list of check boxes checked or not
-	int checkedIndex = 0; 
-	Animal[] frontPage = new Animal[500];
-	GridPane constantLogin = new GridPane();
-	GridPane top = new GridPane(); 
+	VBox root = new VBox(); // the entire GUI is built from this up 
+	LinkedList checked = new LinkedList<CheckBox>(); // the list of check boxes checked
+	Animal[] frontPage = new Animal[500]; // the list of animals that are currently shown
+	GridPane constantLogin = new GridPane(); // the constant login at the top 
+	GridPane top = new GridPane(); // hold the login and search bar and everything that stays at the top permenantly 
 	String loggedInUN = ""; 
 	String loggedInPW = ""; 
 	Boolean isAdminLoggedIn = false; 
 	User currentUser = null; 
+	int lowerLimbLimit = -88; // used if the filters check limit limbs/lifespan 
+	int upperLimbLimit = -88; 
+	int lowerAgeLimit = -88; 
+	int upperAgeLimit = -88; 
+	String dietDropChoice = ""; // used if filter diet dropdown 
+	
 	public static void main(String[] args) 
 	{
 		launch(args);
 	}
-
+	
+	/*
+	 *  This is the method that does most of the work 
+	 *  creates the first set up and calls helper methods when 
+	 *  buttons are clicked, ect. 
+	 */
 	@Override
 	public void start(Stage primaryStage) throws IOException  
 	{
@@ -115,13 +140,12 @@ public class GUI extends Application
 				chkColdBlooded.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkColdBlooded.isSelected() == false)
-					chkColdBlooded.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("cold", 0);
-					refreshAnimalGrid(constantLogin);
+					chkColdBlooded.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkColdBlooded); 
 				}
-				
+				else
+					checked.add(chkColdBlooded); 
 			}
 		});
 
@@ -134,12 +158,12 @@ public class GUI extends Application
 				chkWarmBlooded.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkWarmBlooded.isSelected() == false)
-					chkWarmBlooded.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Warm", 0);
-					refreshAnimalGrid(constantLogin);
-				}
+					chkWarmBlooded.setStyle("-fx-color: MediumAquaMarine");
+				checked.remove(chkWarmBlooded); 
+			}
+			else
+				checked.add(chkWarmBlooded); 
 			}
 		});
 
@@ -152,12 +176,13 @@ public class GUI extends Application
 				chkFlies.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkFlies.isSelected() == false)
-					chkFlies.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Flies", 1);
-					refreshAnimalGrid(constantLogin);
+					chkFlies.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkFlies); 
 				}
+				else
+					checked.add(chkFlies); 
+				
 			}
 		});
 
@@ -170,12 +195,13 @@ public class GUI extends Application
 				chkSlithers.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkSlithers.isSelected() == false)
-					chkSlithers.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Slithers", 1);
-					refreshAnimalGrid(constantLogin);
+					chkSlithers.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkSlithers); 
 				}
+				else
+					checked.add(chkSlithers); 
+				
 			}
 		});
 
@@ -188,12 +214,13 @@ public class GUI extends Application
 				chkWalk.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkWalk.isSelected() == false)
-					chkWalk.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Walks", 1);
-					refreshAnimalGrid(constantLogin);
+					chkWalk.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkWalk); 
 				}
+				else
+					checked.add(chkWalk); 
+				
 			}
 		});
 
@@ -206,12 +233,13 @@ public class GUI extends Application
 				chkSwim.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkSwim.isSelected() == false)
-					chkSwim.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Swims", 1);
-					refreshAnimalGrid(constantLogin);
+					chkSwim.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkSwim); 
 				}
+				else
+					checked.add(chkSwim); 
+				
 			}
 		});
 
@@ -224,12 +252,13 @@ public class GUI extends Application
 				chkFish.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkFish.isSelected() == false)
-					chkFish.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Fish", 2);
-					refreshAnimalGrid(constantLogin);
+					chkFish.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkFish); 
 				}
+				else
+					checked.add(chkFish); 
+				
 			}
 		});
 
@@ -242,12 +271,13 @@ public class GUI extends Application
 				chkBird.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkBird.isSelected() == false)
-					chkBird.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Bird", 2);
-					refreshAnimalGrid(constantLogin);
+					chkBird.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkBird); 
 				}
+				else
+					checked.add(chkBird); 
+				
 			}
 		});
 
@@ -260,12 +290,13 @@ public class GUI extends Application
 				chkReptiles.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkReptiles.isSelected() == false)
-					chkReptiles.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Reptile", 2);
-					refreshAnimalGrid(constantLogin);
+					chkReptiles.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkReptiles); 
 				}
+				else
+					checked.add(chkReptiles); 
+				
 			}
 		});
 
@@ -278,12 +309,13 @@ public class GUI extends Application
 				chkInsect.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkInsect.isSelected() == false)
-					chkInsect.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Insect", 2);
-					refreshAnimalGrid(constantLogin);
+					chkInsect.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkInsect); 
 				}
+				else
+					checked.add(chkInsect); 
+				
 			}
 		});
 
@@ -296,12 +328,13 @@ public class GUI extends Application
 				chkAmphibians.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkAmphibians.isSelected() == false)
-					chkAmphibians.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Amphibian", 2);
-					refreshAnimalGrid(constantLogin);
+					chkAmphibians.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkAmphibians); 
 				}
+				else
+					checked.add(chkAmphibians); 
+				
 			}
 		});
 
@@ -314,12 +347,13 @@ public class GUI extends Application
 				chkMammal.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkMammal.isSelected() == false)
-					chkMammal.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Mammal", 2);
-					refreshAnimalGrid(constantLogin);
+					chkMammal.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkMammal); 
 				}
+				else
+					checked.add(chkMammal); 
+				
 			}
 		});
 		
@@ -332,12 +366,13 @@ public class GUI extends Application
 				chkArthropods.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkArthropods.isSelected() == false)
-					chkArthropods.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Arthropod", 2);
-					refreshAnimalGrid(constantLogin);
+					chkArthropods.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkArthropods); 
 				}
+				else
+					checked.add(chkArthropods); 
+				
 			}
 		});
 
@@ -350,12 +385,13 @@ public class GUI extends Application
 				chkAquatic.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkAquatic.isSelected() == false)
-					chkAquatic.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Aquatic", 3);
-					refreshAnimalGrid(constantLogin);
+					chkAquatic.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkAquatic); 
 				}
+				else
+					checked.add(chkAquatic); 
+				
 			}
 		});
 		
@@ -368,12 +404,13 @@ public class GUI extends Application
 				chkTundra.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkTundra.isSelected() == false)
-					chkTundra.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Tundra", 3);
-					refreshAnimalGrid(constantLogin);
+					chkTundra.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkTundra); 
 				}
+				else
+					checked.add(chkTundra); 
+				
 			}
 		});
 		
@@ -386,12 +423,13 @@ public class GUI extends Application
 				chkTaiga.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkTaiga.isSelected() == false)
-					chkTaiga.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Taiga", 3);
-					refreshAnimalGrid(constantLogin);
+					chkTaiga.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkTaiga); 
 				}
+				else
+					checked.add(chkTaiga); 
+				
 			}
 		});
 		
@@ -404,12 +442,13 @@ public class GUI extends Application
 				chkTDForest.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkTDForest.isSelected() == false)
-					chkTDForest.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Temperate Deciduous Forest", 3);
-					refreshAnimalGrid(constantLogin);
+					chkTDForest.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkTDForest); 
 				}
+				else
+					checked.add(chkTDForest); 
+				
 			}
 		});
 		
@@ -422,12 +461,13 @@ public class GUI extends Application
 				chkScrubForest.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkScrubForest.isSelected() == false)
-					chkScrubForest.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Scrub Forest", 3);
-					refreshAnimalGrid(constantLogin);
+					chkScrubForest.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkScrubForest); 
 				}
+				else
+					checked.add(chkScrubForest); 
+				
 			}
 		});
 		
@@ -440,12 +480,13 @@ public class GUI extends Application
 				chkGrassland.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkGrassland.isSelected() == false)
-					chkGrassland.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Grassland", 3);
-					refreshAnimalGrid(constantLogin);
+					chkGrassland.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkGrassland); 
 				}
+				else
+					checked.add(chkGrassland); 
+				
 			}
 		});
 		
@@ -458,12 +499,13 @@ public class GUI extends Application
 				chkDesert.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkDesert.isSelected() == false)
-					chkDesert.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Desert", 3);
-					refreshAnimalGrid(constantLogin);
+					chkDesert.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkDesert); 
 				}
+				else
+					checked.add(chkDesert); 
+				
 			}
 		});
 		
@@ -477,12 +519,13 @@ public class GUI extends Application
 				chkTempRForest.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkTempRForest.isSelected() == false)
-					chkTempRForest.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Temperate Rain Forest", 3);
-					refreshAnimalGrid(constantLogin);
+					chkTempRForest.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkTempRForest); 
 				}
+				else
+					checked.add(chkTempRForest); 
+				
 			}
 		});
 		
@@ -495,12 +538,13 @@ public class GUI extends Application
 				chkTropRForest.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkTropRForest.isSelected() == false)
-					chkTropRForest.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Tropical Rain Forest", 3);
-					refreshAnimalGrid(constantLogin);
+					chkTropRForest.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkTropRForest); 
 				}
+				else
+					checked.add(chkTropRForest); 
+				
 			}
 		});
 		
@@ -514,12 +558,13 @@ public class GUI extends Application
 				chkNearctic.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkNearctic.isSelected() == false)
-					chkNearctic.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Nearctic", 3);
-					refreshAnimalGrid(constantLogin);
+					chkNearctic.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkNearctic); 
 				}
+				else
+					checked.add(chkNearctic); 
+				
 			}
 		});
 		
@@ -532,12 +577,13 @@ public class GUI extends Application
 				chkPalearctic.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkPalearctic.isSelected() == false)
-					chkPalearctic.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Palearctic", 3);
-					refreshAnimalGrid(constantLogin);
+					chkPalearctic.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkPalearctic); 
 				}
+				else
+					checked.add(chkPalearctic); 
+				
 			}
 		});
 		
@@ -550,12 +596,13 @@ public class GUI extends Application
 				chkAfrican.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkAfrican.isSelected() == false)
-					chkAfrican.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("African", 3);
-					refreshAnimalGrid(constantLogin);
+					chkAfrican.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkAfrican); 
 				}
+				else
+					checked.add(chkAfrican); 
+				
 			}
 		});
 
@@ -568,12 +615,13 @@ public class GUI extends Application
 				chkNeoTropical.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkNeoTropical.isSelected() == false)
-					chkNeoTropical.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("NeoTropical", 3);
-					refreshAnimalGrid(constantLogin);
+					chkNeoTropical.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkNeoTropical); 
 				}
+				else
+					checked.add(chkNeoTropical); 
+				
 			}
 		});
 		
@@ -586,12 +634,13 @@ public class GUI extends Application
 				chkOriental.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkOriental.isSelected() == false)
-					chkOriental.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Oriental", 3);
-					refreshAnimalGrid(constantLogin);
+					chkOriental.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkOriental); 
 				}
+				else
+					checked.add(chkOriental); 
+				
 			}
 		});
 		
@@ -604,12 +653,13 @@ public class GUI extends Application
 				chkAustralian.setStyle("-fx-color: LightSkyBlue");
 				
 				if(chkAustralian.isSelected() == false)
-					chkAustralian.setStyle("-fx-color: MediumAquaMarine");
-				else
 				{
-					frontPage = animalCatalog.filterAnimals("Australian", 3);
-					refreshAnimalGrid(constantLogin);
+					chkAustralian.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkAustralian); 
 				}
+				else
+					checked.add(chkAustralian); 
+				
 			}
 		});
 		
@@ -624,6 +674,23 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
+				chkLifespan.setStyle("-fx-color: LightSkyBlue");
+				
+				if(chkLifespan.isSelected() == false)
+				{
+					chkLifespan.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(chkLifespan); 
+					lowerAgeLimit = -88; 
+					upperAgeLimit = -88; 
+				}
+				else
+				{
+					if(lifeLimitL.getText().length() != 0)
+						lowerAgeLimit = Integer.parseInt(lifeLimitL.getText()); 
+					if(lifeLimitU.getText().length() != 0)
+						upperAgeLimit = Integer.parseInt(lifeLimitU.getText()); 
+					checked.add(chkLifespan); 
+				}
 				
 			}
 		});
@@ -639,6 +706,24 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{	
+				limbLimits.setStyle("-fx-color: LightSkyBlue");
+				
+				if(limbLimits.isSelected() == false)
+				{
+					limbLimits.setStyle("-fx-color: MediumAquaMarine");
+					checked.remove(limbLimits); 
+					lowerLimbLimit = -88; 
+					upperLimbLimit = -88; 
+				}
+				else
+				{
+					if(limbLimitU.getText().length() != 0)
+						upperLimbLimit = Integer.parseInt(limbLimitU.getText()); 
+					if(limbLimitL.getText().length() != 0)
+						lowerLimbLimit = Integer.parseInt(limbLimitL.getText()); 
+					
+					checked.add(limbLimits); 
+				}
 				
 			}
 		});
@@ -654,10 +739,9 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				
+				dietDropChoice = dietDropDown.getValue(); 
 			}
 		});
-
 		
 		 /* 
 		 * Filter Column is grid column 0
@@ -738,26 +822,31 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				 checkCheckboxes(); 
+				 try {
+					checkCheckboxes();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 			}
 		});
 		
 		GridPane checkBoxes = new GridPane();
 		checkBoxes.setVgap(4);
 		checkBoxes.setPadding(new Insets(5, 5, 5,5));
-		checkBoxes.add(cwBloodedTP, 0, 0);
+		checkBoxes.add(filterB, 0, 0);
 		checkBoxes.add(animalClassTP, 0, 1);
 		checkBoxes.add(biomesTP, 0, 2);
 		checkBoxes.add(travelsByTP, 0, 3);
 		checkBoxes.add(regionsTP, 0, 4); 
-		checkBoxes.add(dietDropDown, 0, 5);
-		checkBoxes.add(lifeLimitL, 0, 6);
-		checkBoxes.add(lifeLimitU, 0, 7);
-		checkBoxes.add(chkLifespan, 0, 8);
-		checkBoxes.add(limbLimitL, 0, 9);
-		checkBoxes.add(limbLimitU, 0, 10);
-		checkBoxes.add(limbLimits, 0, 11);
-		checkBoxes.add(filterB, 0, 12); 
+		checkBoxes.add(cwBloodedTP, 0, 5);
+		checkBoxes.add(dietDropDown, 0, 6);
+		checkBoxes.add(lifeLimitL, 0, 7);
+		checkBoxes.add(lifeLimitU, 0, 8);
+		checkBoxes.add(chkLifespan, 0, 9);
+		checkBoxes.add(limbLimitL, 0, 10);
+		checkBoxes.add(limbLimitU, 0, 11);
+		checkBoxes.add(limbLimits, 0, 12); 
 		
 		
 		tp.setExpanded(false);
@@ -1289,26 +1378,49 @@ public class GUI extends Application
 	}
 	
 	/*
-	 * will check all the other check boxes
+	 * Activated by clicking the apply filters button 
+	 * checks to see which check boxes are selected to be filtered 
 	 */
-	void checkCheckboxes()
+	void checkCheckboxes() throws IOException
 	{
-		Object[] f = root.getChildren().toArray(); 
+		Catalog animalCatalog = new Catalog(); 
 		
-		for(int c = 0; c < f.length; c++)
+		ListIterator<CheckBox> c = checked.listIterator(); 
+		
+		
+		while(c.hasNext())
 		{
-			if(f[c] instanceof CheckBox)
+			CheckBox temp = c.next(); 
+			if(temp.getText().equals("Limit Limbs"))
 			{
-				CheckBox temp = (CheckBox) f[c]; 
-				if(temp.isSelected())
-				{
-					String t = temp.getText(); 
-					System.out.println(t); 
-					
-				}
+				/*
+				 * if they only enter in the upper limit 
+				 * 			the lower limit is automatically 0 
+				 * else if they enter in an upper limit that is higher than or equal to the lower 
+				 * 			both limits sent 
+				 * else if lower is >= 0 and upper empty 
+				 * 			lower is the lower bound 
+				 * else if they enter in a lower limit that is greater than upper limit 
+				 * 			they are swapped 
+				 * and if both are negative then no filters are applied 
+				 */
+				if(lowerLimbLimit < 0 && upperLimbLimit >= 0)
+					frontPage = animalCatalog.rangeAnimals(0, upperLimbLimit, 1);
+				else if(lowerLimbLimit >= 0 && upperLimbLimit >= lowerLimbLimit)
+					frontPage = animalCatalog.rangeAnimals(lowerLimbLimit, upperLimbLimit, 1); 
+				else if(lowerLimbLimit >= 0 && upperLimbLimit < 0)
+					frontPage = animalCatalog.rangeAnimals(lowerLimbLimit, Integer.MAX_VALUE, 1); 
+				else if(lowerLimbLimit >= 0 && upperLimbLimit < lowerLimbLimit)
+					frontPage = animalCatalog.rangeAnimals(upperLimbLimit, lowerLimbLimit, 1); 
 			}
+			
+			
+			
+			
+			
 		}
 		
+		refreshAnimalGrid(constantLogin);
 	}
 	
 	/*
@@ -1378,13 +1490,15 @@ public class GUI extends Application
 		String travelMetho = ""; 
 		String[] tm = weirdDog.getTravelMethods();
 		
+		int k = 3; 
 		for(int j = 0; j < tm.length && tm[j] != null; j++)
 		{
 			travelMetho += tm[j];
-			if(j > 0)
-				travelMetho += ", ";
-			else
-				travelMetho += " ";
+			if(k > 0)
+				travelMetho += ", "; 
+			else 
+				travelMetho += " "; 
+			k--; 
 		}
 		
 		i = new Text(travelMetho); 
@@ -1600,7 +1714,7 @@ public class GUI extends Application
 		reqs.prefHeightProperty().bind(root.heightProperty());
 		reqs.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
 		
-	
+		
 		
 		
 		ScrollPane scroller = new ScrollPane(reqs); 
@@ -1755,6 +1869,10 @@ public class GUI extends Application
 			{
 				String[] tm = {animalTM.getText()}; 
 				// submits the request 
+				/*
+				 * send to AnimalRequest 
+				 *  
+				 */
 				Request newR = new Request(animalName.getText(), animalDiet.getText(), animalBiome.getText(),
 						animalRegion.getText(), animalClass.getText(), Integer.parseInt(animalLimbs.getText()),
 						Integer.parseInt(animalLS.getText()), tm, animalB.getText(), todaysDate.getText()); 
