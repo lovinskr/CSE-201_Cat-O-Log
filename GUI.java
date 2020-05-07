@@ -27,11 +27,8 @@
  * approve animal requests 
  * delete a comment on an animal
  * 
- * color options:
- * https://www.w3schools.com/colors/colors_names.asp 
  *
- *
- * The line order is extremely particular and CAN NOT be changed 
+ * The line order is extremely particular and JavaFx has some limitations 
  * 
  */
 
@@ -100,8 +97,7 @@ public class GUI extends Application
 {
 	/* 
 	 * These global variables are used in places where sending them 
-	 * as arguments would make it a very long list of parameters 
-	 * 
+	 * as arguments would make methods have a very long list of parameters 
 	 */
 	private int width = 500;
 	private int height = 500;
@@ -112,9 +108,9 @@ public class GUI extends Application
 	Animal[] frontPage = new Animal[500]; // the list of animals that are currently shown
 	GridPane constantLogin = new GridPane(); // the constant login at the top 
 	GridPane top = new GridPane(); // hold the login and search bar and everything that stays at the top permenantly 
-	String loggedInUN = ""; 
+	String loggedInUN = ""; // keeps track of if a user is logged in
 	String loggedInPW = ""; 
-	Boolean isAdminLoggedIn = false; 
+	Boolean isAdminLoggedIn = false; // keeps track of if the user that is logged in is admin
 	User currentUser = null; 
 	int lowerLimbLimit = -88; // used if the filters check limit limbs/lifespan 
 	int upperLimbLimit = -88; 
@@ -144,10 +140,14 @@ public class GUI extends Application
 		frontPage = animalCatalog.getAnimals(); 
 		GridPane grid = animalGrid(frontPage);
 		grid.setPadding(new Insets(10, 10, 10, 10)); // pads edges
-		ScrollPane sp = new ScrollPane(grid);
+		ScrollPane sp = new ScrollPane(grid); // makes the grid scrollable
 		sp.setPannable(true); 
 				
-		// the check boxes that will be filters
+		/*
+		 * checkboxes that are in the filter 
+		 * repetitive code due to lack of foresight 
+		 * there is a global linkedlist that holds the checkboxes that are checked 
+		 */
 		CheckBox chkColdBlooded = makeChkBox("Cold Blooded");
 		chkColdBlooded.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -156,6 +156,7 @@ public class GUI extends Application
 			{	
 				chkColdBlooded.setStyle("-fx-color: LightSkyBlue");
 				
+				// if this click is unchecking the box it removes it from the linkedlist 
 				if(chkColdBlooded.isSelected() == false)
 				{
 					chkColdBlooded.setStyle("-fx-color: MediumAquaMarine");
@@ -680,7 +681,10 @@ public class GUI extends Application
 			}
 		});
 		
-		// Lifespan range
+		/*
+		 * The tecxtfield ranges with checkboxes for the average lifespan and limb number
+		 * they are only used if their checkbox is checked 
+		 */
 		CheckBox chkLifespan = makeChkBox("Average Lifespan");
 		TextField lifeLimitL = makeTF("Min Years"); // lower limb limit 
 		lifeLimitL.setMaxHeight(20);
@@ -711,8 +715,7 @@ public class GUI extends Application
 				
 			}
 		});
-
-		// have to include a text box to get the limb range
+		
 		CheckBox limbLimits = makeChkBox("Limit Limbs");
 		TextField limbLimitL = makeTF("Min Limbs"); // lower limb limit
 		limbLimitL.setMaxHeight(20);
@@ -745,8 +748,10 @@ public class GUI extends Application
 			}
 		});
 		
-		// diet drop down
-		// can make a couple of check boxes later
+		/*
+		 * Probably should have made this 3 checkboxes 
+		 * The chosen result is kept in a global variable 
+		 */
 		String[] dietOptions = { "Carnivore", "Omnivore", "Herbavore" };
 		ComboBox<String> dietDropDown = makeDropDown(dietOptions);
 		dietDropDown.setMaxHeight(20);
@@ -765,7 +770,6 @@ public class GUI extends Application
 		 * the big grid's holds the titledPane 
 		 * that holds a smaller grid that holds the check boxes 
 		 */
-		
 		TitledPane tp = new TitledPane();
 		tp.setText("Filter");
 		
@@ -833,6 +837,7 @@ public class GUI extends Application
 		travelsByTP.setContent(travelsByGP);
 		travelsByTP.setExpanded(false);
 		
+		// this button triggers the entire filter 
 		Button filterB = makeButton("Apply Filter"); 
 		filterB.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -1373,6 +1378,9 @@ public class GUI extends Application
 		return grid; 
 	}
 	
+	/*
+	 * has some constants that keeps the frontpage up to date 
+	 */
 	void refreshAnimalGrid(GridPane constantLogin)
 	{
 		root.getChildren().clear(); 
@@ -1700,9 +1708,10 @@ public class GUI extends Application
 		userPage.setStyle("-fx-background-color: CadetBlue;"); // background color
 		
 		Text i = new Text("Your Listed Information"); 
+		Text n = new Text("Name: " + currentUser.firstName + " " + currentUser.lastName);
 		Text un = new Text("Username: " + currentUser.username);
-		Text p = new Text("Phone Number: " + currentUser.getPhoneNumber()); 
-		Text e = new Text("Email: " + currentUser.getEmail()); 
+		Text p = new Text("Phone Number: " + currentUser.getPhoneNumber() + ", " + currentUser.phoneNumber[1]); 
+		Text e = new Text("Emails: " + currentUser.getEmail() + ", " + currentUser.email[1]); 
 		Button cu = makeButton("Change Username"); 
 		cu.setOnAction(new EventHandler<ActionEvent>() 
 		{
