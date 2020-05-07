@@ -1,5 +1,4 @@
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,8 +14,9 @@ public class AnimalRequests
 	String fileName = "requests.txt";
 	LinkedList<Request> requests;
 	int index;
-	public AnimalRequests() {
+	public AnimalRequests() throws IOException {
 		requests = new LinkedList<Request>();
+		readRequests();
 		index = 0;
 	}
 	/* 
@@ -40,9 +40,11 @@ public class AnimalRequests
 	/*
 	 * Finds a given request and removes it if it is in the list
 	 */
-	public boolean removeRequest(Request request) {
+	public boolean removeRequest(Request request) throws IOException {
+		
 		if (requests.contains(request)) {
 			requests.remove(request);
+			writeRequests();
 			return true;
 		}
 		return false;
@@ -52,7 +54,6 @@ public class AnimalRequests
 	 */
 	Request[] getRequests() throws IOException
 	{
-		readRequests(); 
 		Request[] reqs = new Request[requests.size()]; 
 		
 		ListIterator<Request> reqIt = requests.listIterator(); 
@@ -89,11 +90,12 @@ public class AnimalRequests
 		while(read.hasNext())
 		{
 			String[] methodsOfTravel = {null};
-			String name = read.next().trim(); // Animal names can be more than one word
+			String name = read.next().trim(); // Animal names can't be more than one word
 			String diet = read.next().trim();
 			String commonRegion = read.next().trim();
 			String biome = read.next().trim();
 			String aclass = read.next().trim();
+			
 			int n = read.nextInt();
 			int a = read.nextInt();
 			int c = read.nextInt();
@@ -115,9 +117,8 @@ public class AnimalRequests
 	// writes requests to the file 
 	void writeRequests() throws IOException
 	{
-		readRequests(); 
+		//readRequests(); 
 		PrintWriter to = new PrintWriter(new File(fileName));
-		String line;
 		ListIterator<Request> reqIt = requests.listIterator();
 		
 		while(reqIt.hasNext())
@@ -132,10 +133,8 @@ public class AnimalRequests
 			to.println(temp.averageLifespan);
 			to.println(temp.coldOrWarmBlooded);
 			to.println(temp.methodsOfTravel == null ? "N/A" : temp.methodsOfTravel[0]);
-			to.println("");
 		}
-		
-		to.println();
+		to.println(); 
 		to.close();
 	}
 	
