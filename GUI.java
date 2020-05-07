@@ -10,9 +10,6 @@
  * The line order is extremely particular and CAN NOT be changed 
  * 
  * To do: 
- * sort by travel method 
- * add comment 
- * delete comment 
  * requests 
  * 
  */
@@ -1632,8 +1629,31 @@ public class GUI extends Application
 					newComment.clear();
 				}
 			});
+			if(currentUser.administrator)
+			{
+				TextArea deletedComment = new TextArea(); 
+				deletedComment.setPromptText("Type Comment For Deletion Here");
+			Button deleteComments = makeButton("Delete Comment"); 
+			deleteComments.setOnAction(new EventHandler<ActionEvent>() 
+			{
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					String t = deletedComment.getText(); 
+					if(!t.isEmpty())
+						try {
+							weirdDog.deleteComment(t);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
+			});
 			
+			info.addColumn(3, deletedComment, deleteComments);
+			}
 			info.addColumn(3, newComment,addComment);
+			
 		}
 		
 		String[] currentComments = weirdDog.getComments(); 
@@ -1758,14 +1778,21 @@ public class GUI extends Application
 		});
 		userPage.addColumn(0, i, un, p, e, cu, cp, ce, cph, ra);
 		
+		/*
+		 * If the logged in user is an administrator 
+		 * they can view requests through the button 
+		 * view comments through that button 
+		 */
 		if(currentUser.administrator)
 			userPage.addColumn(0, seeRequests);
+			
 		
 		ScrollPane scroller = new ScrollPane(userPage); 
 		root.getChildren().add(constantLogin);
 		root.getChildren().add(top); 
 		root.getChildren().add(scroller); 
 	}
+	
 	
 	void changePasswordPopup() throws IOException
 	{
