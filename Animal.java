@@ -250,12 +250,12 @@ class SortBiome implements Comparator<Animal> {
 	}
 }
 /*
- * still figuring this out rip
- * havent figured out filtering by blood either
+ * 
+ * 
  */
 class SortTravel implements Comparator<Animal> {
 	public int compare(Animal a, Animal b) {
-		return 0;
+		return a.methodsOfTravel[0].compareTo(b.methodsOfTravel[0]);
 	}
 }
 class SortLifespan implements Comparator<Animal> {

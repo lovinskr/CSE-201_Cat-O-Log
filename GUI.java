@@ -13,7 +13,6 @@
  * sort by travel method 
  * add comment 
  * delete comment 
- * saving users full info 
  * requests 
  * 
  */
