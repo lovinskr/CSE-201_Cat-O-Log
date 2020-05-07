@@ -32,6 +32,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -1381,6 +1382,7 @@ public class GUI extends Application
 	/*
 	 * Activated by clicking the apply filters button 
 	 * checks to see which check boxes are selected to be filtered 
+	 * and does so 
 	 */
 	void checkCheckboxes() throws IOException
 	{
@@ -1388,13 +1390,10 @@ public class GUI extends Application
 		frontPage = null; 
 		ListIterator<CheckBox> c = checked.listIterator(); 
 		
-		
+		// goes through the linked list 
 		while(c.hasNext())
 		{
-			
 			CheckBox temp = c.next(); 
-			
-			
 			if(temp.getText().equals("Limit Limbs"))
 			{
 				/*
@@ -1687,13 +1686,31 @@ public class GUI extends Application
 			}
 		});
 		Button cp = makeButton("Change Password"); 
+		cp.setOnAction(new EventHandler<ActionEvent>() 
+		{
+			@Override
+			public void handle(ActionEvent event) 
+			{
+				try {
+					changePasswordPopup();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		Button ce = makeButton("Change or Add Email"); 
 		ce.setOnAction(new EventHandler<ActionEvent>() 
 		{
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				
+				try {
+					changeEmailPopup();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 			}
 		});
 		
@@ -1739,9 +1756,13 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				viewAnimalRequests(); 
+				try {
+					viewAnimalRequests();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 			}
-
 		});
 		userPage.addColumn(0, i, un, p, e, cu, cp, ce, cph, ra);
 		
@@ -1813,7 +1834,11 @@ public class GUI extends Application
 	}
 	
 	
-	void viewAnimalRequests()
+	/*
+	 * Only an administrator can edit animal requests 
+	 * 
+	 */
+	void viewAnimalRequests() throws IOException
 	{
 		root.getChildren().clear(); 
 		
@@ -1824,6 +1849,101 @@ public class GUI extends Application
 		reqs.prefHeightProperty().bind(root.heightProperty());
 		reqs.setStyle("-fx-background-color: DarkSeaGreen;"); // background color
 		
+		Text name = new Text("Name : "); 
+		
+		reqs.addColumn(0, name);
+		
+		AnimalRequests requests = new AnimalRequests(); 
+		Request[] reqArr = requests.getRequests(); 
+		
+		for(int c = 0; c < reqArr.length; c++)
+		{
+			Text temp = new Text(reqArr[c].getName()); 
+			Button deleteReq = makeButton("Deny Request"); 
+			Button approveReq = makeButton("Approve Request");
+			Button viewReq = makeButton("View Full Request");
+			reqs.addRow(c, temp, viewReq, approveReq, deleteReq);
+			
+			
+			Request lookAt = null; 
+			for(int l = 0; l < reqArr.length && reqArr[l] != null; l++)
+			{
+				if(reqArr[l].getName().equalsIgnoreCase(temp.getText()))
+					lookAt = reqArr[l];
+			}
+			
+			Request aReq = lookAt; // because javafx doesn't like to make my life easy 
+			int x = c; // because javafx doesn't like to make my life easy 
+			deleteReq.setOnAction(new EventHandler<ActionEvent>() 
+			{
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					requests.removeRequest(aReq); 
+				}
+			});
+			
+			approveReq.setOnAction(new EventHandler<ActionEvent>() 
+			{
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					
+					try {
+						requests.addAnimal(new Catalog(), aReq);
+						requests.removeRequest(aReq); 
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			});
+			
+			viewReq.setOnAction(new EventHandler<ActionEvent>() 
+			{
+				@Override
+				public void handle(ActionEvent event) 
+				{
+					
+					Stage dialog = new Stage();
+					dialog.initModality(Modality.APPLICATION_MODAL);
+					StackPane popup = new StackPane();
+				    popup.setStyle("-fx-background-color: AZURE");
+				    
+				    GridPane cp = new GridPane(); 
+				    
+				    Text a = new Text("Name: " + aReq.name);
+					a.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+					Text b = new Text("Preferred Biome: " + aReq.prefferedBiome);
+					b.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+					Text c = new Text("Class: " + aReq.animalClass); 
+					c.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+					Text d = new Text("Diet Type: " + aReq.diet); 
+					d.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+					Text e = new Text("Common Region: " + aReq.commonRegion); 
+					e.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+					Text f = new Text("Blood Type: " + (aReq.coldOrWarmBlooded == 0 ? "Warm": "Cold")); 
+					f.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+					Text g = new Text("Limbs: " + aReq.numOfLimbs); 
+					g.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+					Text h = new Text("Average Lifespan: " + aReq.averageLifespan);
+					h.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+					Text i = new Text("Travel Methods: " + aReq.methodsOfTravel[0]); 
+					i.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 15));
+				    cp.addColumn(0, a, b, c, d, e, f, g, h, i);
+				    
+				    ScrollPane s = new ScrollPane(cp); 
+					popup.getChildren().add(s); 
+					Scene dialogScene = new Scene(popup, 300, 300);
+				    
+				    dialog.setScene(dialogScene);
+				    dialog.show();
+				}
+			});
+		}
+		
+		
 		
 		
 		
@@ -1832,6 +1952,10 @@ public class GUI extends Application
 		root.getChildren().add(top); 
 		root.getChildren().add(scroller); 
 	}
+	
+	/*
+	 * the popup that allows the user to change or add a phone number 
+	 */
 	void changePhonePopup() throws IOException
 	{
 		Accounts acc = new Accounts(); 
@@ -1949,6 +2073,9 @@ public class GUI extends Application
         dialog.show();
 	}
 	
+	/*
+	 * can create a request that is saved until approved or deleted 
+	 */
 	void requestAnimal()
 	{
 		root.getChildren().clear(); 
@@ -1967,7 +2094,7 @@ public class GUI extends Application
 		TextField animalBiome = makeTF("Animal Biome"); 
 		TextField animalLimbs = makeTF("Animal Limbs");
 		TextField animalLS = makeTF("Animal LifeSpan"); 
-		TextField animalTM = makeTF("Animal Travel Method"); //make seperate by commas [] later 
+		TextField animalTM = makeTF("Animal Main Travel Method"); 
 		TextField animalB = makeTF("Animal Bloodtype"); 
 		TextField todaysDate = makeTF("Today's Date");
 		
@@ -1977,18 +2104,35 @@ public class GUI extends Application
 			@Override
 			public void handle(ActionEvent event) 
 			{
-				String[] tm = {animalTM.getText()}; 
-				// submits the request 
-				/*
-				 * send to AnimalRequest 
-				 *  
-				 */
-				Request newR = new Request(animalName.getText(), animalDiet.getText(), animalBiome.getText(),
-						animalRegion.getText(), animalClass.getText(), Integer.parseInt(animalLimbs.getText()),
-						Integer.parseInt(animalLS.getText()), tm, animalB.getText(), todaysDate.getText()); 
+				String[] tm = {animalTM.getText().isEmpty()? "N/A" : animalTM.getText()}; 
+				int li = 0; 
+				if(!animalLimbs.getText().isEmpty())
+				{
+					li = Integer.parseInt(animalLimbs.getText()); 
+				}
+				int lis = 0; 
+				if(!animalLS.getText().isEmpty())
+				{
+					lis = Integer.parseInt(animalLS.getText()); 
+				}
+				// if the user does not enter in anything then "N/A" is entered 
+				Request newR = new Request(animalName.getText().isEmpty()? "N/A" : animalName.getText(),
+										   animalDiet.getText().isEmpty()? "N/A" : animalDiet.getText(), 
+										   animalBiome.getText().isEmpty()? "N/A" : animalBiome.getText(),
+										   animalRegion.getText().isEmpty()? "N/A" : animalRegion.getText(),
+										   animalClass.getText().isEmpty()? "N/A" : animalClass.getText(),
+										   li, lis, tm,
+										   animalB.getText().isEmpty()? "-99" : animalB.getText());
 				
+				AnimalRequests requests = new AnimalRequests(); 
+				try {
+					requests.addRequest(newR);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 				
-				// popup 
+				// request sent popup 
 				Stage dialog = new Stage();
                 dialog.initModality(Modality.APPLICATION_MODAL);
                 //dialog.initOwner(scroller);
@@ -2016,6 +2160,10 @@ public class GUI extends Application
 		root.getChildren().add(scroller); 
 	}
 	
+	/*
+	 * This popup is how the user changes their email or 
+	 * adds one to their account 
+	 */
 	void changeEmailPopup() throws IOException
 	{
 		Accounts acc = new Accounts(); 

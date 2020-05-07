@@ -30,10 +30,9 @@ public class Request
 	 * @param lifespan
 	 * @param travel
 	 * @param blood
-	 * @param date
 	 */
 	public Request(String Aname, String Adiet, String region, String biome, String Aclass,
-			Integer limbs, Integer lifespan, String[] travel, String blood, String date) {
+			Integer limbs, Integer lifespan, String[] travel, String blood) {
 		name = Aname;
 		diet = Adiet;
 		commonRegion = region;
@@ -49,7 +48,6 @@ public class Request
 			coldOrWarmBlooded = 0;
 		}
 		}
-		this.date = date;
 	}
 	/**
 	 * Returns the name of the person making the request
@@ -129,10 +127,11 @@ public class Request
 				numOfLimbs, averageLifespan, methodsOfTravel, name, blood);
 		return animal;
 	}
+	
 	// Writes the requests to the request.txt file
 	public void writeRequests() throws IOException {
 		String[] TBA = {"TBA" };
-		this.addTraits("TBA", "TBA", "TBA", "TBA", 0, 0,TBA , "TBA");
+		this.addTraits("TBA", "TBA", "TBA", "TBA", 0, 0, TBA , "TBA");
 		FileWriter fstream = new FileWriter(filename, true);
         BufferedWriter out = new BufferedWriter(fstream);
         out.write(name);
@@ -151,9 +150,8 @@ public class Request
 		out.newLine();
 		out.write(String.valueOf(coldOrWarmBlooded));
 		out.newLine();
-		for(int j = 0; j < methodsOfTravel.length; j++) {
-			out.write(methodsOfTravel[j]);
-		}
+		out.write(methodsOfTravel[0]);
+		
 		out.newLine();
 		out.write(date);
 		out.newLine();
