@@ -140,8 +140,16 @@ public class Animal implements Comparable<Animal>
 	boolean addComment(String comment) throws IOException
 	{ 
 		lastComment++;
-		writeComments(comment); 
+		comments.add(comment); 
+		writeComments(); 
 		return true; 
+	}
+	
+	void deleteComment(String comment) throws IOException
+	{ 
+		//readComments(); 
+		comments.remove(comment); 
+		writeComments(); 
 	}
 	
 	public void readComments() throws IOException 
@@ -158,10 +166,10 @@ public class Animal implements Comparable<Animal>
 		read.close();
 	}
 	
-	void writeComments(String newCom) throws IOException 
+	void writeComments() throws IOException 
 	{
 		//readUsers(); // get all current accounts in the linked list
-		comments.add(newCom); 
+		 
 		PrintWriter to = new PrintWriter(new File(name + " Comments.txt"));
 		String line;
 		ListIterator<String> ui = comments.listIterator();
@@ -169,7 +177,7 @@ public class Animal implements Comparable<Animal>
 		
 		while(ui.hasNext())
 		{
-			
+			to.println(ui.next());
 		}
 		
 		to.println();
@@ -250,7 +258,8 @@ class SortBiome implements Comparator<Animal> {
 	}
 }
 /*
- * 
+ * These are the comparators that we use to sort the animals
+ * by their traits 
  * 
  */
 class SortTravel implements Comparator<Animal> {
