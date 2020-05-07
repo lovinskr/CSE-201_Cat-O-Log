@@ -29,9 +29,9 @@ public class AnimalRequests
 	 * Adds a request to the list
 	 * @param newRequest
 	 * @return
-	 * @throws FileNotFoundException 
+	 * @throws IOException 
 	 */
-	public boolean addRequest(Request newRequest) throws FileNotFoundException 
+	public boolean addRequest(Request newRequest) throws IOException 
 	{
 		requests.add(newRequest);
 		writeRequests(); 
@@ -89,7 +89,7 @@ public class AnimalRequests
 		while(read.hasNext())
 		{
 			String[] methodsOfTravel = {null};
-			String name = read.next().trim();
+			String name = read.nextLine().trim(); // Animal names can be more than one word
 			String diet = read.next().trim();
 			String commonRegion = read.next().trim();
 			String biome = read.next().trim();
@@ -113,12 +113,12 @@ public class AnimalRequests
 	}
 	
 	// writes requests to the file 
-	void writeRequests() throws FileNotFoundException
+	void writeRequests() throws IOException
 	{
+		readRequests(); 
 		PrintWriter to = new PrintWriter(new File(fileName));
 		String line;
 		ListIterator<Request> reqIt = requests.listIterator();
-		to.println(); 
 		
 		while(reqIt.hasNext())
 		{
