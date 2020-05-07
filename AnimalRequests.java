@@ -94,6 +94,7 @@ public class AnimalRequests
 			String commonRegion = read.next().trim();
 			String biome = read.next().trim();
 			String aclass = read.next().trim();
+			System.out.print( name + " " + diet + " " + commonRegion + " " + biome + " " + aclass + " ");
 			int n = read.nextInt();
 			int a = read.nextInt();
 			int c = read.nextInt();
@@ -117,7 +118,6 @@ public class AnimalRequests
 	{
 		readRequests(); 
 		PrintWriter to = new PrintWriter(new File(fileName));
-		String line;
 		ListIterator<Request> reqIt = requests.listIterator();
 		
 		while(reqIt.hasNext())
@@ -134,7 +134,6 @@ public class AnimalRequests
 			to.println(temp.methodsOfTravel == null ? "N/A" : temp.methodsOfTravel[0]);
 		}
 		
-		to.println();
 		to.close();
 	}
 	
