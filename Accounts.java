@@ -10,10 +10,6 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Scanner;
 
-/**
- * Creates a linked list used to hold all user information
- *
- */
 public class Accounts {
 	public LinkedList userlist;
 	public String filename = "accounts.txt";
@@ -22,44 +18,26 @@ public class Accounts {
 		userlist = new LinkedList();
 		readUsers(); 
 	}
-	/**
-	 * Creates an account when a new user is made and saves the user in a text file
-	 * @param newUser
-	 * @throws IOException
-	 */
+	
 	public void Makaccount(User newUser) throws IOException
 	{
 		userlist.add(newUser);
 		writeUser(newUser);
 	}
-	/**
-	 * Makes an account and saves their information from a username and password
-	 * @param username
-	 * @param password
-	 * @throws IOException
-	 */
+	
 	public void Makeaccount(String username, String password) throws IOException {
 		User user = new User(username, password);
 		userlist.add(user);
 		writeUser(user);
 	}
-	/**
-	 * Creates an account and saves their information from a username, password and admin privilages
-	 * @param username
-	 * @param password
-	 * @param admin
-	 * @throws IOException
-	 */
+	
 	public void Makeaccount(String username, String password, boolean admin) throws IOException {
 		User user = new User(username, password, admin);
 		userlist.add(user);
 		writeUser(user);
 	}
 	
-	 /**
-	  * Reads in the list of users from the accounts.txt file and stores then in the account list
-	  * @throws IOException
-	  */
+	 
 	public void readUsers() throws IOException 
 	{
 		Scanner read = new Scanner(new File(filename));
@@ -68,8 +46,11 @@ public class Accounts {
 		{
 			String username = read.next().trim();
 			String password = read.next().trim();
-			int a = read.nextInt(); 
-			 
+			int a = read.nextInt(); // admin or not 
+			String nameF =  read.next().trim();
+			String nameL =  read.next().trim(); 
+			String[] phonenumbers = {read.next().trim(), read.next().trim()}; 
+			String[] emails = {read.next().trim(), read.next().trim()};
 			Boolean admin = false; 
 			if(a == 1)
 				admin = true; 
@@ -79,12 +60,7 @@ public class Accounts {
 		
 		read.close();
 	}
-	/**
-	 * Allows a user to change their password
-	 * @param un
-	 * @param newP
-	 * @throws IOException
-	 */
+	
 	public void changePassword(String un, String newP) throws IOException
 	{
 		ListIterator<User> userIterator = userlist.listIterator();
@@ -101,12 +77,7 @@ public class Accounts {
 			}
 		}
 	}
-	/**
-	 * Allows a user to change their username
-	 * @param un
-	 * @param newU
-	 * @throws IOException
-	 */
+	
 	public void changeUsername(String un, String newU) throws IOException
 	{
 		ListIterator<User> userIterator = userlist.listIterator();
@@ -123,11 +94,10 @@ public class Accounts {
 			}
 		}
 	}
-	/**
-	 * Allows a user to change their phone number
-	 * @param un
-	 * @param newN
-	 * @throws IOException
+	
+	/*
+	 * Changes the phone number of a user 
+	 * in linkedlist and then file 
 	 */
 	public void changePhoneNumber(String un, String newN) throws IOException
 	{
@@ -137,16 +107,16 @@ public class Accounts {
 			User temp = userIterator.next();
 			if((temp.username).equals(un))
 			{
-			String[] number = {newN}; 
-			temp.setPhoneNumber(number); 
+				
+				String[] number = {newN, temp.getPhoneNumber()}; 
+				temp.setPhoneNumber(number); 
 			}
 		}
 	}
-	/**
-	 * Allows a user to change their email
-	 * @param un
-	 * @param newE
-	 * @throws IOException
+	
+	/*
+	 * Changes the email of a user 
+	 * in linkedlist and then the file 
 	 */
 	public void changeEmail(String un, String newE) throws IOException
 	{
@@ -156,15 +126,16 @@ public class Accounts {
 			User temp = userIterator.next();
 			if((temp.username).equals(un))
 			{
-			String[] em = {newE}; 
-			temp.setPhoneNumber(em); 
+				String[] em = {newE, temp.getEmail()}; 
+				temp.setEmail(em); 
 			}
 		}
 	}
 	
 	/*
 	 * NEED FOR GUI PLEASE DON'T CHANGE 
-	 * checks that user can log in with that username and password  
+	 * checks that user exists in the accounts.txt file with the 
+	 * username and password that they entered
 	 */
 	int hasAccount(String username, String password) throws IOException
 	{
@@ -183,10 +154,9 @@ public class Accounts {
 		
 		return -66; 
 	}
-	/**
-	 * Writes the user to the accounts file
-	 * @param usr
-	 * @throws IOException
+	
+	/*
+	 * Writes the users to the Accounts.txt from the linkedlist 
 	 */
 	void writeUser(User usr) throws IOException 
 	{
@@ -203,6 +173,12 @@ public class Accounts {
 			to.println(temp.username);
 			to.println(temp.password);
 			to.println(temp.isAdmin());
+			to.println(temp.firstName);
+			to.println(temp.lastName);
+			to.println(temp.email[0]);
+			to.println(temp.email[1]);
+			to.println(temp.phoneNumber[0]);
+			to.println(temp.phoneNumber[1]);
 		}
 		
 		to.println();

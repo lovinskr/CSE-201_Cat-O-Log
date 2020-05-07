@@ -2,9 +2,9 @@
 public class User 
 {
 	// there has to at least be 1 of each except email
-	private String[] email = new String[2]; 
-	private String[] phoneNumber = new String[2]; 
-	private String lastName, firstName; 
+	String[] email = {"N/A", "N/A"}; 
+	String[] phoneNumber = {"N/A", "N/A"}; 
+	String lastName, firstName; 
 	public boolean administrator = false;
 	public String username = ""; // so checkEquals doesn't throw nullPointer exception
 	public String password = "";
@@ -15,6 +15,15 @@ public class User
 		username = name; 
 		password = pass; 
 		administrator = admin; 
+	}
+	public User(String name, String pass, String emails, String nums, String fn, String ln)
+	{
+		username = name; 
+		password = pass; 
+		phoneNumber[0] = nums; 
+		email[0] = emails; 
+		lastName = ln;
+		firstName = fn; 
 	}
 	
 	public User(String name, String pass) 

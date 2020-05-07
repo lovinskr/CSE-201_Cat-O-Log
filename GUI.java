@@ -15,7 +15,6 @@
  * delete comment 
  * saving users full info 
  * requests 
- * fix filters again 
  * 
  */
 
@@ -1259,13 +1258,7 @@ public class GUI extends Application
 				}
 				else
 				{
-					User newUser = new User(u, p); 
-					String[] ee = {e};
-					newUser.setEmail(ee);
-					newUser.setFName(f);
-					newUser.setLName(l);
-					String[] pp = {pn};
-					newUser.setPhoneNumber(pp);
+					User newUser = new User(u, p, e, pn, f, l); 
 					
 					try {
 						Accounts acc = new Accounts();
@@ -2095,9 +2088,7 @@ public class GUI extends Application
 		TextField animalLimbs = makeTF("Animal Limbs");
 		TextField animalLS = makeTF("Animal LifeSpan"); 
 		TextField animalTM = makeTF("Animal Main Travel Method"); 
-		TextField animalB = makeTF("Animal Bloodtype"); 
-		TextField todaysDate = makeTF("Today's Date");
-		
+		TextField animalB = makeTF("Animal Bloodtype, 0 = Warm and 1 = Cold"); 
 		Button submitRequest = makeButton("Submit Request");
 		submitRequest.setOnAction(new EventHandler<ActionEvent>() 
 		{
@@ -2130,6 +2121,9 @@ public class GUI extends Application
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				} 
 				
 				// request sent popup 
@@ -2150,7 +2144,7 @@ public class GUI extends Application
 		});
 		
 		userPage.addColumn(0, animalName, animalClass, animalBiome, animalLimbs, animalLS,
-				animalRegion, animalDiet, animalB, animalTM, todaysDate, submitRequest);
+				animalRegion, animalDiet, animalB, animalTM, submitRequest);
 		
 		ScrollPane scroller = new ScrollPane(userPage); 
 		root.getChildren().add(constantLogin);
