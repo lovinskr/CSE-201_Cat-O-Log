@@ -89,7 +89,7 @@ public class AnimalRequests
 		while(read.hasNext())
 		{
 			String[] methodsOfTravel = {null};
-			String name = read.nextLine().trim(); // Animal names can be more than one word
+			String name = read.next().trim(); // Animal names can be more than one word
 			String diet = read.next().trim();
 			String commonRegion = read.next().trim();
 			String biome = read.next().trim();
@@ -132,6 +132,7 @@ public class AnimalRequests
 			to.println(temp.averageLifespan);
 			to.println(temp.coldOrWarmBlooded);
 			to.println(temp.methodsOfTravel == null ? "N/A" : temp.methodsOfTravel[0]);
+			to.println("");
 		}
 		
 		to.println();
