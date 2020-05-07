@@ -1314,7 +1314,6 @@ public class GUI extends Application
 		// eight columns under row 0 for the animals 
 		Text name = new Text("Name");
 		name.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
-		//name.setFill(Color.DARKCYAN);
 		Text prefBiome = new Text("Preferred Biome");
 		prefBiome.setFont(Font.font("verdana", FontWeight.SEMI_BOLD, FontPosture.REGULAR, 20));
 		Text classAni = new Text("Class");
