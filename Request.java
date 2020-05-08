@@ -124,7 +124,7 @@ public class Request
 		}
 		else blood = "warm";
 		Animal animal = new Animal(name, diet, commonRegion, prefferedBiome, animalClass,
-				numOfLimbs, averageLifespan, methodsOfTravel, name, blood);
+				numOfLimbs, averageLifespan, methodsOfTravel, blood);
 		return animal;
 	}
 	
@@ -153,7 +153,7 @@ public class Request
 		out.write(methodsOfTravel[0]);
 		
 		out.newLine();
-		out.write(date);
+		
 		out.newLine();
 	out.close();	
 	}

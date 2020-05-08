@@ -1975,6 +1975,8 @@ public class GUI extends Application
 					try {
 						requests.addAnimal(new Catalog(), aReq);
 						requests.removeRequest(aReq); 
+						frontPage = new Catalog().animals; 
+						refreshAnimalGrid(constantLogin); 
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

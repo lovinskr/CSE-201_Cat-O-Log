@@ -33,10 +33,14 @@ public class Animal implements Comparable<Animal>
 			e.printStackTrace();
 		}
 	}
-	
+	/*
+	 * Animal constructor 
+	 * animal info is saved as .dat file 
+	 * anmal comments are saved as a .txt file
+	 */
 	public Animal(String Aname, String Adiet, String region, String biome, String Aclass,
-			int limbs, int lifespan, String[] travel, String identifier, String blood) throws IOException {
-		filename = identifier + "Storage.txt";
+			int limbs, int lifespan, String[] travel, String blood) throws IOException {
+		filename = Aname  + " Storage.dat";
 		File newFile = new File(filename); 
 		newFile.createNewFile(); // if file already exists will do nothing
 		File commentFile = new File(Aname + " Comments.txt"); 
@@ -55,7 +59,7 @@ public class Animal implements Comparable<Animal>
 		} else {
 			coldOrWarmBlooded = 0;
 		}
-		filename = identifier + "Storage.dat";
+		filename = Aname + " Storage.dat";
 		animalStorage = new File(filename);
 		saveAnimal();
 		readComments(); 

@@ -1,5 +1,4 @@
 
-
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -28,41 +27,17 @@ public class Catalog
 	public Catalog() throws IOException {
 		animals = new Animal[500];
 		currentlyDisplaying = animals;
-//		Animal tiger;
-//		String[] travel = {"Walk"};
-//		tiger = new Animal("Tiger", "Carnivore", "Palearctic", "Tropical Rain Forest", 
-//				"Mammal", 4, 15, travel, "m1", "warm");
-//		addAnimal(tiger);
-//		String[] travel1 = {"Swim"};
-//		Animal seaBass = new Animal("Sea Bass", "Carnivore", "Nearctic", "Aquatic", 
-//				"Fish", 0, 10, travel1, "f1", "cold");
-//		addAnimal(seaBass);
-//		String[] travel2 = {"Walk"};
-//		Animal salamander = new Animal("Spotted Salamander", "Carnivore", "Nearctic", 
-//				"Temperate Deciduous Forest", "Amphibian", 4, 20, travel2, "a1", "cold");
-//		addAnimal(salamander);
-//		String[] travel3 = {"Flies", "Walk"};
-//		Animal rook = new Animal("Rook", "Omnivore", "Palearctic", "Grassland", 
-//				"Bird", 4, 20, travel3, "b1", "warm");
-//		addAnimal(rook);
-//		String[] travel4 = {"Walk"};
-//		Animal iguana = new Animal("Green Iguana", "Herbivore", "Neotropical", 
-//				"Tropical Rain Forest", "Reptile", 4, 20, travel4, "r1", "cold");
-//		addAnimal(iguana);
-//		String[] travel5 = {"Slithers"};
-//		Animal ballPython = new Animal("Ball Python", "Carnivore", "African", "Grassland",
-//				"Reptile", 0, 30, travel5, "r2", "cold");
-//		addAnimal(ballPython);
+		
+		// reads the animals that we have files for 
 		String current = System.getProperty("user.dir");
-		System.out.println(current);
+		
 		try (Stream<Path> walk = Files.walk(Paths.get(current))) {
 
 			List<String> result = walk.map(x -> x.toString())
-					.filter(f -> f.endsWith(".dat")).collect(Collectors.toList());
+					.filter(f -> f.endsWith(" Storage.dat")).collect(Collectors.toList());
 			
 			for(String file : result) {
 				this.readAnimal(file);
-				System.out.println("Found " + file + "!");
 			}
 
 		} catch (IOException e) {
@@ -320,8 +295,6 @@ public class Catalog
         System.out.println(animal.averageLifespan);
         animal.coldOrWarmBlooded = Integer.parseInt(br.readLine());
         System.out.println(animal.coldOrWarmBlooded);
-        animal.comments.add(br.readLine());
-        animal.printComments();
         animal.methodsOfTravel[0] = br.readLine();
         animal.printTravel();
         br.close();
