@@ -1,6 +1,7 @@
 
 /*
  * This is the entire front end of the Cat-o-log. 
+ * 
  * After running the program you see a page with : 
  * a place to login a button to signup a search bar 
  * a filter drop down 
@@ -12,7 +13,7 @@
  * search the catalog filter the catalog sort the catalog 
  * sign up or log in
  * Logged in users : 
- * can do what any user 
+ * can do what any user can do 
  * can click on their username and go to their personal page 
  * comment on an animal from the animal's personal page 
  * request an animal from the user's account's personal page 
@@ -907,7 +908,10 @@ public class GUI extends Application
 				Button u = makeButton(username); 
 				
 				
-				// check with accounts class 
+				/*
+				 * Logs in/out the user or displays a popup that says
+				 * password or username is incorrect with a counter for tries 
+				 */
 				try 
 				{ 
 					Accounts temp = new Accounts();
@@ -978,7 +982,7 @@ public class GUI extends Application
 		});
 		
 		/*
-		 * permanent search bar header 
+		 * permanent header 
 		 * adding them directly to root keeps them at the top 
 		 */ 
 		top.setVgap(3); // gap between rows
@@ -1013,6 +1017,7 @@ public class GUI extends Application
 		 * it goes fly slither swim walk 
 		 * 
 		 * with each animal sorted by the travel method
+		 * (if multiple travel methods then goes by first in array)
 		 * alphabetically first 
 		 * 
 		 * cold blooded then warm blooded if cold blooded is chosen
@@ -1119,7 +1124,7 @@ public class GUI extends Application
 	}
 	
 	/*
-	 * standardizes the buttons
+	 * standardizes the buttons and allows for them to stretch 
 	 */
 	Button makeButton(String str) 
 	{
@@ -1134,7 +1139,7 @@ public class GUI extends Application
 	
 	/*
 	 * a tailored drop down (combobox) 
-	 * for our needs 
+	 * for our needs - fit to GUI and has limitations 
 	 */
 	ComboBox<String> makeDropDown(String[] values) 
 	{
@@ -1163,7 +1168,9 @@ public class GUI extends Application
 	}
 	
 	/*
-	 * Does the sign up stuff 
+	 * A popup that allows the user to sign up. 
+	 * Can sign up and immediately login 
+	 * if certain parameters are not entered another popup tells you to fill them in
 	 */
 	void signUpPopUp()
 	{
@@ -1211,7 +1218,12 @@ public class GUI extends Application
 				String f = newFN.getText(); 
 				String l = newLN.getText();
 				String pn = newP.getText(); 
-				// if the passwords do not match 
+				/*
+				 * other popups that tell you to enter in information if left empty 
+				 * or if the passwords do not match 
+				 * there is no limitation on users having the same username or password 
+				 * or the length of the information they enter 
+				 */
 				if(p.equals(pc) == false)
 		        {
 					Stage dialog = new Stage();
@@ -1228,7 +1240,6 @@ public class GUI extends Application
 	                dialog.setScene(dialogScene);
 	                dialog.show(); 
 		        }
-				// if the password textfield is empty 
 				else if(p.isEmpty()) 
 				{
 					Stage dialog = new Stage();
@@ -1245,7 +1256,6 @@ public class GUI extends Application
 	                dialog.setScene(dialogScene);
 	                dialog.show(); 
 				}
-				// if the username textfield is empty 
 				else if(u.isEmpty())
 				{
 					Stage dialog = new Stage();
@@ -1305,6 +1315,10 @@ public class GUI extends Application
 
 	/*
 	 * creates the animal grid that is added to the scroll pane 
+	 * 
+	 * returns grid of animals that uses the Animal[] 
+	 * this grid is the display of animals and is called 
+	 * when filters, search, or sortby is used 
 	 */
 	GridPane animalGrid(Animal[] useThese)
 	{
@@ -1336,6 +1350,7 @@ public class GUI extends Application
 		grid.addRow(1, name, classAni, mOT, numLi, prefBiome, bT, d, lS);
 		
 		int gridRow = 2; 
+		// goes through the animals that are going to be displayed 
 		for(int c = 0; c < frontPage.length && frontPage[c] != null; c++)
 		{
 			Button tempName = new Button(frontPage[c].getName());
@@ -1380,6 +1395,8 @@ public class GUI extends Application
 	
 	/*
 	 * has some constants that keeps the frontpage up to date 
+	 * so that it all is uniform and is up to date 
+	 * called when the animals that are being siplayed are changed 
 	 */
 	void refreshAnimalGrid(GridPane constantLogin)
 	{
@@ -1399,7 +1416,8 @@ public class GUI extends Application
 	/*
 	 * Activated by clicking the apply filters button 
 	 * checks to see which check boxes are selected to be filtered 
-	 * and does so 
+	 * and does the filtering, and then refreshes the page so that the 
+	 * proper animals are displayed 
 	 */
 	void checkCheckboxes() throws IOException
 	{
@@ -1550,13 +1568,10 @@ public class GUI extends Application
 	}
 	
 	/*
-	 * Animal's personal page where 
-	 * 	logged in users can 
-	 * 			add comments
-	 * 			
-	 * 	not logged in users can 
-	 * 			view comments 
-	 * 
+	 * Sets up the personal page of the animal sent to it 
+	 * Logged in users can comment 
+	 * logged in admin can comment and delete comments 
+	 * all can view all the information and comments 
 	 */
 	void animalPersonalPage(Animal weirdDog) throws IOException
 	{
@@ -1635,7 +1650,7 @@ public class GUI extends Application
 		commentsHeader.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
 		info.addColumn(3, commentsHeader);
 		
-		// can comment  
+		// can comment only if logged in user 
 		if(!loggedInUN.equals(""))
 		{
 			TextArea newComment = new TextArea(); 
@@ -1657,6 +1672,7 @@ public class GUI extends Application
 					newComment.clear();
 				}
 			});
+			// can only delete comment if admin 
 			if(currentUser.administrator)
 			{
 				TextArea deletedComment = new TextArea(); 
@@ -1684,6 +1700,7 @@ public class GUI extends Application
 			
 		}
 		
+		// adds all the comments to page 
 		String[] currentComments = weirdDog.getComments(); 
 		for(int x = 0; x < currentComments.length; x++)
 		{
@@ -1697,6 +1714,15 @@ public class GUI extends Application
 		root.getChildren().add(scroller); 
 	}
 	
+	/*
+	 * When a logged in user clicks on the button with their username as the text 
+	 * it go to their personal page where they can 
+	 * see their information 
+	 * change it all but their name 
+	 * request an animal 
+	 * 
+	 * if they are an administrator then they can also view animal requests 
+	 */
 	void userPersonalPage()
 	{
 		root.getChildren().clear(); 
@@ -1810,7 +1836,6 @@ public class GUI extends Application
 		/*
 		 * If the logged in user is an administrator 
 		 * they can view requests through the button 
-		 * view comments through that button 
 		 */
 		if(currentUser.administrator)
 			userPage.addColumn(0, seeRequests);
@@ -1822,7 +1847,10 @@ public class GUI extends Application
 		root.getChildren().add(scroller); 
 	}
 	
-	
+	/*
+	 * This popup is where the logged in  user can change their password 
+	 * it only changes the password if they click the button
+	 */
 	void changePasswordPopup() throws IOException
 	{
 		Accounts acc = new Accounts(); 
@@ -1884,7 +1912,9 @@ public class GUI extends Application
 	
 	/*
 	 * Only an administrator can edit animal requests 
-	 * 
+	 * the options are : approve or deny
+	 * they can also click the view full information button 
+	 * the requests only show up as those buttons and the name of the animal 
 	 */
 	void viewAnimalRequests() throws IOException
 	{
@@ -1920,8 +1950,8 @@ public class GUI extends Application
 					lookAt = reqArr[l];
 			}
 			
-			Request aReq = lookAt; // because javafx doesn't like to make my life easy 
-			int x = c; // because javafx doesn't like to make my life easy 
+			Request aReq = lookAt; // because javafx has particulars about needing a basically final variable in .setOnAction
+			int x = c; 			   // ^
 			deleteReq.setOnAction(new EventHandler<ActionEvent>() 
 			{
 				@Override
@@ -1995,9 +2025,6 @@ public class GUI extends Application
 				}
 			});
 		}
-		
-		
-		
 		
 		
 		ScrollPane scroller = new ScrollPane(reqs); 
@@ -2127,7 +2154,7 @@ public class GUI extends Application
 	}
 	
 	/*
-	 * can create a request that is saved until approved or deleted 
+	 * can create a request that is saved until approved or denied by an admin 
 	 */
 	void requestAnimal()
 	{
