@@ -24,7 +24,7 @@ public class Animal implements Comparable<Animal>
 	
 	public Animal(String Aname, String identifier) {
 		name = Aname;
-		filename = name + "Storage.dat";
+		filename = name + " Storage.dat";
 		
 		try {
 			readComments();
@@ -36,7 +36,7 @@ public class Animal implements Comparable<Animal>
 	
 	public Animal(String Aname, String Adiet, String region, String biome, String Aclass,
 			int limbs, int lifespan, String[] travel, String identifier, String blood) throws IOException {
-		filename = Aname + ".txt"; 
+		filename = Aname + " Storage.txt"; 
 		
 		File newFile = new File(filename); 
 		newFile.createNewFile(); // if file already exists will do nothing
@@ -56,7 +56,7 @@ public class Animal implements Comparable<Animal>
 		} else {
 			coldOrWarmBlooded = 0;
 		}
-		filename = identifier + "Storage.dat";
+		filename = name + " Storage.txt";
 		animalStorage = new File(filename);
 		saveAnimal();
 		readComments(); 

@@ -1,6 +1,7 @@
 
 /*
  * This is the entire front end of the Cat-o-log. 
+ * 
  * After running the program you see a page with : 
  * a place to login a button to signup a search bar 
  * a filter drop down 
@@ -12,7 +13,7 @@
  * search the catalog filter the catalog sort the catalog 
  * sign up or log in
  * Logged in users : 
- * can do what any user 
+ * can do what any user can do 
  * can click on their username and go to their personal page 
  * comment on an animal from the animal's personal page 
  * request an animal from the user's account's personal page 
