@@ -7,8 +7,16 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Catalog 
 {
@@ -20,43 +28,60 @@ public class Catalog
 	public Catalog() throws IOException {
 		animals = new Animal[500];
 		currentlyDisplaying = animals;
-		Animal tiger;
-		String[] travel = {"Walk"};
-		tiger = new Animal("Tiger", "Carnivore", "Palearctic", "Tropical Rain Forest", 
-				"Mammal", 4, 15, travel, "m1", "warm");
-		addAnimal(tiger);
-		String[] travel1 = {"Swim"};
-		Animal seaBass = new Animal("Sea Bass", "Carnivore", "Nearctic", "Aquatic", 
-				"Fish", 0, 10, travel1, "f1", "cold");
-		addAnimal(seaBass);
-		String[] travel2 = {"Walk"};
-		Animal salamander = new Animal("Spotted Salamander", "Carnivore", "Nearctic", 
-				"Temperate Deciduous Forest", "Amphibian", 4, 20, travel2, "a1", "cold");
-		addAnimal(salamander);
-		String[] travel3 = {"Flies", "Walk"};
-		Animal rook = new Animal("Rook", "Omnivore", "Palearctic", "Grassland", 
-				"Bird", 4, 20, travel3, "b1", "warm");
-		addAnimal(rook);
-		String[] travel4 = {"Walk"};
-		Animal iguana = new Animal("Green Iguana", "Herbivore", "Neotropical", 
-				"Tropical Rain Forest", "Reptile", 4, 20, travel4, "r1", "cold");
-		addAnimal(iguana);
-		String[] travel5 = {"Slithers"};
-		Animal ballPython = new Animal("Ball Python", "Carnivore", "African", "Grassland",
-				"Reptile", 0, 30, travel5, "r2", "cold");
-		addAnimal(ballPython);
+//		Animal tiger;
+//		String[] travel = {"Walk"};
+//		tiger = new Animal("Tiger", "Carnivore", "Palearctic", "Tropical Rain Forest", 
+//				"Mammal", 4, 15, travel, "m1", "warm");
+//		addAnimal(tiger);
+//		String[] travel1 = {"Swim"};
+//		Animal seaBass = new Animal("Sea Bass", "Carnivore", "Nearctic", "Aquatic", 
+//				"Fish", 0, 10, travel1, "f1", "cold");
+//		addAnimal(seaBass);
+//		String[] travel2 = {"Walk"};
+//		Animal salamander = new Animal("Spotted Salamander", "Carnivore", "Nearctic", 
+//				"Temperate Deciduous Forest", "Amphibian", 4, 20, travel2, "a1", "cold");
+//		addAnimal(salamander);
+//		String[] travel3 = {"Flies", "Walk"};
+//		Animal rook = new Animal("Rook", "Omnivore", "Palearctic", "Grassland", 
+//				"Bird", 4, 20, travel3, "b1", "warm");
+//		addAnimal(rook);
+//		String[] travel4 = {"Walk"};
+//		Animal iguana = new Animal("Green Iguana", "Herbivore", "Neotropical", 
+//				"Tropical Rain Forest", "Reptile", 4, 20, travel4, "r1", "cold");
+//		addAnimal(iguana);
+//		String[] travel5 = {"Slithers"};
+//		Animal ballPython = new Animal("Ball Python", "Carnivore", "African", "Grassland",
+//				"Reptile", 0, 30, travel5, "r2", "cold");
+//		addAnimal(ballPython);
+		String current = System.getProperty("user.dir");
+		System.out.println(current);
+		try (Stream<Path> walk = Files.walk(Paths.get(current))) {
+
+			List<String> result = walk.map(x -> x.toString())
+					.filter(f -> f.endsWith(".dat")).collect(Collectors.toList());
+			
+			for(String file : result) {
+				this.readAnimal(file);
+				System.out.println("Found " + file + "!");
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
 	}
 	public Catalog(Animal[] animal, int index) {
 		animals = animal;
 		lastAnimal = index;
 	}
-	public boolean addAnimal(Animal newAnimal) {
+	public boolean addAnimal(Animal newAnimal) throws IOException {
 		if (lastAnimal == animals.length) return false;
 		animals[lastAnimal] = newAnimal;
 		lastAnimal++;
 		Arrays.sort(animals, 0, lastAnimal);
 		return true;
 	}
+	
 	public Animal[] getAnimals() {
 		return animals;
 	}
@@ -300,6 +325,25 @@ public class Catalog
         animal.methodsOfTravel[0] = br.readLine();
         animal.printTravel();
         br.close();
+		
+	}
+	
+	public void readAnimal(String file) throws IOException {
+		Animal a = new Animal();
+		String fileName = file;
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        a.name = br.readLine();
+        a.diet = br.readLine();
+        a.commonRegion = br.readLine();
+        a.prefferedBiome = br.readLine();
+        a.animalClass = br.readLine();
+        a.numOfLimbs = Integer.parseInt(br.readLine());
+        a.averageLifespan = Integer.parseInt(br.readLine());
+        a.coldOrWarmBlooded = Integer.parseInt(br.readLine());
+        a.comments.add(br.readLine());
+        a.methodsOfTravel[0] = br.readLine();
+        br.close();
+        this.addAnimal(a);
 		
 	}
 }

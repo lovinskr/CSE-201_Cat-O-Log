@@ -36,8 +36,7 @@ public class Animal implements Comparable<Animal>
 	
 	public Animal(String Aname, String Adiet, String region, String biome, String Aclass,
 			int limbs, int lifespan, String[] travel, String identifier, String blood) throws IOException {
-		filename = Aname + ".txt"; 
-		
+		filename = identifier + "Storage.txt";
 		File newFile = new File(filename); 
 		newFile.createNewFile(); // if file already exists will do nothing
 		File commentFile = new File(Aname + " Comments.txt"); 
